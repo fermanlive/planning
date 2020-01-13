@@ -6,7 +6,7 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>728D9C02-802C-4669-8254-8D4E8D99F1D0</key>
+		<key>2F3AB40D-C663-4615-A7D1-35D9690CB5EC</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -15,39 +15,7 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>728D9C02-802C-4669-8254-8D4E8D99F1D0.xcactivitylog</string>
-			<key>primaryObservable</key>
-			<dict>
-				<key>highLevelStatus</key>
-				<string>E</string>
-			</dict>
-			<key>schemeIdentifier-containerName</key>
-			<string>Planning project</string>
-			<key>schemeIdentifier-schemeName</key>
-			<string>Planning</string>
-			<key>schemeIdentifier-sharedScheme</key>
-			<integer>1</integer>
-			<key>signature</key>
-			<string>Building workspace Planning with scheme Planning and configuration Debug</string>
-			<key>timeStartedRecording</key>
-			<real>600198408.66269505</real>
-			<key>timeStoppedRecording</key>
-			<real>600198413.01302803</real>
-			<key>title</key>
-			<string>Building workspace Planning with scheme Planning and configuration Debug</string>
-			<key>uniqueIdentifier</key>
-			<string>728D9C02-802C-4669-8254-8D4E8D99F1D0</string>
-		</dict>
-		<key>A2952C48-875C-4F91-81D6-1B01F77CBBCA</key>
-		<dict>
-			<key>className</key>
-			<string>IDECommandLineBuildLog</string>
-			<key>documentTypeString</key>
-			<string>&lt;nil&gt;</string>
-			<key>domainType</key>
-			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
-			<key>fileName</key>
-			<string>A2952C48-875C-4F91-81D6-1B01F77CBBCA.xcactivitylog</string>
+			<string>2F3AB40D-C663-4615-A7D1-35D9690CB5EC.xcactivitylog</string>
 			<key>primaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
@@ -62,13 +30,45 @@
 			<key>signature</key>
 			<string>Building workspace Planning with scheme Planning and configuration Debug</string>
 			<key>timeStartedRecording</key>
-			<real>600198774.10791004</real>
+			<real>600375627.31292903</real>
 			<key>timeStoppedRecording</key>
-			<real>600198921.134619</real>
+			<real>600375777.23209095</real>
 			<key>title</key>
 			<string>Building workspace Planning with scheme Planning and configuration Debug</string>
 			<key>uniqueIdentifier</key>
-			<string>A2952C48-875C-4F91-81D6-1B01F77CBBCA</string>
+			<string>2F3AB40D-C663-4615-A7D1-35D9690CB5EC</string>
+		</dict>
+		<key>A8535DF9-698D-45D5-9E7F-355AEEF7C702</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>A8535DF9-698D-45D5-9E7F-355AEEF7C702.xcactivitylog</string>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>Planning project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>Planning</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building workspace Planning with scheme Planning and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>600473432.34087706</real>
+			<key>timeStoppedRecording</key>
+			<real>600473434.119192</real>
+			<key>title</key>
+			<string>Building workspace Planning with scheme Planning and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>A8535DF9-698D-45D5-9E7F-355AEEF7C702</string>
 		</dict>
 	</dict>
 </dict>

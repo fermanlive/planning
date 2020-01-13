@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F68685BACE2A081F64CBB15F2DAAD6D5"
+               BlueprintIdentifier = "B88B6AFCBC8B29CE6E47AB573AB1E209"
                BlueprintName = "RNCMaskedView"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "libRNCMaskedView.a">
