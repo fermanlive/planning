@@ -8,7 +8,7 @@
 ## Build generated
 build/
 DerivedData/
-**/ios/build/
+app/planning/ios/build/
 
 ## Various settings
 *.pbxuser
