@@ -18,6 +18,11 @@ class Home extends React.Component {
             title="Go Login"
             onPress={this.handlePress}
           />
+         <Text>Perfil</Text>
+          <Button 
+            title="Profile"
+            onPress={() => this.props.navigation.navigate('Profile')}
+          />
            <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
           <PieChart
             data={[

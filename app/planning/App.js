@@ -6,6 +6,7 @@ import HomeScreen from './src/screens/home';
 import LoginScreen from './src/screens/login';
 import RegisterScreen from './src/screens/register';
 import ForgetPasswordScreen from './src/screens/forgetPassword';
+import ProfileScreen from './src/screens/profile';
 
 
 
@@ -14,6 +15,12 @@ const homeStack = createStackNavigator({
     screen: HomeScreen,
     navigationOptions: {
       title: 'Home'
+    }
+  },  
+  Profile: {
+    screen: ProfileScreen,
+    navigationOptions: {
+      title: 'Perfil'
     }
   },
 },{
