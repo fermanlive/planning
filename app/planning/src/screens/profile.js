@@ -11,7 +11,7 @@ class Home extends React.Component {
                 <View style={{backgroundColor: '#FFFFFF', width:'100%',alignItems:'center',height:'25%' }}>
                     <Image
                     style={{width:'25%',height:'25%' , marginTop:'-2%',borderRadius:600/ 2}}
-                    source={{uri: 'https://bigbangtheoryla.files.wordpress.com/2009/05/jim_parsons.jpg'}}
+                    source={{uri: 'https://cdn0.iconfinder.com/data/icons/bold-purple-free-samples/32/User_Avatar_Human_Profile_Face_Circle-512.png'}}
                     />
                     <Text>
                         Brandon Cooper
@@ -27,7 +27,11 @@ class Home extends React.Component {
                     <Text>
                         Contraseña
                     </Text>
-                    <TextInput secureTextEntry={true} value="" />
+                    <TextInput
+                        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                        secureTextEntry={true} 
+                        value="" 
+                    />
                 </View>
 
         </View>

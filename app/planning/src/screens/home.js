@@ -7,7 +7,6 @@ import { Dimensions } from 'react-native';
 
 class Home extends React.Component {
     handlePress = () => {
-        console.log(this.props.navigation);
         this.props.navigation.navigate('Login')
     }
     render() {

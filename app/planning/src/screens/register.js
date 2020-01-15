@@ -4,7 +4,6 @@ import { View, Text, Button } from 'react-native';
 
 class Register extends React.Component {
     handlePress = () => {
-        console.log(this.props.navigation);
         this.props.navigation.navigate('Home')
     }
     render() {
