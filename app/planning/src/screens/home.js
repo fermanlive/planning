@@ -4,6 +4,8 @@ import {
   PieChart
 } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
+var {height, width} = Dimensions.get('window');
+
 
 class Home extends React.Component {
     handlePress = () => {
@@ -22,39 +24,38 @@ class Home extends React.Component {
             title="Profile"
             onPress={() => this.props.navigation.navigate('Profile')}
           />
-           <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
           <PieChart
             data={[
               {
-                name: 'Seoul',
-                population: 21500000,
+                name: 'Arriendo',
+                population: 30,
                 color: 'rgba(131, 167, 234, 1)',
                 legendFontColor: '#7F7F7F',
                 legendFontSize: 15,
               },
               {
-                name: 'Toronto',
-                population: 2800000,
+                name: 'Servicios',
+                population: 20,
                 color: '#F00',
                 legendFontColor: '#7F7F7F',
                 legendFontSize: 15,
               },
               {
-                name: 'New York',
-                population: 8538000,
-                color: '#ffffff',
+                name: 'Tarjetas',
+                population: 10,
+                color: 'green',
                 legendFontColor: '#7F7F7F',
                 legendFontSize: 15,
               },
               {
-                name: 'Moscow',
-                population: 11920000,
+                name: 'Ahorros',
+                population: 50,
                 color: 'rgb(0, 0, 255)',
                 legendFontColor: '#7F7F7F',
                 legendFontSize: 15,
               },
             ]}
-            width={220}
+            width={width}
             height={220}
             chartConfig={{
               backgroundColor: '#1cc910',
@@ -66,16 +67,11 @@ class Home extends React.Component {
                 borderRadius: 16,
               },
             }}
-            style={{
-              marginVertical: 8,
-              borderRadius: 16,
-            }}
             accessor="population"
             backgroundColor="transparent"
-            paddingLeft="15"
-            absolute //for the absolute number remove if you want percentage
+            paddingLeft="20"
+            //absolute //for the absolute number remove if you want percentage
           />
-          </View>
         </View>
       );
     }
