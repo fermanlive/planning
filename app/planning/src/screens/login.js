@@ -61,7 +61,7 @@ class Login extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => this.loginNav()}
-                            disabled={this.state.isDisable}
+                            disabled="True"
                             style={[buttons.GralButton, buttons.BLight]}>
                             <Text style={[text.BText, text.TFacebookColor,{paddingRight:20}]}>
                                 Iniciar Facebook 
@@ -74,7 +74,7 @@ class Login extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => this.loginNav()}
-                            disabled={this.state.isDisable}
+                            disabled="True"
                             style={[buttons.GralButton, buttons.BLight]}>
                             <Text style={[text.BText, text.TGmailColor,{paddingRight:20}]}>
                                 Registro Gmail
