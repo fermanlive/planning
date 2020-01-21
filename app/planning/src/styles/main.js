@@ -39,6 +39,9 @@ export const colors = {
   	VTGray: '#E0E2E4',
 	VTDarkGray: '#343D42',
 	VTAlertRed: '#F42464',
+	Black: '#000000',
+	Facebook: '#3b5998',
+	Gmail: '#c4302b',
 
 	// Profiles
 
@@ -1176,11 +1179,20 @@ export const text = StyleSheet.create({
 	TLight: {
 		color: colors.White,
 	},
+	TGmailColor: {
+		color: colors.Gmail,
+	},
+	TFacebookColor: {
+		color: colors.Facebook,
+	},
 	TLightBlue: {
 		color: colors.VTLightBlue,
 	},
 	TDarkBlue: {
 		color: colors.VTDarkBlue,
+	},
+	TBlack: {
+		color: colors.Black,
 	},
 	TTurquoise: {
 		color: colors.VTTurquoise,

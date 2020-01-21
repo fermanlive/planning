@@ -12,18 +12,18 @@ class Login extends React.Component {
     render() {
       return (
               <View style = {{ flex: 1, }}>
-                    <Image
-                        style={login.LoginLogo}
-                        source={{uri: 'https://i.pinimg.com/236x/5c/7b/53/5c7b53a7be1dd267f24f7559584d1345.jpg'}}
-                    />
 
                     <View style={[login.LoginFormCont]}>
+                        <Image
+                            style={login.LoginLogo}
+                            source={{uri: 'https://i.pinimg.com/236x/5c/7b/53/5c7b53a7be1dd267f24f7559584d1345.jpg'}}
+                        />
                         <View style={forms.InputCont}>
                             <TextInput
                                 value={this.state.user}
                                 style={[forms.Input, forms.CenterAlingment]}
                                 onChangeText={(user) => this.setState({user})}
-                                placeholder= "usuario"
+                                placeholder= "Usuario"
                                 keyboardType = "email-address"
                                 autoCapitalize = 'none'
                                 onBlur = {()=>{
@@ -45,14 +45,14 @@ class Login extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity 
-                            onPress={() => this.props.navigation.navigate('ForgotPassword')}
+                            onPress={() => this.props.navigation.navigate('ForgetPassword')}
                             style={text.GralLink}>
-                            <Text style={[text.LText, text.TLight]}>
+                            <Text style={[text.LText, text.TBlack]}>
                             Olvidaste Contraseña 
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
-                            onPress={() => this.loginNav()}
+                            onPress={() => this.props.navigation.navigate('home')}
                             disabled={this.state.isDisable}
                             style={[buttons.GralButton, buttons.BLightBlue]}>
                             <Text style={[text.BText, text.TLight]}>
@@ -63,43 +63,41 @@ class Login extends React.Component {
                             onPress={() => this.loginNav()}
                             disabled={this.state.isDisable}
                             style={[buttons.GralButton, buttons.BLight]}>
-                            <Text style={[text.BText, text.TLight,{paddingRight:20}]}>
+                            <Text style={[text.BText, text.TFacebookColor,{paddingRight:20}]}>
                                 Iniciar Facebook 
                             </Text>
                             <Icon
                               name='facebook'
                               type='font-awesome'
                               color='#3b5998'
-                              onPress={() => console.log('hello')}
                                />
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => this.loginNav()}
                             disabled={this.state.isDisable}
-                            style={[buttons.GralButton, buttons.BLightBlue]}>
-                            <Text style={[text.BText, text.TLight,{paddingRight:20}]}>
+                            style={[buttons.GralButton, buttons.BLight]}>
+                            <Text style={[text.BText, text.TGmailColor,{paddingRight:20}]}>
                                 Registro Gmail
                             </Text>
                             <Icon
                               name='google'
                               type='font-awesome'
-                              color='#3b5998'
-                              onPress={() => console.log('hello')}
+                              color='#c4302b'
                                />
                         </TouchableOpacity>
                     </View>
 
                     <View style={layout.GralTextCont}>
-                        <Text style={[text.GralText, text.Strong, text.TLight]}>
-                        Compañia
+                        <Text style={[text.GralText, text.Strong, text.TBlack]}>
+                        Registro
                         </Text>
                     </View>
 
                     <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate('CompanyRegistration_1')}
+                        onPress={() => this.props.navigation.navigate('RegisterScreen')}
                         style={[buttons.GralButton, buttons.BLight]}>
                         <Text style={[text.BText, text.TLightBlue]}>
-                        Registrar Compañia
+                        Registrarse Aqui
                         </Text>
                     </TouchableOpacity>
                     
