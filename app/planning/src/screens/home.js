@@ -1,29 +1,37 @@
 import React from 'react';
-import { View, Text , Button} from 'react-native';
+import { View, Text ,TouchableOpacity,Modal,TouchableHighlight} from 'react-native';
 import {
   PieChart
 } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 var {height, width} = Dimensions.get('window');
-
+const {layout, text, login, forms, buttons} = require ('../styles/main');
 
 class Home extends React.Component {
-    handlePress = () => {
-        this.props.navigation.navigate('Login')
-    }
+  state = {
+    modalVisible: false,
+  };
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text>Home</Text>
-          <Button 
-            title="Go Login"
-            onPress={this.handlePress}
-          />
-         <Text>Perfil</Text>
-          <Button 
-            title="Profile"
+          <TouchableOpacity 
+            onPress={() => this.props.navigation.navigate('Login')}
+            style={[buttons.GralButton, buttons.BLightBlue]}>
+            <Text style={[text.LText, text.TBlack]}>
+             Volver Login 
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
             onPress={() => this.props.navigation.navigate('Profile')}
-          />
+            style={[buttons.GralButton, buttons.BLightBlue]}>
+            <Text style={[text.LText, text.TBlack]}>
+             Perfil 
+            </Text>
+          </TouchableOpacity>
           <PieChart
             data={[
               {
@@ -72,6 +80,20 @@ class Home extends React.Component {
             paddingLeft="20"
             //absolute //for the absolute number remove if you want percentage
           />
+          <TouchableHighlight
+            onPress={() => {
+              this.setModalVisible(!this.state.modalVisible);
+            }}>
+            <Text>Hide Modal</Text>
+          </TouchableHighlight>
+          <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>   
+          </Modal>
         </View>
       );
     }
