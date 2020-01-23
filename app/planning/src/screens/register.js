@@ -95,7 +95,7 @@ class Register extends React.Component {
           </View>
           <View style={layout.InputGroup}>
               <Text style={text.InputLabel}>
-              Nombres
+              Contraseña
               </Text>
               <View style={[forms.InputCont, forms.LeftAlingment, forms.AlertInput]}>
                   <TextInput
@@ -113,7 +113,7 @@ class Register extends React.Component {
           </View>
           <View style={layout.InputGroup}>
               <Text style={text.InputLabel}>
-              Apellidos
+              Confimar Contraseña
               </Text>
               <View style={[forms.InputCont, forms.LeftAlingment, forms.AlertInput]}>
                   <TextInput
