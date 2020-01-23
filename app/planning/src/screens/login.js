@@ -94,7 +94,7 @@ class Login extends React.Component {
                     </View>
 
                     <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate('RegisterScreen')}
+                        onPress={() => this.props.navigation.navigate('Register')}
                         style={[buttons.GralButton, buttons.BLight]}>
                         <Text style={[text.BText, text.TLightBlue]}>
                         Registrarse Aqui
