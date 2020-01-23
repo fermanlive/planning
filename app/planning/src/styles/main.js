@@ -420,7 +420,7 @@ export const layout = StyleSheet.create({
 		width: '100%',
 		paddingVertical: fzbase,
 		paddingHorizontal: fzbase * 1.5,
-		borderRadius: 15,
+		//borderRadius: 15,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
