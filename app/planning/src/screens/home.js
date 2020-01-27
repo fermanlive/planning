@@ -1,24 +1,31 @@
 import React from 'react';
-import { View, Text ,TouchableOpacity,Modal,TouchableHighlight} from 'react-native';
+import { View, Text ,TouchableOpacity,Modal,TouchableHighlight,TextInput} from 'react-native';
 import {
   PieChart
 } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
+import AddExpense from '../components/AddExpense';
+
+
 var {height, width} = Dimensions.get('window');
+
+//////Estilos
 const {layout, text, login, forms, buttons} = require ('../styles/main');
 
 import LinearGradient from 'react-native-linear-gradient';
-
+import { Icon } from 'react-native-elements';
 
 class Home extends React.Component {
-  state = {
-    modalVisible: false,
-  };
+  constructor(props) {
+   
+    super(props);
+    const { navigation } = this.props;
+    this.state = { 
+      modalVisible:false
+    };
+}
 
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
   _setBusyIndicator = (activity_loading, activity_text) => {
     this.setState({activity_loading: activity_loading})
     this.setState({activity_text: activity_text})
@@ -88,7 +95,72 @@ class Home extends React.Component {
           </TouchableOpacity>
 
         </LinearGradient>
-    
+        <LinearGradient 
+          colors={['#c4302b', '#c4302b']}  
+          style = {layout.TravelCardCont}>
+
+          <Text style={[text.TravelInfoTitle, text.Regular, text.TLight]}>
+            Soy una Alerta
+          </Text>
+          <Text style={[text.TravelInfoSubtitle, text.Regular, text.TLight,]}>
+             2020/10/11 a  2020/10/12
+          </Text>
+
+          <View style={layout.TravelCardInfoCont}>
+
+            <View style={layout.TravelCardInfoColumn}>
+
+              <Text style={[layout.TravelCardInfoTitle, text.Strong, text.TLight]}>
+                   Facturas
+              </Text>
+
+            
+              <View style={{flexDirection: 'row',}}>
+                <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
+                 112312312
+                </Text>
+                <View style={layout.CurrencyIndDetail}>
+                  <Text style={[layout.CurrencyIndText, text.Medium, text.TTurquoise]}>
+                 usd
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={layout.TravelCardInfoColumn}>
+
+              <Text style={[layout.TravelCardInfoTitle, text.Strong, text.TLight]}>
+                  912312
+              </Text>
+
+              <View style={{flexDirection: 'row',}}>
+                <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
+                  123123
+                </Text>
+                <View style={layout.CurrencyIndDetail}>
+                  <Text style={[layout.CurrencyIndText, text.Medium, text.TTurquoise]}>
+                  usd
+                  </Text>
+                </View>
+              </View>
+
+            </View>
+
+          </View>
+
+          <TouchableOpacity 
+              onPress={() => {this.haveBills()}}
+              style={[buttons.GralButton, buttons.SmlButton, buttons.BLight, {marginTop: 10, width: '100%',}]}>
+              <Text style={[text.BText, text.TLightBlue]}>
+                enviar
+              </Text>
+          </TouchableOpacity>
+
+        </LinearGradient>
+        <Text style={[text.TravelInfoTitle, text.Regular, text.TBlack]}>
+            Grafica para el mes Agust
+          </Text>
+
           <PieChart
             data={[
               {
@@ -137,6 +209,16 @@ class Home extends React.Component {
             paddingLeft="20"
             //absolute //for the absolute number remove if you want percentage
           />
+
+            <Icon
+            raised
+            name='plus'
+            type='font-awesome'
+            color='#f50'
+            onPress={() => {this.setState({modalVisible : true})}}
+            />
+         
+
           <TouchableOpacity 
             onPress={() => this.props.navigation.navigate('Login')}
             style={[buttons.GralButton, buttons.BLightBlue]}>
@@ -147,10 +229,70 @@ class Home extends React.Component {
           <Modal
           animationType="slide"
           transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-          }}>   
+          visible={this.state.modalVisible}>  
+                      <View style={[layout.GralTextCont, {marginBottom: 60,}]}>
+                <Text style={[text.GralText, text.Regular]}>
+                 Recuperar Contraseña
+                </Text>
+            </View>
+
+            <View style={layout.InputGroup}>
+                <Text style={text.InputLabel}>
+                Email
+                </Text>
+                <View style={[forms.InputCont, forms.LeftAlingment,forms.AlertInput]}>
+                    <TextInput
+                        style={forms.Input}
+                        //onChangeText={(email) => this.validate('email','email','emailError',email)}
+                        placeholder='Ingresar Email'
+                        keyboardType = "email-address"
+                    />
+                </View>
+                <View style={layout.textAlertCont}>
+                        <Text style={[layout.textAlertError, text.Regular]}>
+                          Ingresar Email de forma correcta
+                        </Text>
+                </View>
+            </View>
+
+            <View style={layout.InputGroup}>
+                <Text style={text.InputLabel}>
+                Confirmacion Email
+                </Text>
+                <View style={[forms.InputCont, forms.LeftAlingment, forms.AlertInput]}>
+                    <TextInput
+                        style={forms.Input}
+                        onChangeText={(emailVerification) => this.validate('email','emailVerification','emailVerificationError',emailVerification)}
+                        placeholder="Confirmar Email"
+                        keyboardType = "email-address"
+                    />
+                </View>
+                <View style={layout.textAlertCont}>
+                        <Text style={[layout.textAlertError, text.Regular]}>
+                            Error: Emails no conciden.
+                        </Text>
+                </View>
+            </View>
+
+            <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between',}}> 
+              <TouchableOpacity 
+                  // onPress={this.props.leftFunction}
+                  onPress={() => {this.setState({modalVisible : false})}}
+                  style={[buttons.GralButton, buttons.BLineLightBlue, {marginBottom: 0, width: '47%',}]}
+                  >
+                  <Text style={[text.BText, text.TLightBlue]}>
+                      Cancelar
+                  </Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                  // onPress={this.props.rightFunction}
+                  style={[buttons.GralButton, buttons.BLightBlue, {marginBottom: 0, width: '47%',}]}
+                  >
+                  <Text style={[text.BText, text.TLight]}>
+                     Guardar
+                  </Text>
+              </TouchableOpacity>
+              </View>
           </Modal>
           <Loading 
           activity_loading={this.state.activity_loading} 

@@ -77,7 +77,8 @@ const loginStack = createStackNavigator({
   Login: {
     screen: LoginScreen,
     navigationOptions: {
-      title: 'Login'
+      title: 'Login',
+      headerShown:false,
     }
   },
   Register: {
