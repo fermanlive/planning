@@ -442,6 +442,12 @@ export const layout = StyleSheet.create({
 		justifyContent: 'space-between',
 		marginTop: fzbase,
 	},
+	ButtonsSpends: {
+		width: '100%',
+		flexDirection: 'column',
+		justifyContent: 'flex-start',
+		marginTop: fzbase,
+	},
 	TravelCardInfoColumn: {
 		width: '50%',
 		flexDirection: 'column',

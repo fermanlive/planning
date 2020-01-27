@@ -7,7 +7,7 @@ import { Dimensions } from 'react-native';
 class Home extends React.Component {
     render() {
       return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor: 'gray' }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <View style={{backgroundColor: '#FFFFFF', width:'100%',alignItems:'center',height:'25%' }}>
                     <Image
                     style={{width:'25%',height:'25%' , marginTop:'-2%',borderRadius:600/ 2}}
