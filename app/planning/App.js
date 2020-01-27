@@ -4,6 +4,8 @@ import { createAppContainer,createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
+import { Icon } from 'react-native-elements';
+
 ///Home simulator
 import HomeScreen from './src/screens/home';
 import HistoricScreen from './src/screens/history';
@@ -23,26 +25,38 @@ const homeStack = createBottomTabNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      title: 'Home'
-    }
+      tabBarLabel: 'Home',
+      tabBarIcon: ({tintColor, activeTintColor}) => (
+         <Icon name="home" type='font-awesome' size={30} color={'#3b5998'} />
+         )
+    } 
   },  
-  Profile: {
-    screen: ProfileScreen,
+  Simulator: {
+    screen: SimulatorScreen,
     navigationOptions: {
-      title: 'Perfil'
+      tabBarLabel: 'Simulador',
+      tabBarIcon: ({tintColor, activeTintColor}) => (
+         <Icon name="plane" type='font-awesome' size={30} color={'#3b5998'} />
+         )
     }
   },
   Historic: {
     screen: HistoricScreen,
     navigationOptions: {
-      title: 'Historial'
-    }
+      tabBarLabel: 'Historial',
+      tabBarIcon: ({tintColor, activeTintColor}) => (
+         <Icon name="calendar" type='font-awesome' size={30} color={'#3b5998'} />
+         )
+    } 
   },
-  Simulator: {
-    screen: SimulatorScreen,
+  Profile: {
+    screen: ProfileScreen,
     navigationOptions: {
-      title: 'Simulador'
-    }
+      tabBarLabel: 'Historial',
+      tabBarIcon: ({tintColor, activeTintColor}) => (
+         <Icon name="user-circle" type='font-awesome' size={30} color={'#3b5998'} />
+         )
+    } 
   },
 },{
   initialRouteName:'Home',
