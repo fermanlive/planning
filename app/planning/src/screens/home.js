@@ -144,19 +144,6 @@ class Home extends React.Component {
              Volver Login 
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity 
-            onPress={() => this.props.navigation.navigate('Profile')}
-            style={[buttons.GralButton, buttons.BLightBlue]}>
-            <Text style={[text.LText, text.TBlack]}>
-             Perfil 
-            </Text>
-          </TouchableOpacity>
-          <TouchableHighlight
-            onPress={() => {
-              this._setBusyIndicator(true, '');
-            }}>
-            <Text>Mostrar Loading</Text>
-          </TouchableHighlight>
           <Modal
           animationType="slide"
           transparent={false}
@@ -169,7 +156,7 @@ class Home extends React.Component {
           activity_loading={this.state.activity_loading} 
           activity_text={this.state.activity_text} 
         />
-        </View>
+        </View> 
       );
     }
   }
