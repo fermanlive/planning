@@ -52,7 +52,7 @@ const homeStack = createBottomTabNavigator({
   Profile: {
     screen: ProfileScreen,
     navigationOptions: {
-      tabBarLabel: 'Historial',
+      tabBarLabel: 'Perfil',
       tabBarIcon: ({tintColor, activeTintColor}) => (
          <Icon name="user-circle" type='font-awesome' size={30} color={'#3b5998'} />
          )
