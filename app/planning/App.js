@@ -3,11 +3,19 @@ import { View, Text } from 'react-native';
 import { createAppContainer,createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+
+///Home simulator
 import HomeScreen from './src/screens/home';
+import HistoricScreen from './src/screens/history';
+import SimulatorScreen from './src/screens/simulator';
+import ProfileScreen from './src/screens/profile';
+
+
+///Login Stack
 import LoginScreen from './src/screens/login';
 import RegisterScreen from './src/screens/register';
 import ForgetPasswordScreen from './src/screens/forgetPassword';
-import ProfileScreen from './src/screens/profile';
+
 
 
 const homeStack = createBottomTabNavigator({
@@ -24,15 +32,28 @@ const homeStack = createBottomTabNavigator({
       title: 'Perfil'
     }
   },
+  Historic: {
+    screen: HistoricScreen,
+    navigationOptions: {
+      title: 'Historial'
+    }
+  },
+  Simulator: {
+    screen: SimulatorScreen,
+    navigationOptions: {
+      title: 'Simulador'
+    }
+  },
 },{
   initialRouteName:'Home',
   tabBarOptions: {
-    activeTintColor: '#e91e63',
+    activeTintColor: '#000000',
+    showIcon: true,
     labelStyle: {
       fontSize: 12,
     },
     style: {
-      backgroundColor: 'blue',
+      backgroundColor: 'transparent',
     },
   }
 }
