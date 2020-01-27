@@ -1229,7 +1229,7 @@ export const login = StyleSheet.create({
 	// --
 	// Form container
 	LoginFormCont: {
-		backgroundColor: 'rgba(255,255,255,0.15)',
+		//backgroundColor: 'red',
 		width: '100%',
 		borderRadius: 10,
 		padding: 20,
@@ -1422,7 +1422,7 @@ export const buttons = StyleSheet.create({
 	    justifyContent: 'center',
 	    alignItems: 'center',
 	    height: 42,
-	    borderRadius: 21,
+	    //borderRadius: 21,
 	    flexDirection: 'row',
 	    marginBottom: 10,
 	    width: '100%',

@@ -3,6 +3,7 @@ import { View, Text, Button, TextInput, Image,TouchableOpacity  } from 'react-na
 const {layout, text, login, forms, buttons} = require ('../styles/main');
 
 import { Icon } from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient';
 
 class Login extends React.Component {
   constructor(props) {
@@ -12,7 +13,10 @@ class Login extends React.Component {
     render() {
       return (
               <View style = {{ flex: 1, }}>
-
+                    <LinearGradient 
+                    colors={['#eef9bf', '#a7e9af']}
+                    style={{ height: '100%' }}
+                    >
                     <View style={[login.LoginFormCont]}>
                         <Image
                             style={login.LoginLogo}
@@ -86,7 +90,7 @@ class Login extends React.Component {
                                />
                         </TouchableOpacity>
                     </View>
-
+                    
                     <View style={layout.GralTextCont}>
                         <Text style={[text.GralText, text.Strong, text.TBlack]}>
                         Registro
@@ -100,7 +104,7 @@ class Login extends React.Component {
                         Registrarse Aqui
                         </Text>
                     </TouchableOpacity>
-                    
+                    </LinearGradient>
            </View>
       );
     }
