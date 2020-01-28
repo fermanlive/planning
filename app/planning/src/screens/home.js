@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text ,TouchableOpacity,Modal,TouchableHighlight,TextInput,ScrollView} from 'react-native';
+import { View, Text ,TouchableOpacity,Modal,TouchableHighlight,FlatList,TextInput,ScrollView} from 'react-native';
 import {
   PieChart
 } from 'react-native-chart-kit';
@@ -7,6 +7,7 @@ import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
 import AddExpense from '../components/AddExpense';
 
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 var {height, width} = Dimensions.get('window');
 
@@ -22,24 +23,40 @@ class Home extends React.Component {
     super(props);
     const { navigation } = this.props;
     this.state = { 
-      modalVisible:false
+      modalVisible:false,
+      showIcons:false,
+      chosenDate: 'Seleccionar fecha' ,
+      chosenDateShow: 'Seleccionar fecha',
     };
 }
+
+_showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+
+_hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+
+_handleDatePicked = (date) => {
+  this.setState({
+      chosenDate : moment(date).format('DD-MM-YYYY')
+  });
+this.setState({
+      chosenDateShow : moment(date).format('DD/MM/YYYY')
+  });
+  this._hideDateTimePicker();
+};
 
   _setBusyIndicator = (activity_loading, activity_text) => {
     this.setState({activity_loading: activity_loading})
     this.setState({activity_text: activity_text})
   }
+
+  _toggleIcons = () => this.setState({ showIcons: !this.state.showIcons });
+
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <ScrollView
-          style = { layout.MainContainerSV }
-          showsVerticalScrollIndicator = {false}
-          >
           <LinearGradient 
             colors={['#00cc74', '#0058cc']}  
-            style = {layout.TravelCardCont}>
+            style = {layout.TravelCardCont,{display: 'none'}}>
 
             <Text style={[text.TravelInfoTitle, text.Regular, text.TLight]}>
               Usuario con nombre
@@ -164,7 +181,6 @@ class Home extends React.Component {
           <Text style={[text.TravelInfoTitle, text.Regular, text.TBlack]}>
               Grafica para el mes Agust
             </Text>
-
             <PieChart
               data={[
                 {
@@ -213,30 +229,122 @@ class Home extends React.Component {
               paddingLeft="20"
               //absolute //for the absolute number remove if you want percentage
             />
-            <View style={[layout.ButtonsSpends]}>
+          <FlatList
+            data = {[
+              {
+                id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+                title: 'Prima',
+                categoria:'0', ///ingreso
+                value:'100.000,00'
+              },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Salario',
+                categoria:'0', ///ingreso
+                value:'100.000,00'
+              },
+              {
+                id: '58694a0f-3da1-471f-bd96-145571e29d72',
+                title: 'Tarjeta de credito',
+                categoria:'1', ///egreso
+                value:'100.000,00'
+              },
+            ]}
+            style={layout.MainContainerSV}
+            keyExtractor={item => item.id}
+            renderItem={({item}) =>
+              <TouchableOpacity>
+                <View  style={layout.AdminItemCont}>
+                  <View style={layout.AdminItemIconCont}>
+                    {item.categoria==0 ?                       
+                      <Icon
+                        name='cash'
+                        type='material-community'
+                        color='green'
+                        backgroundColor='#000000'
+                        size={30}
+                        onPress={() => {this._toggleIcons();} }
+                        />
+                      : 
+                        <Icon
+                        name='cash'
+                        type='material-community'
+                        color='red'
+                        size={30}
+                        backgroundColor='#000000'
+                        onPress={() => {this._toggleIcons();} }
+                        />
+                    }
+                  </View>
+                  <View style={layout.AdminItemTextCont}>
+                    <Text style={[layout.AdminItemTextNormal, text.Medium, text.TLightBlue]}>
+                      {item.title}
+                    </Text>
+                    <Text style={[layout.BillItemText, text.Strong, text.TLightGray,]}>
+                      {item.value}
+                    </Text>
+                    </View>
+                </View>
+              </TouchableOpacity>
+            }
+          />
+            { this.state.showIcons ? 
+              <View style={[layout.ButtonsSpends2]}>
+                <View style={[layout.ButtonsSpends3]}>
+                  <Icon
+                  reverse
+                  name='arrow-left'
+                  type='material-community'
+                  color='#f50'
+                  backgroundColor='#000000'
+                  onPress={() => {this._toggleIcons();} }
+                  />
+                  <Text style={[layout.BillItemText2, text.Strong, text.TLightGray,]}>Regresar</Text>
+                </View>
+                <View style={[layout.ButtonsSpends3]}>
+                  <Icon
+                  raised
+                  name='plus'
+                  type='material-community'
+                  color='#f50'
+                  onPress={() => {this.setState({modalVisible : true})}}
+                  />
+                  <Text style={[layout.BillItemText2, text.Strong, text.TLightGray,]}>Agregar {"\n"} Ingreso</Text>
+                </View>
+                <View style={[layout.ButtonsSpends3]}>
+                  <Icon
+                  raised
+                  name='minus'
+                  type='material-community'
+                  color='#f50'
+                  onPress={() => {this.setState({modalVisible : true})}}
+                  />
+                  <Text style={[layout.BillItemText2, text.Strong, text.TLightGray,]}>Agregar {"\n"} Egreso</Text>
+                </View>
+                <View style={[layout.ButtonsSpends3]}>
+                  <Icon
+                  raised
+                  name='book-open-variant'
+                  type='material-community'
+                  color='#f50'
+                  backgroundColor='#000000'
+                  onPress={() => this.props.navigation.navigate('Index')}
+                  />
+                  <Text style={[layout.BillItemText2, text.Strong, text.TLightGray,]}>Diccionario</Text>
+                </View>
+              </View>
+            :
+              <View style={[layout.ButtonsSpends]}>
               <Icon
               reverse
-              name='arrow-left'
-              type='font-awesome'
+              name='currency-usd'
+              type='material-community'
               color='#f50'
               backgroundColor='#000000'
-              onPress={() => {this.setState({modalVisible : true})}}
+              onPress={() => {this._toggleIcons();} }
               />
-              <Icon
-              raised
-              name='plus'
-              type='font-awesome'
-              color='#f50'
-              onPress={() => {this.setState({modalVisible : true})}}
-              />
-              <Icon
-              raised
-              name='minus'
-              type='font-awesome'
-              color='#f50'
-              onPress={() => {this.setState({modalVisible : true})}}
-              />
-            </View>
+              </View>
+            }
             <Modal
             animationType="slide"
             transparent={false}
@@ -284,6 +392,27 @@ class Home extends React.Component {
                           </Text>
                   </View>
               </View>
+              <View style={[forms.InputCont, forms.LeftAlingment]}>
+                  <View style={forms.InputInteraction}>
+                   <Icon name="calendar-month-outline" type='material-community' size={30} color={'#3b5998'} />  
+                  </View>
+                  <TouchableOpacity
+                      style={forms.DatePickerCont}
+                      onPress={this._showDateTimePicker}
+                  >
+                      <Text
+                      style={forms.DatePickerText}>
+                          {this.state.chosenDateShow}
+                      </Text>
+                  </TouchableOpacity>
+              </View>
+              <DateTimePicker
+                            isVisible={this.state.isDateTimePickerVisible}
+                            onConfirm={this._handleDatePicked}
+                            onCancel={this._hideDateTimePicker}
+                            // minimumDate = {new Date(this.state.sTrip.tripStartDateformat)}
+                            
+                        />
 
               <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between',}}> 
                 <TouchableOpacity 
@@ -309,7 +438,6 @@ class Home extends React.Component {
             activity_loading={this.state.activity_loading} 
             activity_text={this.state.activity_text} 
             />
-          </ScrollView>
         </View> 
       );
     }

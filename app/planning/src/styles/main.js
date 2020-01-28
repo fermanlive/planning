@@ -448,6 +448,17 @@ export const layout = StyleSheet.create({
 		justifyContent: 'flex-start',
 		marginTop: fzbase,
 	},
+	ButtonsSpends2: {
+		width: '100%',
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		marginTop: fzbase,
+	},
+	ButtonsSpends3: {
+		alignItems:'center',
+		flexDirection: 'column',
+		marginTop: fzbase,
+	},
 	TravelCardInfoColumn: {
 		width: '50%',
 		flexDirection: 'column',
@@ -588,6 +599,10 @@ export const layout = StyleSheet.create({
 	},
 	BillItemText: {
 		fontSize: fzbase * mult_022,
+	},
+	BillItemText2: {
+		fontSize: fzbase * mult_022,
+		justifyContent:'center'
 	},
 	//--
 	// Admin list items

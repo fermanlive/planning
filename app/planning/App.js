@@ -3,7 +3,6 @@ import { View, Text } from 'react-native';
 import { createAppContainer,createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-
 import { Icon } from 'react-native-elements';
 
 ///Home simulator
@@ -18,6 +17,8 @@ import LoginScreen from './src/screens/login';
 import RegisterScreen from './src/screens/register';
 import ForgetPasswordScreen from './src/screens/forgetPassword';
 
+////Index Stack
+import IndexScreen from './src/screens/index'
 
 
 const homeStack = createBottomTabNavigator({
@@ -27,7 +28,7 @@ const homeStack = createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'Home',
       tabBarIcon: ({tintColor, activeTintColor}) => (
-         <Icon name="home" type='font-awesome' size={30} color={'#3b5998'} />
+         <Icon name="home" type='material-community' size={30} color={'#3b5998'} />
          )
     } 
   },  
@@ -36,7 +37,7 @@ const homeStack = createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'Simulador',
       tabBarIcon: ({tintColor, activeTintColor}) => (
-         <Icon name="plane" type='font-awesome' size={30} color={'#3b5998'} />
+         <Icon name="calculator" type='material-community' size={30} color={'#3b5998'} />
          )
     }
   },
@@ -45,7 +46,7 @@ const homeStack = createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'Historial',
       tabBarIcon: ({tintColor, activeTintColor}) => (
-         <Icon name="calendar" type='font-awesome' size={30} color={'#3b5998'} />
+         <Icon name="calendar-month-outline" type='material-community' size={30} color={'#3b5998'} />
          )
     } 
   },
@@ -54,11 +55,11 @@ const homeStack = createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'Perfil',
       tabBarIcon: ({tintColor, activeTintColor}) => (
-         <Icon name="user-circle" type='font-awesome' size={30} color={'#3b5998'} />
+         <Icon name="account-circle" type='material-community' size={30} color={'#3b5998'} />
          )
     } 
   },
-},{
+  },{
   initialRouteName:'Home',
   tabBarOptions: {
     activeTintColor: '#000000',
@@ -97,11 +98,23 @@ const loginStack = createStackNavigator({
   initialRouteName:'Login'
 }
 );
+const indexStack = createStackNavigator({
+  Index: {
+    screen: IndexScreen,
+    navigationOptions: {
+      title: 'Libreria'
+    }
+  },
+},{
+  initialRouteName:'Index'
+}
+);
 
 export default createAppContainer(createSwitchNavigator(
   {
     home: homeStack,
     login: loginStack,
+    index: indexStack,
   },
   {
     initialRouteName: 'login',
