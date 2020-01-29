@@ -1,16 +1,16 @@
 import React from 'react';
-import { View, Text , Button,Image,TextInput} from 'react-native';
-
+import { View, Text , Button,Image,TextInput,TouchableOpacity} from 'react-native';
+const {layout, text, forms, buttons} = require ('../styles/main');
 import { Dimensions } from 'react-native';
 
 
 class Home extends React.Component {
     render() {
       return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <View style={{backgroundColor: '#FFFFFF', width:'100%',alignItems:'center',height:'25%' }}>
+        <View style={ [layout.MainContainer, layout.AlignCenter] }>
+                <View style={{backgroundColor: '#F0F3F5', width:'100%',alignItems:'center',height:'25%' }}>
                     <Image
-                    style={{width:'25%',height:'25%' , marginTop:'-2%',borderRadius:600/ 2}}
+                    style={{width:'40%',height:'60%' , marginTop:'-20%',resizeMode:'contain'}}
                     source={{uri: 'https://cdn0.iconfinder.com/data/icons/bold-purple-free-samples/32/User_Avatar_Human_Profile_Face_Circle-512.png'}}
                     />
                     <Text>
@@ -23,16 +23,49 @@ class Home extends React.Component {
                         Currently Bogota DC
                     </Text>
                 </View>
-                <View style={{backgroundColor: '#B1CAF6',width:'100%'  }}>
-                    <Text>
-                        Contraseña
+                <View style={layout.InputGroup}>
+                    <Text style={text.InputLabel}>
+                    Email
                     </Text>
-                    <TextInput
-                        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                        secureTextEntry={true} 
-                        value="" 
-                    />
+                    <View style={[forms.InputCont, forms.LeftAlingment,forms.AlertInput]}>
+                        <TextInput
+                            style={forms.Input}
+                            //onChangeText={(email) => this.validate('email','email','emailError',email)}
+                            placeholder='Ingresar Email'
+                            keyboardType = "email-address"
+                        />
+                    </View>
+                    <View style={layout.textAlertCont}>
+                            <Text style={[layout.textAlertError, text.Regular]}>
+                            Ingresar Email de forma correcta
+                            </Text>
+                    </View>
                 </View>
+                <View style={layout.InputGroup}>
+                    <Text style={text.InputLabel}>
+                    Email
+                    </Text>
+                    <View style={[forms.InputCont, forms.LeftAlingment,forms.AlertInput]}>
+                        <TextInput
+                            style={forms.Input}
+                            //onChangeText={(email) => this.validate('email','email','emailError',email)}
+                            placeholder='Ingresar Email'
+                            keyboardType = "email-address"
+                        />
+                    </View>
+                    <View style={layout.textAlertCont}>
+                            <Text style={[layout.textAlertError, text.Regular]}>
+                            Ingresar Email de forma correcta
+                            </Text>
+                    </View>
+                </View>
+                <TouchableOpacity 
+                    onPress={() => this.validateMail()}
+                    style={[buttons.GralButton, buttons.BLightBlue]}>
+                    <Text style={[text.BText, text.TLight]}>
+                        Cerrar Sesión
+                    </Text>
+                </TouchableOpacity>
 
         </View>
       );
