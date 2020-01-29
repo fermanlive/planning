@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text ,TouchableOpacity,Modal,TouchableHighlight,FlatList,TextInput,ScrollView} from 'react-native';
+import { View, Text ,TouchableOpacity,Modal,TouchableHighlight,FlatList,TextInput,ScrollView,Picker} from 'react-native';
 import {
   PieChart
 } from 'react-native-chart-kit';
@@ -16,6 +16,7 @@ const {layout, text, login, forms, buttons} = require ('../styles/main');
 
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon } from 'react-native-elements';
+import moment from 'moment';
 
 class Home extends React.Component {
   constructor(props) {
@@ -357,7 +358,7 @@ this.setState({
 
               <View style={layout.InputGroup}>
                   <Text style={text.InputLabel}>
-                  Email
+                  Nombre del gasto
                   </Text>
                   <View style={[forms.InputCont, forms.LeftAlingment,forms.AlertInput]}>
                       <TextInput
@@ -376,15 +377,18 @@ this.setState({
 
               <View style={layout.InputGroup}>
                   <Text style={text.InputLabel}>
-                  Confirmacion Email
+                  Tipo de gasto
                   </Text>
                   <View style={[forms.InputCont, forms.LeftAlingment, forms.AlertInput]}>
-                      <TextInput
-                          style={forms.Input}
-                          onChangeText={(emailVerification) => this.validate('email','emailVerification','emailVerificationError',emailVerification)}
-                          placeholder="Confirmar Email"
-                          keyboardType = "email-address"
-                      />
+                        <Picker
+                          selectedValue={this.state.language}
+                          style={{height: 50, width: 100}}
+                          onValueChange={(itemValue, itemIndex) =>
+                            this.setState({language: itemValue})
+                          }>
+                          <Picker.Item label="Java" value="java" />
+                          <Picker.Item label="JavaScript" value="js" />
+                        </Picker>
                   </View>
                   <View style={layout.textAlertCont}>
                           <Text style={[layout.textAlertError, text.Regular]}>
@@ -392,33 +396,43 @@ this.setState({
                           </Text>
                   </View>
               </View>
-              <View style={[forms.InputCont, forms.LeftAlingment]}>
-                  <View style={forms.InputInteraction}>
-                   <Icon name="calendar-month-outline" type='material-community' size={30} color={'#3b5998'} />  
-                  </View>
-                  <TouchableOpacity
-                      style={forms.DatePickerCont}
-                      onPress={this._showDateTimePicker}
-                  >
-                      <Text
-                      style={forms.DatePickerText}>
-                          {this.state.chosenDateShow}
-                      </Text>
-                  </TouchableOpacity>
-              </View>
-              <DateTimePicker
+              <View style={layout.InputGroup}>
+                        <Text style={text.InputLabel}>
+                            Fecha
+                        </Text>
+                        <View style={[forms.InputCont, forms.LeftAlingment, 
+                         forms.AlertInput]}>
+                            <View style={forms.InputInteraction}>
+                                
+                            </View>
+                            <TouchableOpacity
+                                style={forms.DatePickerCont}
+                                onPress={this._showDateTimePicker}
+                            >
+                                <Text
+                                style={forms.DatePickerText}>
+                                    {this.state.chosenDateShow}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        
+                        <DateTimePicker
                             isVisible={this.state.isDateTimePickerVisible}
                             onConfirm={this._handleDatePicked}
                             onCancel={this._hideDateTimePicker}
-                            // minimumDate = {new Date(this.state.sTrip.tripStartDateformat)}
-                            
                         />
+                        <View style={layout.textAlertCont}>
+                            <Text style={[layout.textAlertError, text.Regular]}>
+                                Seleccionar fecha
+                            </Text>
+                        </View>
+                    </View>
 
               <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between',}}> 
                 <TouchableOpacity 
                     // onPress={this.props.leftFunction}
                     onPress={() => {this.setState({modalVisible : false})}}
-                    style={[buttons.GralButton, buttons.BLineLightBlue, {marginBottom: 0, width: '47%',}]}
+                    style={[buttons.GralButton, buttons.BLineLight, {marginBottom: 0, width: '47%',}]}
                     >
                     <Text style={[text.BText, text.TLightBlue]}>
                         Cancelar
@@ -426,7 +440,7 @@ this.setState({
                 </TouchableOpacity>
                 <TouchableOpacity 
                     // onPress={this.props.rightFunction}
-                    style={[buttons.GralButton, buttons.BLightBlue, {marginBottom: 0, width: '47%',}]}
+                    style={[buttons.GralButton, buttons.BDarkBlue, {marginBottom: 0, width: '47%',}]}
                     >
                     <Text style={[text.BText, text.TLight]}>
                       Guardar

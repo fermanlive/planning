@@ -251,7 +251,7 @@ export const layout = StyleSheet.create({
 	},
 	textAlertError:{
 		fontSize: fzbase * mult_02,
-		color: '#F42464'
+		color: 'red'
 	},
 	textOrangeError:{
 		fontSize: fzbase * mult_02,

@@ -20,7 +20,7 @@ class Login extends React.Component {
                     <View style={[login.LoginFormCont]}>
                         <Image
                             style={login.LoginLogo}
-                            source={{uri: 'https://i.pinimg.com/236x/5c/7b/53/5c7b53a7be1dd267f24f7559584d1345.jpg'}}
+                            source={{uri: 'https://www.fundacionbolivardavivienda.org/cultivarte/wp-content/uploads/2020/01/Icono3.jpg'}}
                         />
                         <View style={forms.InputCont}>
                             <TextInput
