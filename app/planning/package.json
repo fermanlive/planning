@@ -19,6 +19,7 @@
     "react-native-chart-kit": "^4.3.0",
     "react-native-elements": "^1.2.7",
     "react-native-gesture-handler": "^1.5.3",
+    "react-native-image-picker": "^2.2.1",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-modal-datetime-picker": "^8.1.1",
     "react-native-reanimated": "^1.7.0",

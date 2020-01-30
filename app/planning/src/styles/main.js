@@ -377,6 +377,8 @@ export const layout = StyleSheet.create({
 	PhotoPreviewImg: {
 		width: '100%',
 		height: '100%',
+		resizeMode:'contain',
+		borderRadius:300
 	},
 	// --
 	// Alert modal styles

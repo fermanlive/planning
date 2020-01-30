@@ -1,16 +1,62 @@
 import React from 'react';
-import { View, Text , Button,Image,TextInput,TouchableOpacity} from 'react-native';
+import { View, Text , Button,Image,TextInput,TouchableOpacity,ScrollView} from 'react-native';
 const {layout, text, forms, buttons} = require ('../styles/main');
 import { Dimensions } from 'react-native';
+import { Icon } from 'react-native-elements';
+import ImagePicker from 'react-native-image-picker';
 
+class Profile extends React.Component {
+    constructor(props) {
+   
+        super(props);
+        const { navigation } = this.props;
+        this.state = { 
+          Editable:false,
+        };
+    }
+  _toggleEdit = () => this.setState({ Editable: !this.state.Editable });
 
-class Home extends React.Component {
+  _OpenImagePicker = () => {
+    // More info on all the options is below in the API Reference... just some common use cases shown here
+    const options = {
+      // title: 'Seleccione una foto',
+      // takePhotoButtonTitle: 'Tomar foto...',
+      // chooseFromLibraryButtonTitle: 'Escojer de la librería...',
+      // cancelButtonTitle: I18n.t('LBL_BUTTON_CANCEL'),
+      quality: 0.5,
+      cameraType: 'back',
+      mediaType: 'photo',
+      permissionDenied: {
+        title: 'Permission denied',//'Permission to use camera',
+        text: 'To be able to take pictures with your camera and choose images from your library.',//'We need your permission to use your camera phone',
+        reTryTitle: 're-try',
+        okTitle: 'I am sure',
+      },
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.launchCamera(options, (response) => {
+      if (response.didCancel) {
+      } else if (response.error) {
+      } else if (response.customButton) {
+      } else {
+        var fileObj = { uri: response.uri, base64: response.data, height: response.height, width: response.width };
+        this.setState({imgUri: fileObj});
+      }
+    });    
+  }
+
     render() {
       return (
         <View style={ [layout.MainContainer, layout.AlignCenter] }>
-                <View style={{backgroundColor: '#F0F3F5', width:'100%',alignItems:'center',height:'25%' }}>
+            { this.state.Editable ? 
+                null
+            :
+                <View style={{backgroundColor: 'yellow', width:'100%',alignItems:'center' }}>
                     <Image
-                    style={{width:'40%',height:'60%' , marginTop:'-20%',resizeMode:'contain'}}
+                    style={{width:'50%',height:'50%' ,resizeMode:'contain'}}
                     source={{uri: 'https://cdn0.iconfinder.com/data/icons/bold-purple-free-samples/32/User_Avatar_Human_Profile_Face_Circle-512.png'}}
                     />
                     <Text>
@@ -22,54 +68,91 @@ class Home extends React.Component {
                     <Text>
                         Currently Bogota DC
                     </Text>
-                </View>
-                <View style={layout.InputGroup}>
-                    <Text style={text.InputLabel}>
-                    Email
-                    </Text>
-                    <View style={[forms.InputCont, forms.LeftAlingment,forms.AlertInput]}>
-                        <TextInput
-                            style={forms.Input}
-                            //onChangeText={(email) => this.validate('email','email','emailError',email)}
-                            placeholder='Ingresar Email'
-                            keyboardType = "email-address"
+                </View> 
+            }
+            { this.state.Editable ? 
+                <View style = { layout.MainContainerSV } >
+                    <View style={layout.PhotoPreviewContSml}>
+                        <TouchableOpacity
+                            onPress={this._OpenImagePicker}
+                            style={buttons.PhotoPreviewFloatButton}>
+                                <Icon raised name='account-edit'type='material-community' color='green' backgroundColor='#000000'
+                                size={30}
+                                />
+                        </TouchableOpacity>
+                        <Image
+                        style={layout.PhotoPreviewImg}
+                        source={{uri: 'https://media-exp1.licdn.com/dms/image/C4E03AQFrtpWFZao51w/profile-displayphoto-shrink_200_200/0?e=1585785600&v=beta&t=36nMalQP4F9X4BXeB_A1ZhgLmowqwIQm5qWfCAaKFbA'}}
                         />
                     </View>
-                    <View style={layout.textAlertCont}>
-                            <Text style={[layout.textAlertError, text.Regular]}>
-                            Ingresar Email de forma correcta
-                            </Text>
+                    <View style={layout.InputGroup}>
+                        <Text style={text.InputLabel}>
+                        Nombres
+                        </Text>
+                        <View style={[forms.InputCont, forms.LeftAlingment, forms.AlertInput]}>
+                            <TextInput
+                                style={forms.Input}
+                                onChangeText={(emailVerification) => this.validate('email','emailVerification','emailVerificationError',emailVerification)}
+                                placeholder="Ingresar Nombres"
+                                keyboardType = "email-address"
+                            />
+                        </View>
+                        <View style={layout.textAlertCont}>
+                                <Text style={[layout.textAlertError, text.Regular]}>
+                                    Nombres no validos
+                                </Text>
+                        </View>
+                    </View>
+                    <View style={layout.InputGroup}>
+                        <Text style={text.InputLabel}>
+                        Apellidos
+                        </Text>
+                        <View style={[forms.InputCont, forms.LeftAlingment, forms.AlertInput]}>
+                            <TextInput
+                                style={forms.Input}
+                                onChangeText={(emailVerification) => this.validate('email','emailVerification','emailVerificationError',emailVerification)}
+                                placeholder="Apellido"
+                                keyboardType = "email-address"
+                            />
+                        </View>
+                        <View style={layout.textAlertCont}>
+                                <Text style={[layout.textAlertError, text.Regular]}>
+                                    Apellido no valido
+                                </Text>
+                        </View>
                     </View>
                 </View>
-                <View style={layout.InputGroup}>
-                    <Text style={text.InputLabel}>
-                    Email
+            : null }
+            <View style = { layout.MainContainerSV } >
+            { this.state.Editable ? 
+                    <TouchableOpacity 
+                    onPress={() => {this._toggleEdit();} }
+                    style={[buttons.GralButton, buttons.BDarkBlue]}>
+                    <Text style={[text.BText, text.TLight]}>
+                        Guardar
                     </Text>
-                    <View style={[forms.InputCont, forms.LeftAlingment,forms.AlertInput]}>
-                        <TextInput
-                            style={forms.Input}
-                            //onChangeText={(email) => this.validate('email','email','emailError',email)}
-                            placeholder='Ingresar Email'
-                            keyboardType = "email-address"
-                        />
-                    </View>
-                    <View style={layout.textAlertCont}>
-                            <Text style={[layout.textAlertError, text.Regular]}>
-                            Ingresar Email de forma correcta
-                            </Text>
-                    </View>
-                </View>
+                </TouchableOpacity>
+            :
                 <TouchableOpacity 
-                    onPress={() => this.validateMail()}
+                    onPress={() => {this._toggleEdit();} }
                     style={[buttons.GralButton, buttons.BLightBlue]}>
                     <Text style={[text.BText, text.TLight]}>
-                        Cerrar Sesión
+                        Actualizar
                     </Text>
                 </TouchableOpacity>
 
+            }      
+            <TouchableOpacity 
+                onPress={() => this.validateMail()}
+                style={[buttons.GralButton, buttons.BLightBlue]}>
+                <Text style={[text.BText, text.TLight]}>
+                    Cerrar Sesión
+                </Text>
+            </TouchableOpacity>
+            </View>
         </View>
       );
     }
   }
   
-  export default Home;
+  export default Profile;

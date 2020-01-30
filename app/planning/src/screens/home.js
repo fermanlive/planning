@@ -350,10 +350,10 @@ this.setState({
             animationType="slide"
             transparent={false}
             visible={this.state.modalVisible}>  
-                        <View style={[layout.GralTextCont, {marginBottom: 60,}]}>
-                  <Text style={[text.GralText, text.Regular]}>
-                  Recuperar Contraseña
-                  </Text>
+              <View style={[layout.GralTextCont, {marginBottom: 60,}]}>
+                <Text style={[text.GralText, text.Regular]}>
+                Recuperar Contraseña
+                </Text>
               </View>
 
               <View style={layout.InputGroup}>
