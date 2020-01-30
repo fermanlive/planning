@@ -3,7 +3,7 @@ import { View, Text , Button,Image,TextInput,TouchableOpacity,ScrollView} from '
 const {layout, text, forms, buttons} = require ('../styles/main');
 import { Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
-import ImagePicker from 'react-native-image-picker';
+
 
 class Profile extends React.Component {
     constructor(props) {
@@ -15,38 +15,6 @@ class Profile extends React.Component {
         };
     }
   _toggleEdit = () => this.setState({ Editable: !this.state.Editable });
-
-  _OpenImagePicker = () => {
-    // More info on all the options is below in the API Reference... just some common use cases shown here
-    const options = {
-      // title: 'Seleccione una foto',
-      // takePhotoButtonTitle: 'Tomar foto...',
-      // chooseFromLibraryButtonTitle: 'Escojer de la librería...',
-      // cancelButtonTitle: I18n.t('LBL_BUTTON_CANCEL'),
-      quality: 0.5,
-      cameraType: 'back',
-      mediaType: 'photo',
-      permissionDenied: {
-        title: 'Permission denied',//'Permission to use camera',
-        text: 'To be able to take pictures with your camera and choose images from your library.',//'We need your permission to use your camera phone',
-        reTryTitle: 're-try',
-        okTitle: 'I am sure',
-      },
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    ImagePicker.launchCamera(options, (response) => {
-      if (response.didCancel) {
-      } else if (response.error) {
-      } else if (response.customButton) {
-      } else {
-        var fileObj = { uri: response.uri, base64: response.data, height: response.height, width: response.width };
-        this.setState({imgUri: fileObj});
-      }
-    });    
-  }
 
     render() {
       return (
@@ -74,7 +42,7 @@ class Profile extends React.Component {
                 <View style = { layout.MainContainerSV } >
                     <View style={layout.PhotoPreviewContSml}>
                         <TouchableOpacity
-                            onPress={this._OpenImagePicker}
+                            //onPress={this._OpenImagePicker}
                             style={buttons.PhotoPreviewFloatButton}>
                                 <Icon raised name='account-edit'type='material-community' color='green' backgroundColor='#000000'
                                 size={30}
