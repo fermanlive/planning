@@ -1352,7 +1352,7 @@ export const forms = StyleSheet.create({
 	},
 	// Picker select Styles
 	PickerOverlay: {
-		backgroundColor: 'rgba(0,110,160, 0.9)',
+		backgroundColor: 'red',
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: width / 12,
