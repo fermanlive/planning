@@ -10,6 +10,7 @@ import HomeScreen from './src/screens/home';
 import HistoricScreen from './src/screens/history';
 import SimulatorScreen from './src/screens/simulator';
 import ProfileScreen from './src/screens/profile';
+import CreditCardScreen from './src/screens/creditCard';
 
 
 ///Login Stack
@@ -17,8 +18,9 @@ import LoginScreen from './src/screens/login';
 import RegisterScreen from './src/screens/register';
 import ForgetPasswordScreen from './src/screens/forgetPassword';
 
+
 ////Index Stack
-import IndexScreen from './src/screens/index'
+import IndexScreen from './src/screens/index';
 
 
 const homeStack = createBottomTabNavigator({
@@ -98,6 +100,7 @@ const loginStack = createStackNavigator({
   initialRouteName:'Login'
 }
 );
+
 const indexStack = createStackNavigator({
   Index: {
     screen: IndexScreen,
@@ -109,12 +112,24 @@ const indexStack = createStackNavigator({
   initialRouteName:'Index'
 }
 );
+const CreditCardStack = createStackNavigator({
+  CreditCard: {
+    screen: CreditCardScreen,
+    navigationOptions: {
+      title: 'Tarjeta de credito'
+    }
+  },
+},{
+  initialRouteName:'CreditCard'
+}
+);
 
 export default createAppContainer(createSwitchNavigator(
   {
     home: homeStack,
     login: loginStack,
     index: indexStack,
+    credits: CreditCardStack,
   },
   {
     initialRouteName: 'login',

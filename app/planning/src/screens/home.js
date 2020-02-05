@@ -239,22 +239,25 @@ this.setState({
                 value:'100.000,00'
               },
               {
-                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-                title: 'Salario',
-                categoria:'0', ///ingreso
-                value:'100.000,00'
-              },
-              {
                 id: '58694a0f-3da1-471f-bd96-145571e29d72',
                 title: 'Tarjeta de credito',
                 categoria:'1', ///egreso
                 value:'100.000,00'
               },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Salario',
+                categoria:'0', ///ingreso
+                value:'100.000,00'
+              },
+
             ]}
             style={layout.MainContainerSV}
             keyExtractor={item => item.id}
             renderItem={({item}) =>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => item.categoria ==0 ? null : this.props.navigation.navigate('credits')}
+              >
                 <View  style={layout.AdminItemCont}>
                   <View style={layout.AdminItemIconCont}>
                     {item.categoria==0 ?                       
@@ -264,7 +267,7 @@ this.setState({
                         color='green'
                         backgroundColor='#000000'
                         size={30}
-                        onPress={() => {this._toggleIcons();} }
+                        
                         />
                       : 
                         <Icon
@@ -273,7 +276,7 @@ this.setState({
                         color='red'
                         size={30}
                         backgroundColor='#000000'
-                        onPress={() => {this._toggleIcons();} }
+                        
                         />
                     }
                   </View>
