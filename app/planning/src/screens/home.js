@@ -59,6 +59,28 @@ this.setState({
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={layout.MainTabsCont}>
+
+            <TouchableHighlight
+              
+              style={[buttons.MainTabButton, buttons.MiddleTab]}
+              >
+                <Text style={[buttons.MainTabText, text.Regular,  text.TLightGray]}>
+                 Grafica
+                </Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              
+              style={[buttons.MainTabButton, buttons.MainTabButtonActive]}
+              >
+                <Text style={[buttons.MainTabText, text.Strong, text.TFacebookColor]}>
+                    Resumen
+                </Text>
+            </TouchableHighlight>
+
+
+          </View>
 
           <LinearGradient 
             colors={['#00cc74', '#0058cc']}  

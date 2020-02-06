@@ -105,7 +105,7 @@ export const layout = StyleSheet.create({
     MainTabsCont: {
     	backgroundColor: 'transparent',
     	borderColor: '#E1E4E6',
-    	borderBottomWidth: 4,
+    	borderBottomWidth: 1,
     	width: '100%',
     	height: 35,
     	marginBottom: 15,
@@ -1623,7 +1623,7 @@ export const buttons = StyleSheet.create({
 	},
 	MainTabButtonActive: {
 		borderBottomWidth: (Platform.OS) === 'android' ? 8 : 4,
-		borderColor: colors.VTLightBlue,
+		borderColor: colors.Facebook,
 	},
 	MainTabText: {
 		fontSize: fzbase * mult_02,
