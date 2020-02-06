@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text,TextInput,TouchableOpacity } from 'react-native';
 const {layout, text, forms, buttons} = require ('../styles/main');
 
-class Index extends React.Component {
+class Dictionary extends React.Component {
     render() {
       return(
           <View style={ [layout.MainContainer, layout.AlignCenter] }>
@@ -18,4 +18,4 @@ class Index extends React.Component {
   }
   }
   
-  export default Index;
+  export default Dictionary;

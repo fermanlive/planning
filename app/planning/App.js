@@ -6,11 +6,13 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Icon } from 'react-native-elements';
 
 ///Home simulator
-import HomeScreen from './src/screens/home';
 import HistoricScreen from './src/screens/history';
 import SimulatorScreen from './src/screens/simulator';
 import ProfileScreen from './src/screens/profile';
+
+import HomeScreen from './src/screens/home';
 import CreditCardScreen from './src/screens/creditCard';
+import DictionaryScreen from './src/screens/dictionary'
 
 
 ///Login Stack
@@ -20,12 +22,16 @@ import ForgetPasswordScreen from './src/screens/forgetPassword';
 
 
 ////Index Stack
-import IndexScreen from './src/screens/index';
+//import HomeNav from './src/nav/HomeNav';
 
 const homeStack = createBottomTabNavigator({
   //const homeStack = createStackNavigator({
-    Home: {
-      screen: HomeScreen,
+    Main: {
+      screen: createStackNavigator({
+        HomeScreen,
+        CreditCardScreen,
+        DictionaryScreen
+      }),
       navigationOptions: {
         tabBarLabel: 'Home',
         tabBarIcon: ({tintColor, activeTintColor}) => (
@@ -61,7 +67,7 @@ const homeStack = createBottomTabNavigator({
       } 
     },
     },{
-    initialRouteName:'Home',
+    initialRouteName:'Main',
     tabBarOptions: {
       activeTintColor: '#000000',
       showIcon: true,
@@ -74,6 +80,12 @@ const homeStack = createBottomTabNavigator({
     }
   }
   );
+
+  // const HomeNav = createStackNavigator({
+  //     HomeScreen,
+  //     CreditCardScreen
+  // });
+
 
 export default createAppContainer(createStackNavigator(
   {

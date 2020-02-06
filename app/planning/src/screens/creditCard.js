@@ -134,13 +134,6 @@ class CreditCardView extends React.Component {
                   Enviar
                 </Text>
             </TouchableOpacity>
-            <TouchableOpacity 
-                onPress={() => this.validateMail()}
-                style={[buttons.GralButton, buttons.BLightBlue]}>
-                <Text style={[text.BText, text.TLight]}>
-                  Volver al home
-                </Text>
-            </TouchableOpacity>
             </View>
     );
   }

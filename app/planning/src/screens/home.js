@@ -51,7 +51,10 @@ this.setState({
   }
 
   _toggleIcons = () => this.setState({ showIcons: !this.state.showIcons });
-
+  
+  static navigationOptions = ({ navigation }) => ({
+    headerShown:false
+  })
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -256,7 +259,7 @@ this.setState({
             keyExtractor={item => item.id}
             renderItem={({item}) =>
               <TouchableOpacity
-                onPress={() => item.categoria ==0 ? null : this.props.navigation.navigate('credits')}
+                onPress={() => item.categoria ==0 ? null : this.props.navigation.navigate('CreditCardScreen')}
               >
                 <View  style={layout.AdminItemCont}>
                   <View style={layout.AdminItemIconCont}>
@@ -332,7 +335,7 @@ this.setState({
                   type='material-community'
                   color='#f50'
                   backgroundColor='#000000'
-                  onPress={() => this.props.navigation.navigate('Index')}
+                  onPress={() => this.props.navigation.navigate('DictionaryScreen')}
                   />
                   <Text style={[layout.BillItemText2, text.Strong, text.TLightGray,]}>Diccionario</Text>
                 </View>
