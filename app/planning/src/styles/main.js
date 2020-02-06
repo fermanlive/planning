@@ -27,7 +27,6 @@ const mult_14  = 2.00 + offset;
 const mult_15  = 2.10 + offset;
 const mult_16  = 2.20 + offset;
 
-console.warn(PixelRatio.get())
 
 export const colors = {
 	White: '#FFFFFF',
