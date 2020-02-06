@@ -6,6 +6,7 @@ import {
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
 import AddExpense from '../components/AddExpense';
+import { Card, SimpleCard } from "@paraboly/react-native-card";
 
 import DateTimePicker from "react-native-modal-datetime-picker";
 
@@ -58,6 +59,7 @@ this.setState({
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
           <LinearGradient 
             colors={['#00cc74', '#0058cc']}  
             style = {layout.TravelCardCont,{display: 'none'}}>
@@ -122,7 +124,7 @@ this.setState({
           </LinearGradient>
           <LinearGradient 
             colors={['#c4302b', '#c4302b']}  
-            style = {layout.TravelCardCont}>
+            style = {layout.TravelCardCont,{display:"none"}}>
 
             <Text style={[text.TravelInfoTitle, text.Regular, text.TLight]}>
               Soy una Alerta

@@ -10,6 +10,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@freakycoder/react-native-helpers": "^0.1.2",
+    "@paraboly/react-native-card": "^0.2.13",
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/masked-view": "^0.1.5",
     "moment": "^2.24.0",
@@ -18,10 +20,12 @@
     "react-native": "0.61.5",
     "react-native-chart-kit": "^4.3.0",
     "react-native-credit-card-input": "^0.4.1",
+    "react-native-dynamic-vector-icons": "^0.2.1",
     "react-native-elements": "^1.2.7",
     "react-native-gesture-handler": "^1.5.3",
     "react-native-image-picker": "^2.2.1",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-material-ripple": "^0.9.1",
     "react-native-modal-datetime-picker": "^8.1.1",
     "react-native-modal-selector": "^1.1.2",
     "react-native-reanimated": "^1.7.0",

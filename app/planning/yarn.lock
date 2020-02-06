@@ -662,6 +662,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@freakycoder/react-native-helpers@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@freakycoder/react-native-helpers/-/react-native-helpers-0.1.2.tgz#a96a919b15cbd0ef0e2ed96e87149dd0b0bd9613"
+  integrity sha512-iRmGZKRNvdGmaEyHJnpqqwSfLSFf+y2wCWcV0VpMUl52zvGmivJ5Zpw9wEnmgw4u5oXFkRD0NC/30rdUuDa9wg==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -841,6 +846,11 @@
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
+
+"@paraboly/react-native-card@^0.2.13":
+  version "0.2.13"
+  resolved "https://registry.yarnpkg.com/@paraboly/react-native-card/-/react-native-card-0.2.13.tgz#d25f232a4ee498994f880d9d3adb87a1bf254df4"
+  integrity sha512-fglXk5BCQjr1FNws4+BAt1uEdJyj98mfnVbdo6vhdfYUl4+V4jC2ZYRy8CIERME905lkzzlfryM20q6wI23k+A==
 
 "@react-native-community/cli-debugger-ui@^3.0.0":
   version "3.0.0"
@@ -5340,6 +5350,11 @@ react-native-credit-card-input@^0.4.1:
     prop-types "^15.6.0"
     react-native-flip-card "^3.4.1"
 
+react-native-dynamic-vector-icons@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-dynamic-vector-icons/-/react-native-dynamic-vector-icons-0.2.1.tgz#6859d0aac7e00f831a30de612c905bd4d08da555"
+  integrity sha512-C5BZ3rxkRAkzCOIwZSlZReNPfco8smWHicnKc5Z60nr7ibyaV/6EugDmf/eUuHAl4qdsYnRdSm7q1Ag627ZARQ==
+
 react-native-elements@^1.2.7:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-1.2.7.tgz#1eca2db715c41722aeb67aea62bd2a4621adb134"
@@ -5385,6 +5400,13 @@ react-native-linear-gradient@^2.5.6:
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"
   integrity sha512-HDwEaXcQIuXXCV70O+bK1rizFong3wj+5Q/jSyifKFLg0VWF95xh8XQgfzXwtq0NggL9vNjPKXa016KuFu+VFg==
+
+react-native-material-ripple@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-material-ripple/-/react-native-material-ripple-0.9.1.tgz#db1ad9dd7cf97011e4cd8475ae2041ade0f891cb"
+  integrity sha512-dHjARdKoGD3LXwPh2TkURabywM5BfdpKc/AHplJTfBMalhVZ2bc7iJoJmNhNnmT/TZ+B3szL6uV1mO7Pv8zNeA==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-modal-datetime-picker@^8.1.1:
   version "8.1.1"
