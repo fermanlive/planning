@@ -56,7 +56,7 @@ class Login extends React.Component {
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
-                            onPress={() => this.props.navigation.navigate('home')}
+                            onPress={() => this.props.navigation.navigate('Home')}
                             disabled={this.state.isDisable}
                             style={[buttons.GralButton, buttons.BLightBlue]}>
                             <Text style={[text.BText, text.TLight]}>

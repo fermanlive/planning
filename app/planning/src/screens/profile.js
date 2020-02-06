@@ -111,7 +111,7 @@ class Profile extends React.Component {
 
             }      
             <TouchableOpacity 
-                onPress={() => this.validateMail()}
+                onPress={() => this.props.navigation.navigate('Login')}
                 style={[buttons.GralButton, buttons.BLightBlue]}>
                 <Text style={[text.BText, text.TLight]}>
                     Cerrar Sesión
