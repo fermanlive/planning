@@ -23,15 +23,27 @@ import ForgetPasswordScreen from './src/screens/forgetPassword';
 
 ////Index Stack
 //import HomeNav from './src/nav/HomeNav';
+const FeedStack = createStackNavigator({
+  Home: HomeScreen,
+  CreditCard: CreditCardScreen,
+  DictionaryScreen,
+});
+
+FeedStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
 
 const homeStack = createBottomTabNavigator({
   //const homeStack = createStackNavigator({
-    Main: {
-      screen: createStackNavigator({
-        HomeScreen,
-        CreditCardScreen,
-        DictionaryScreen
-      }),
+    Hogar: {
+      screen:FeedStack,
       navigationOptions: {
         tabBarLabel: 'Home',
         tabBarIcon: ({tintColor, activeTintColor}) => (
@@ -67,7 +79,7 @@ const homeStack = createBottomTabNavigator({
       } 
     },
     },{
-    initialRouteName:'Main',
+    initialRouteName:'Hogar',
     tabBarOptions: {
       activeTintColor: '#000000',
       showIcon: true,
@@ -81,13 +93,8 @@ const homeStack = createBottomTabNavigator({
   }
   );
 
-  // const HomeNav = createStackNavigator({
-  //     HomeScreen,
-  //     CreditCardScreen
-  // });
 
-
-export default createAppContainer(createStackNavigator(
+export default createAppContainer(createSwitchNavigator(
   {
     Login: {
       screen: LoginScreen,

@@ -283,7 +283,7 @@ this.setState({
             keyExtractor={item => item.id}
             renderItem={({item}) =>
               <TouchableOpacity
-                onPress={() => item.categoria ==0 ? null : this.props.navigation.navigate('CreditCardScreen')}
+                onPress={() => item.categoria ==0 ? null : this.props.navigation.navigate('CreditCard')}
               >
                 <View  style={layout.AdminItemCont}>
                   <View style={layout.AdminItemIconCont}>
