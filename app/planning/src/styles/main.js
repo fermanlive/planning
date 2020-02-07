@@ -57,14 +57,14 @@ export const colors = {
 };
 
 const fonts = {
-	light: 'Montserrat-Light',
-	light_italic: 'Montserrat-LightItalic',
-  	regular: 'Montserrat-Regular',
-  	italic: 'Montserrat-Italic',
-  	semibold: 'Montserrat-SemiBold',
-  	semibold_italic: 'Montserrat-SemiBoldItalic',
-  	bold: 'Montserrat-Bold',
-  	bold_italic: 'Montserrat-BoldItalic',
+	light: 'RobotoMono-Light',
+	light_italic: 'RobotoMono-LightItalic',
+  	regular: 'RobotoMono-Regular',
+  	italic: 'RobotoMono-Italic',
+  	semibold: 'RobotoMono-SemiBold',
+  	semibold_italic: 'RobotoMono-SemiBoldItalic',
+  	bold: 'RobotoMono-Bold',
+  	bold_italic: 'RobotoMono-BoldItalic',
 };
 
 // Layout Styles
@@ -1313,6 +1313,19 @@ export const forms = StyleSheet.create({
 		backgroundColor: 'transparent',
 		flex: 1,
 		width: '100%',
+		height: 44,
+		alignItems: 'center',
+		justifyContent: 'center',
+		fontFamily: fonts.light,
+		fontSize: fzbase * mult_04,
+		color: colors.VTDarkGray,
+		borderWidth: 0,
+		flexWrap: 'wrap',
+	},
+	InputLogin: {
+		backgroundColor: 'transparent',
+		flex: 1,
+		width: '50%',
 		height: 44,
 		alignItems: 'center',
 		justifyContent: 'center',

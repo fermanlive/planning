@@ -14,7 +14,7 @@ class Login extends React.Component {
       return (
               <View style = {{ flex: 1, }}>
                     <LinearGradient 
-                    colors={['#eef9bf', '#a7e9af']}
+                    colors={['#fffae3', '#e3e8ff']}
                     style={{ height: '100%' }}
                     >
                     <View style={[login.LoginFormCont]}>
@@ -25,7 +25,7 @@ class Login extends React.Component {
                         <View style={forms.InputCont}>
                             <TextInput
                                 value={this.state.user}
-                                style={[forms.Input, forms.CenterAlingment]}
+                                style={[forms.InputLogin, forms.CenterAlingment]}
                                 onChangeText={(user) => this.setState({user})}
                                 placeholder= "Usuario"
                                 keyboardType = "email-address"
@@ -37,7 +37,7 @@ class Login extends React.Component {
                         </View>
                         <View style={forms.InputCont}>
                             <TextInput
-                                style={[forms.Input, forms.CenterAlingment]}
+                                style={[forms.InputLogin, forms.CenterAlingment]}
                                 onChangeText={(pass) => this.setState({pass})}
                                 placeholder="Contraseña"
                                 secureTextEntry={this.state.passwordHidden}
