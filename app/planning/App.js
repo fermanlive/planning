@@ -94,7 +94,7 @@ const homeStack = createBottomTabNavigator({
   );
 
 
-export default createAppContainer(createSwitchNavigator(
+export default createAppContainer(createStackNavigator(
   {
     Login: {
       screen: LoginScreen,
