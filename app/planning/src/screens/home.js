@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text ,TouchableOpacity,Modal,TouchableHighlight,FlatList,TextInput,ScrollView,Picker} from 'react-native';
+import { View, Text ,TouchableOpacity,Modal,TouchableHighlight,FlatList,TextInput,ScrollView,Picker,Animated} from 'react-native';
 import {
   PieChart
 } from 'react-native-chart-kit';
@@ -18,6 +18,32 @@ const {layout, text, login, forms, buttons} = require ('../styles/main');
 import LinearGradient from 'react-native-linear-gradient';
 import { Icon } from 'react-native-elements';
 import moment from 'moment';
+
+const FadeInView = (props) => {
+  const [fadeAnim] = useState(new Animated.Value(0))  // Initial value for opacity: 0
+
+  React.useEffect(() => {
+    Animated.timing(
+      fadeAnim,
+      {
+        toValue: 1,
+        duration: 10000,
+      }
+    ).start();
+  }, [])
+
+  return (
+    <Animated.View                 // Special animatable View
+      style={{
+        ...props.style,
+        opacity: fadeAnim,         // Bind opacity to animated value
+      }}
+    >
+      {props.children}
+    </Animated.View>
+  );
+}
+
 
 class Home extends React.Component {
   constructor(props) {
@@ -59,10 +85,12 @@ this.setState({
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <View style={layout.MainTabsCont}>
+          <FadeInView  style={layout.MainTabsCont}>
 
             <TouchableHighlight
-              
+              onPress={() => {
+
+              }}
               style={[buttons.MainTabButton, buttons.MiddleTab]}
               >
                 <Text style={[buttons.MainTabText, text.Regular,  text.TLightGray]}>
@@ -71,7 +99,9 @@ this.setState({
             </TouchableHighlight>
 
             <TouchableHighlight
-              
+               onPress={() => {
+          
+              }}
               style={[buttons.MainTabButton, buttons.MainTabButtonActive]}
               >
                 <Text style={[buttons.MainTabText, text.Strong, text.TFacebookColor]}>
@@ -80,7 +110,7 @@ this.setState({
             </TouchableHighlight>
 
 
-          </View>
+          </FadeInView>
 
           <LinearGradient 
             colors={['#00cc74', '#0058cc']}  
