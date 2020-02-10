@@ -1,4 +1,4 @@
-import { StyleSheet, Platform, Dimensions, PixelRatio} from 'react-native';
+import { StyleSheet, Platform, Dimensions, PixelRatio, ColorPropType} from 'react-native';
 
 var {height, width} = Dimensions.get('window');
 
@@ -93,6 +93,10 @@ export const layout = StyleSheet.create({
 		flex: 1,
 		width: '100%',
 		marginVertical: 20,
+	},
+	MainContainerSV2 :{
+		flex: 1,
+		width: '100%',
 	},
 	MainContainerSVFlatlist :{
 		flex: 1,
@@ -1376,7 +1380,7 @@ export const forms = StyleSheet.create({
 	},
 	// Picker select Styles
 	PickerOverlay: {
-		backgroundColor: 'red',
+		backgroundColor: colors.Facebook,
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: width / 12,
