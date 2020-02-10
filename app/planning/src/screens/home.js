@@ -181,11 +181,12 @@ this.setState({
               //absolute //for the absolute number remove if you want percentage
             />
           }
+          <ScrollView>
           <FlatList
             data = {[
               {
                 id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-                title: 'Prima',
+                title: 'Salario',
                 categoria:'0', ///ingreso
                 value:'100.000,00'
               },
@@ -196,14 +197,69 @@ this.setState({
                 value:'100.000,00'
               },
               {
-                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-                title: 'Salario',
-                categoria:'0', ///ingreso
+                id: '58694a0f-3da1-471f-bd96-145571e29d72',
+                title: 'Tarjeta de credito',
+                categoria:'1', ///egreso
                 value:'100.000,00'
+              },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Retención',
+                categoria:'1', ///ingreso
+                value:'100.000,00'
+              },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Prestamo UAN',
+                categoria:'1', ///ingreso
+                value:'400.000,00'
+              },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Prestamo UAN',
+                categoria:'1', ///ingreso
+                value:'400.000,00'
+              },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Prestamo UAN',
+                categoria:'1', ///ingreso
+                value:'400.000,00'
+              },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Prestamo UAN',
+                categoria:'1', ///ingreso
+                value:'400.000,00'
+              },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Prestamo UAN',
+                categoria:'1', ///ingreso
+                value:'400.000,00'
+              },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Prestamo UAN',
+                categoria:'1', ///ingreso
+                value:'400.000,00'
+              },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Prestamo UAN',
+                categoria:'1', ///ingreso
+                value:'400.000,00'
+              },
+              {
+                id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+                title: 'Prestamo UAN',
+                categoria:'1', ///ingreso
+                value:'400.000,00'
               },
 
             ]}
             style={layout.MainContainerSV}
+            numColumns={2}
             keyExtractor={item => item.id}
             renderItem={({item}) =>
               <TouchableOpacity
@@ -243,6 +299,7 @@ this.setState({
               </TouchableOpacity>
             }
           />
+          
             { this.state.showIcons ? 
               <View style={[layout.ButtonsSpends2]}>
                 <View style={[layout.ButtonsSpends3]}>
@@ -300,6 +357,7 @@ this.setState({
               />
               </View>
             }
+            </ScrollView>
             <Modal
             animationType="slide"
             transparent={false}

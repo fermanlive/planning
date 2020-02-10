@@ -93,6 +93,7 @@ export const layout = StyleSheet.create({
 		flex: 1,
 		width: '100%',
 		marginVertical: 20,
+		flexDirection: 'row',
 	},
 	NotificationMainContainerSV :{
 		flex: 1,
@@ -611,11 +612,15 @@ export const layout = StyleSheet.create({
 		backgroundColor: colors.White,
 		borderRadius: fzbase * 0.8,
 		paddingHorizontal: fzbase,
-		width: '100%',
+		// minWidth: '40%',
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
 		marginBottom: fzbase,
+		minWidth:'30%',
+		overflow: 'hidden',
+		width:180,
+		marginLeft:6
 	},
 	AdminItemIconCont:{
 		width: fzbase * 3.5,
@@ -650,6 +655,8 @@ export const layout = StyleSheet.create({
 		alignItems: 'flex-start',
 		padding: fzbase,
 		height: fzbase * 7,
+		maxWidth:'70%',
+		overflow: 'hidden',
 	},
 	AdminItemActionsCont: { 
 		height: '100%',
