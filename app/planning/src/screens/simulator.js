@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text,TextInput,TouchableOpacity,ScrollView } from 'react-native';
+import { View, Text,TextInput,TouchableOpacity,ScrollView,StyleSheet,Modal } from 'react-native';
 const {layout, text, forms, buttons} = require ('../styles/main');
 import ModalSelector from 'react-native-modal-selector';
+import { Table, Row, Rows } from 'react-native-table-component';
 
 class Simulator extends React.Component {
   constructor(props) {
@@ -11,7 +12,30 @@ class Simulator extends React.Component {
     this.state = {
       textInputValue: '',
       typeCredit:'',
-      typeTransaction:''
+      modalVisible:false,
+      typeTransaction:'',
+      tableHead: ['Mes','Pago Minimo', 'Interes', 'Pago Total'],
+      tableData: [
+        ['1','$30,780.50', '$0.00', '$123,122.00'],
+        ['2','$35,348.33', '$4,567.83', '$96,909.33'],
+        ['3','$32,085.59', '$1,305.09', '$62,866.09'],
+        ['4','$31,433.05', '$652.55', '$31,433.05'],
+        ['5','$35,348.33', '$4,567.83', '$96,909.33'],
+        ['6','$32,085.59', '$1,305.09', '$62,866.09'],
+        ['7','$31,433.05', '$652.55', '$31,433.05'],
+        ['8','$35,348.33', '$4,567.83', '$96,909.33'],
+        ['9','$32,085.59', '$1,305.09', '$62,866.09'],
+        ['10','$31,433.05', '$652.55', '$31,433.05'],
+        ['11','$35,348.33', '$4,567.83', '$96,909.33'],
+        ['12','$32,085.59', '$1,305.09', '$62,866.09'],
+        ['13','$31,433.05', '$652.55', '$31,433.05'],
+        ['14','$35,348.33', '$4,567.83', '$96,909.33'],
+        ['15','$32,085.59', '$1,305.09', '$62,866.09'],
+        ['16','$31,433.05', '$652.55', '$31,433.05'],
+        ['17','$35,348.33', '$4,567.83', '$96,909.33'],
+        ['18','$32,085.59', '$1,305.09', '$62,866.09'],
+        ['19','$31,433.05', '$652.55', '$31,433.05']
+      ]
   };
 }
     render() {
@@ -167,16 +191,49 @@ class Simulator extends React.Component {
             </View> 
             :null}
               <TouchableOpacity 
-                  onPress={() => this.validateMail()}
+                  onPress={() => this.setState({modalVisible:true})}
                   style={[buttons.GralButton, buttons.BLightBlue]}>
                   <Text style={[text.BText, text.TLight]}>
                     Calcular
                   </Text>
               </TouchableOpacity>
             </ScrollView>
+            <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalVisible}>  
+             <ScrollView style={{margin:20}}>
+                <Text style={[text.TravelInfoTitle, text.Regular, text.TBlack]}>
+                  Calculo de intereses
+                </Text>
+                <Table borderStyle={{borderWidth: 5, borderColor: '#c8e1ff'}}>
+                  <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
+                  <Rows data={this.state.tableData} textStyle={styles.text}/>
+                </Table>
+                <Text style={{color:'red',textAlign:'justify',paddingTop:'5%'}}>
+                  No ingreso el tipo de intereses, conoce el interes que maneja su cuota de credito? 
+                </Text>
+                <Text style={{textAlign:'justify'}}>
+                  Este simualdor ofrece un estimativo de como serian las cuotas mas no 
+                  una herramienta oficial del banco.
+                </Text>
+              </ScrollView>
+              <TouchableOpacity 
+                onPress={() => this.setState({modalVisible:false})}
+                style={[buttons.GralButton, buttons.BLightBlue]}>
+                <Text style={[text.BText, text.TLight]}>
+                  Cerrar
+                </Text>
+            </TouchableOpacity>
+            </Modal>
             </View>
     );
   }
   }
   
+  const styles = StyleSheet.create({
+    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+    head: { height: 40, backgroundColor: '#f1f8ff' },
+    text: { margin: 6 }
+  });
   export default Simulator;
