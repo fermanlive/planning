@@ -258,7 +258,7 @@ this.setState({
               },
 
             ]}
-            style={layout.MainContainerSV}
+            style={layout.MainContainerSVFlatlist}
             numColumns={2}
             keyExtractor={item => item.id}
             renderItem={({item}) =>
@@ -299,7 +299,7 @@ this.setState({
               </TouchableOpacity>
             }
           />
-          
+                      </ScrollView>
             { this.state.showIcons ? 
               <View style={[layout.ButtonsSpends2]}>
                 <View style={[layout.ButtonsSpends3]}>
@@ -357,7 +357,7 @@ this.setState({
               />
               </View>
             }
-            </ScrollView>
+
             <Modal
             animationType="slide"
             transparent={false}

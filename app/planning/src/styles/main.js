@@ -93,6 +93,11 @@ export const layout = StyleSheet.create({
 		flex: 1,
 		width: '100%',
 		marginVertical: 20,
+	},
+	MainContainerSVFlatlist :{
+		flex: 1,
+		width: '100%',
+		marginVertical: 20,
 		flexDirection: 'row',
 	},
 	NotificationMainContainerSV :{
@@ -448,18 +453,18 @@ export const layout = StyleSheet.create({
 		width: '100%',
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
-		marginTop: fzbase,
+		
 	},
 	ButtonsSpends2: {
 		width: '100%',
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
-		marginTop: fzbase,
+		
 	},
 	ButtonsSpends3: {
 		alignItems:'center',
 		flexDirection: 'column',
-		marginTop: fzbase,
+		
 	},
 	TravelCardInfoColumn: {
 		width: '50%',
