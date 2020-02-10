@@ -45,7 +45,7 @@ class CreditCardView extends React.Component {
                 fontSize:25,
                 top:'40%'
               }}
-              >xxxx-xxxx-xxxx-xxxx</Text>
+              >Tarjeta BBVA</Text>
               <Text style={[text.AlertText],{
                 position: 'absolute',
                 zIndex:99,
