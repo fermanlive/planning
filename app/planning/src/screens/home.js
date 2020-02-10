@@ -29,6 +29,7 @@ class Home extends React.Component {
       showIcons:false,
       chosenDate: 'Seleccionar fecha' ,
       chosenDateShow: 'Seleccionar fecha',
+      displayTab:true,
     };
 }
 
@@ -59,98 +60,42 @@ this.setState({
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={[text.TravelInfoTitle, text.Regular, text.TBlack]}>
+          Relacion de gastos para Agosto
+          </Text>
           <View style={layout.MainTabsCont}>
-
             <TouchableHighlight
-              
-              style={[buttons.MainTabButton, buttons.MiddleTab]}
+              style={[buttons.MainTabButton, !this.state.displayTab ? buttons.MiddleTab : buttons.MainTabButtonActive ]}
+              onPress={() => this.setState({displayTab:true})}
               >
-                <Text style={[buttons.MainTabText, text.Regular,  text.TLightGray]}>
-                 Grafica
+                <Text style={[buttons.MainTabText, 
+                  !this.state.displayTab ? text.Regular : text.Strong,  
+                  !this.state.displayTab ? text.TLightGray: text.TFacebookColor
+                  ]}>
+                  Resumen
                 </Text>
             </TouchableHighlight>
 
             <TouchableHighlight
-              
-              style={[buttons.MainTabButton, buttons.MainTabButtonActive]}
+              style={[buttons.MainTabButton, this.state.displayTab ? buttons.MiddleTab : buttons.MainTabButtonActive ]}
+              onPress={() => this.setState({displayTab:false})}
               >
-                <Text style={[buttons.MainTabText, text.Strong, text.TFacebookColor]}>
-                    Resumen
+                <Text style={[buttons.MainTabText,
+                  this.state.displayTab ? text.Regular : text.Strong,  
+                  this.state.displayTab ? text.TLightGray: text.TFacebookColor
+                  ]}>
+                  Grafica
                 </Text>
             </TouchableHighlight>
 
 
           </View>
-
+          
+          { this.state.displayTab  ?
           <LinearGradient 
             colors={['#00cc74', '#0058cc']}  
-            style = {layout.TravelCardCont,{display: 'none'}}>
+            style = {layout.TravelCardCont}>
 
-            <Text style={[text.TravelInfoTitle, text.Regular, text.TLight]}>
-              Usuario con nombre
-            </Text>
-            <Text style={[text.TravelInfoSubtitle, text.Regular, text.TLight,]}>
-              2020/10/11 a  2020/10/12 }
-            </Text>
-
-            <View style={layout.TravelCardInfoCont}>
-
-              <View style={layout.TravelCardInfoColumn}>
-
-                <Text style={[layout.TravelCardInfoTitle, text.Strong, text.TLight]}>
-                    Facturas
-                </Text>
-
-              
-                <View style={{flexDirection: 'row',}}>
-                  <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
-                  112312312
-                  </Text>
-                  <View style={layout.CurrencyIndDetail}>
-                    <Text style={[layout.CurrencyIndText, text.Medium, text.TTurquoise]}>
-                  usd
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={layout.TravelCardInfoColumn}>
-
-                <Text style={[layout.TravelCardInfoTitle, text.Strong, text.TLight]}>
-                    912312
-                </Text>
-
-                <View style={{flexDirection: 'row',}}>
-                  <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
-                    123123
-                  </Text>
-                  <View style={layout.CurrencyIndDetail}>
-                    <Text style={[layout.CurrencyIndText, text.Medium, text.TTurquoise]}>
-                    usd
-                    </Text>
-                  </View>
-                </View>
-
-              </View>
-
-            </View>
-
-            <TouchableOpacity 
-                onPress={() => {this.haveBills()}}
-                style={[buttons.GralButton, buttons.SmlButton, buttons.BLight, {marginTop: 10, width: '100%',}]}>
-                <Text style={[text.BText, text.TLightBlue]}>
-                  enviar
-                </Text>
-            </TouchableOpacity>
-
-          </LinearGradient>
-          <LinearGradient 
-            colors={['#c4302b', '#c4302b']}  
-            style = {layout.TravelCardCont,{display:"none"}}>
-
-            <Text style={[text.TravelInfoTitle, text.Regular, text.TLight]}>
-              Soy una Alerta
-            </Text>
             <Text style={[text.TravelInfoSubtitle, text.Regular, text.TLight,]}>
               2020/10/11 a  2020/10/12
             </Text>
@@ -160,55 +105,33 @@ this.setState({
               <View style={layout.TravelCardInfoColumn}>
 
                 <Text style={[layout.TravelCardInfoTitle, text.Strong, text.TLight]}>
-                    Facturas
+                    Ingresos
                 </Text>
-
-              
                 <View style={{flexDirection: 'row',}}>
                   <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
-                  112312312
+                  $ 2.350.000,00
                   </Text>
-                  <View style={layout.CurrencyIndDetail}>
-                    <Text style={[layout.CurrencyIndText, text.Medium, text.TTurquoise]}>
-                  usd
-                    </Text>
-                  </View>
                 </View>
               </View>
 
               <View style={layout.TravelCardInfoColumn}>
 
                 <Text style={[layout.TravelCardInfoTitle, text.Strong, text.TLight]}>
-                    912312
+                    Egresos
                 </Text>
 
                 <View style={{flexDirection: 'row',}}>
                   <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
-                    123123
+                  $ 2.000.000,00
                   </Text>
-                  <View style={layout.CurrencyIndDetail}>
-                    <Text style={[layout.CurrencyIndText, text.Medium, text.TTurquoise]}>
-                    usd
-                    </Text>
-                  </View>
                 </View>
 
               </View>
 
             </View>
 
-            <TouchableOpacity 
-                onPress={() => {this.haveBills()}}
-                style={[buttons.GralButton, buttons.SmlButton, buttons.BLight, {marginTop: 10, width: '100%',}]}>
-                <Text style={[text.BText, text.TLightBlue]}>
-                  enviar
-                </Text>
-            </TouchableOpacity>
-
           </LinearGradient>
-          <Text style={[text.TravelInfoTitle, text.Regular, text.TBlack]}>
-              Grafica para el mes Agust
-            </Text>
+         : 
             <PieChart
               data={[
                 {
@@ -257,6 +180,7 @@ this.setState({
               paddingLeft="20"
               //absolute //for the absolute number remove if you want percentage
             />
+          }
           <FlatList
             data = {[
               {
