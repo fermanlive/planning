@@ -21,38 +21,13 @@ class Profile extends React.Component {
     render() {
       return (
         <View style={ [layout.MainContainer, layout.AlignCenter] }>
-            { this.state.Editable ? 
-                null
-            :
-                <View style={{backgroundColor: 'yellow', width:'100%',alignItems:'center' }}>
-                    <Image
-                    style={{width:'50%',height:'50%' ,resizeMode:'contain'}}
-                    source={{uri: 'https://cdn0.iconfinder.com/data/icons/bold-purple-free-samples/32/User_Avatar_Human_Profile_Face_Circle-512.png'}}
-                    />
-                    <Text>
-                        Brandon Cooper
-                    </Text>
-                    <Text>
-                        CTO Marvel App
-                    </Text>
-                    <Text>
-                        Currently Bogota DC
-                    </Text>
-                </View> 
-            }
+
             { this.state.Editable ? 
                 <View style = { layout.MainContainerSV } >
                     <View style={layout.PhotoPreviewContSml}>
-                        <TouchableOpacity
-                            //onPress={this._OpenImagePicker}
-                            style={buttons.PhotoPreviewFloatButton}>
-                                <Icon raised name='account-edit'type='material-community' color='green' backgroundColor='#000000'
-                                size={30}
-                                />
-                        </TouchableOpacity>
                         <Image
-                        style={layout.PhotoPreviewImg}
-                        source={{uri: 'https://media-exp1.licdn.com/dms/image/C4E03AQFrtpWFZao51w/profile-displayphoto-shrink_200_200/0?e=1585785600&v=beta&t=36nMalQP4F9X4BXeB_A1ZhgLmowqwIQm5qWfCAaKFbA'}}
+                        style={{width:'50%',height:'50%' ,resizeMode:'contain'}}
+                        source={{uri: 'https://cdn0.iconfinder.com/data/icons/bold-purple-free-samples/32/User_Avatar_Human_Profile_Face_Circle-512.png'}}
                         />
                     </View>
                     <View style={layout.InputGroup}>
@@ -92,10 +67,24 @@ class Profile extends React.Component {
                         </View>
                     </View>
                 </View>
-            : null }
+            : 
             <View style = { layout.MainContainerSV } >
+                <View style={layout.PhotoPreviewContSml}>
+                    <Image
+                    style={{width:'50%',height:'50%' ,resizeMode:'contain'}}
+                    source={{uri: 'https://cdn0.iconfinder.com/data/icons/bold-purple-free-samples/32/User_Avatar_Human_Profile_Face_Circle-512.png'}}
+                    />
+                </View>
+                <View style={layout.InputGroup}>
+                    <Text style={text.InputLabel,{alignContent:"center"}}>
+                    Brandon Cooper 
+                    </Text>
+                </View>
+            </View>
+            }
+
             { this.state.Editable ? 
-                    <TouchableOpacity 
+                <TouchableOpacity 
                     onPress={() => {this._toggleEdit();} }
                     style={[buttons.GralButton, buttons.BDarkBlue]}>
                     <Text style={[text.BText, text.TLight]}>
@@ -113,24 +102,25 @@ class Profile extends React.Component {
 
             }      
             <TouchableOpacity 
-                onPress={() => this.setState({modalVisible: true})}
-                style={[buttons.GralButton, buttons.BLineLightRed]}>
-                <Text style={[text.BText, text.TLight]}>
-                    Abrir Modal
-                </Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
                 onPress={() => this.props.navigation.navigate('Login')}
                 style={[buttons.GralButton, buttons.BLightBlue]}>
                 <Text style={[text.BText, text.TLight]}>
                     Cerrar Sesión
                 </Text>
             </TouchableOpacity>
-            </View>
+            <TouchableOpacity 
+                onPress={() => this.setState({modalVisible: true})}
+                style={[buttons.GralButton, buttons.BDarkBlue]}>
+                <Text style={[text.BText, text.TLight]}>
+                    ¿Deseas ayudarnos con una encuesta?
+                </Text>
+            </TouchableOpacity>
+
             <Modal
             animationType="slide"
             transparent={false}
             visible={this.state.modalVisible}> 
+             <View style={ [layout.MainContainer, layout.AlignCenter],{backgroundColor: 'white'} }>
                 <View style={[layout.GralTextCont, {marginBottom: 60,}]}>
                     <Text style={[text.GralText, text.Regular]}>
                     Recuperar Contraseña
@@ -141,7 +131,7 @@ class Profile extends React.Component {
                     <Text style={text.InputLabel}>
                     Nombre del gasto
                     </Text>
-                    <View style={[forms.InputCont, forms.LeftAlingment,forms.AlertInput]}>
+                    <View style={[forms.InputCont, forms.LeftAlingment,forms.GreenInput]}>
                         <TextInput
                             style={forms.Input}
                             //onChangeText={(email) => this.validate('email','email','emailError',email)}
@@ -149,15 +139,10 @@ class Profile extends React.Component {
                             keyboardType = "email-address"
                         />
                     </View>
-                    <View style={layout.textAlertCont}>
-                            <Text style={[layout.textAlertError, text.Regular]}>
-                                Ingresar Email de forma correcta
-                            </Text>
-                    </View>
                 </View>
                 <View style={layout.InputGroup}>
                     <Text style={text.InputLabel}>
-                        Nombre del gasto
+                        Califica el desempeño de la app
                     </Text>
                     <View style={{height: 100}}>
                     <Stars
@@ -174,28 +159,16 @@ class Profile extends React.Component {
                 </View>
                 <TouchableOpacity 
                 onPress={() => this.setState({modalVisible: false})}
-                style={[buttons.GralButton, buttons.BLineLightRed]}>
+                style={[buttons.GralButton, buttons.BLightBlue]}>
                     <Text style={[text.BText, text.TLight]}>
                         Cerrar Modal
                     </Text>
                 </TouchableOpacity>
+             </View>
             </Modal>
         </View>
       );
     }
   }
-  const styles = StyleSheet.create({
-    myStarStyle: {
-      color: 'yellow',
-      backgroundColor: 'transparent',
-      textShadowColor: 'black',
-      textShadowOffset: {width: 1, height: 1},
-      textShadowRadius: 2,
-      height:100,
-      width:100,
-    },
-    myEmptyStarStyle: {
-      color: 'white',
-    }
-  });
+
   export default Profile;
