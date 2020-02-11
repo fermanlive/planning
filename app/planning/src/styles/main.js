@@ -1574,7 +1574,7 @@ export const buttons = StyleSheet.create({
 	},
 	BLineLightRed: {
 		backgroundColor: 'transparent',
-		borderColor: '#F42464',
+		borderColor: 'red',
 		borderWidth: 2,
 	},
 	BLineGray: {

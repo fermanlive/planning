@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text , Button,Image,TextInput,TouchableOpacity,ScrollView} from 'react-native';
+import { View, Text , Button,Image,TextInput,TouchableOpacity,StyleSheet,Modal} from 'react-native';
 const {layout, text, forms, buttons} = require ('../styles/main');
 import { Dimensions } from 'react-native';
-import { Icon } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Stars from 'react-native-stars';
 
 
 class Profile extends React.Component {
@@ -12,6 +13,7 @@ class Profile extends React.Component {
         const { navigation } = this.props;
         this.state = { 
           Editable:false,
+          modalVisible:false
         };
     }
   _toggleEdit = () => this.setState({ Editable: !this.state.Editable });
@@ -111,6 +113,13 @@ class Profile extends React.Component {
 
             }      
             <TouchableOpacity 
+                onPress={() => this.setState({modalVisible: true})}
+                style={[buttons.GralButton, buttons.BLineLightRed]}>
+                <Text style={[text.BText, text.TLight]}>
+                    Abrir Modal
+                </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
                 onPress={() => this.props.navigation.navigate('Login')}
                 style={[buttons.GralButton, buttons.BLightBlue]}>
                 <Text style={[text.BText, text.TLight]}>
@@ -118,9 +127,75 @@ class Profile extends React.Component {
                 </Text>
             </TouchableOpacity>
             </View>
+            <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalVisible}> 
+                <View style={[layout.GralTextCont, {marginBottom: 60,}]}>
+                    <Text style={[text.GralText, text.Regular]}>
+                    Recuperar Contraseña
+                    </Text>
+                </View>
+
+                <View style={layout.InputGroup}>
+                    <Text style={text.InputLabel}>
+                    Nombre del gasto
+                    </Text>
+                    <View style={[forms.InputCont, forms.LeftAlingment,forms.AlertInput]}>
+                        <TextInput
+                            style={forms.Input}
+                            //onChangeText={(email) => this.validate('email','email','emailError',email)}
+                            placeholder='Ingresar Email'
+                            keyboardType = "email-address"
+                        />
+                    </View>
+                    <View style={layout.textAlertCont}>
+                            <Text style={[layout.textAlertError, text.Regular]}>
+                                Ingresar Email de forma correcta
+                            </Text>
+                    </View>
+                </View>
+                <View style={layout.InputGroup}>
+                    <Text style={text.InputLabel}>
+                        Nombre del gasto
+                    </Text>
+                    <View style={{height: 100}}>
+                    <Stars
+                        half={true}
+                        default={4}
+                        update={(val)=>{this.setState({stars: val})}}
+                        spacing={4}
+                        starSize={30}
+                        count={5}
+                        fullStar={require('./../../images/starFilled.png')}
+                        emptyStar={require('./../../images/starEmpty.png')}
+                        halfStar={require('./../../images/starHalf.png')}/>
+                    </View>
+                </View>
+                <TouchableOpacity 
+                onPress={() => this.setState({modalVisible: false})}
+                style={[buttons.GralButton, buttons.BLineLightRed]}>
+                    <Text style={[text.BText, text.TLight]}>
+                        Cerrar Modal
+                    </Text>
+                </TouchableOpacity>
+            </Modal>
         </View>
       );
     }
   }
-  
+  const styles = StyleSheet.create({
+    myStarStyle: {
+      color: 'yellow',
+      backgroundColor: 'transparent',
+      textShadowColor: 'black',
+      textShadowOffset: {width: 1, height: 1},
+      textShadowRadius: 2,
+      height:100,
+      width:100,
+    },
+    myEmptyStarStyle: {
+      color: 'white',
+    }
+  });
   export default Profile;
