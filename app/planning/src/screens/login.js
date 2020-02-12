@@ -20,7 +20,7 @@ class Login extends React.Component {
                     <View style={[login.LoginFormCont]}>
                         <Image
                             style={login.LoginLogo}
-                            source={{uri: 'https://www.fundacionbolivardavivienda.org/cultivarte/wp-content/uploads/2020/01/Icono3.jpg'}}
+                            source={require('./../../images/planning_logo.png')}
                         />
                         <View style={forms.InputCont}>
                             <TextInput
@@ -65,7 +65,7 @@ class Login extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => this.loginNav()}
-                            disabled="True"
+                            disabled
                             style={[buttons.GralButton, buttons.BLight]}>
                             <Text style={[text.BText, text.TFacebookColor,{paddingRight:20}]}>
                                 Iniciar Facebook 
@@ -78,7 +78,7 @@ class Login extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => this.loginNav()}
-                            disabled="True"
+                            disabled
                             style={[buttons.GralButton, buttons.BLight]}>
                             <Text style={[text.BText, text.TGmailColor,{paddingRight:20}]}>
                                 Registro Gmail
