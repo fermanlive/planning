@@ -14,7 +14,7 @@ class Login extends React.Component {
       return (
               <View style = {{ flex: 1, }}>
                     <LinearGradient 
-                    colors={['#fffae3', '#e3e8ff']}
+                    colors={['#89C763', '#0E9347']}
                     style={{ height: '100%' }}
                     >
                     <View style={[login.LoginFormCont]}>
@@ -22,6 +22,9 @@ class Login extends React.Component {
                             style={login.LoginLogo}
                             source={require('./../../images/planning_logo.png')}
                         />
+                        <Text style={[text.StrongI, text.TLight]}>
+                            Planning 
+                        </Text>
                         <View style={forms.InputCont}>
                             <TextInput
                                 value={this.state.user}
@@ -51,14 +54,14 @@ class Login extends React.Component {
                         <TouchableOpacity 
                             onPress={() => this.props.navigation.navigate('ForgetPassword')}
                             style={text.GralLink}>
-                            <Text style={[text.LText, text.TBlack]}>
+                            <Text style={[text.StrongI, text.TLight]}>
                             Olvidaste Contraseña 
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => this.props.navigation.navigate('Home')}
                             disabled={this.state.isDisable}
-                            style={[buttons.GralButton, buttons.BLightBlue]}>
+                            style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
                             <Text style={[text.BText, text.TLight]}>
                                 Iniciar Sesión
                             </Text>
@@ -66,33 +69,33 @@ class Login extends React.Component {
                         <TouchableOpacity 
                             onPress={() => this.loginNav()}
                             disabled
-                            style={[buttons.GralButton, buttons.BLight]}>
-                            <Text style={[text.BText, text.TFacebookColor,{paddingRight:20}]}>
+                            style={[buttons.GralButton, buttons.ButtonFacebook]}>
+                            <Text style={[text.BText, text.TLight,{paddingRight:20}]}>
                                 Iniciar Facebook 
                             </Text>
                             <Icon
                               name='facebook'
                               type='font-awesome'
-                              color='#3b5998'
+                              color='#FFFFFF'
                                />
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => this.loginNav()}
                             disabled
-                            style={[buttons.GralButton, buttons.BLight]}>
-                            <Text style={[text.BText, text.TGmailColor,{paddingRight:20}]}>
+                            style={[buttons.GralButton, buttons.ButtonGmail]}>
+                            <Text style={[text.BText, text.TLight,{paddingRight:20}]}>
                                 Registro Gmail
                             </Text>
                             <Icon
                               name='google'
                               type='font-awesome'
-                              color='#c4302b'
+                              color='#FFFFFF'
                                />
                         </TouchableOpacity>
                     </View>
                     
                     <View style={layout.GralTextCont}>
-                        <Text style={[text.GralText, text.Strong, text.TBlack]}>
+                        <Text style={[text.GralText, text.Strong, text.TLight]}>
                         Registro
                         </Text>
                     </View>
