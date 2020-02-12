@@ -20,7 +20,7 @@ class Profile extends React.Component {
 
     render() {
       return (
-        <View style={ [layout.MainContainer, layout.AlignCenter] }>
+        <View style={ [layout.MainContainerProfile, layout.AlignCenter] }>
 
             { this.state.Editable ? 
                 <View style = { layout.MainContainerSV } >

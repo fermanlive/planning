@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Button, TextInput, Image,TouchableOpacity  } from 'react-native';
 const {layout, text, login, forms, buttons} = require ('../styles/main');
 
-import { Icon } from 'react-native-elements';
+import { Icon, colors } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 
 class Login extends React.Component {
@@ -25,7 +25,7 @@ class Login extends React.Component {
                         <Text style={[text.StrongI, text.TLight]}>
                             Planning 
                         </Text>
-                        <View style={forms.InputCont}>
+                        <View style={forms.InputContentLogin}>
                             <TextInput
                                 value={this.state.user}
                                 style={[forms.InputLogin, forms.CenterAlingment]}
@@ -38,7 +38,7 @@ class Login extends React.Component {
                                 }}
                             />
                         </View>
-                        <View style={forms.InputCont}>
+                        <View style={forms.InputContentLogin}>
                             <TextInput
                                 style={[forms.InputLogin, forms.CenterAlingment]}
                                 onChangeText={(pass) => this.setState({pass})}
@@ -61,7 +61,7 @@ class Login extends React.Component {
                         <TouchableOpacity 
                             onPress={() => this.props.navigation.navigate('Home')}
                             disabled={this.state.isDisable}
-                            style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
+                            style={[buttons.LoginButtons, buttons.ButtonAccentPurple]}>
                             <Text style={[text.BText, text.TLight]}>
                                 Iniciar Sesión
                             </Text>
@@ -69,7 +69,7 @@ class Login extends React.Component {
                         <TouchableOpacity 
                             onPress={() => this.loginNav()}
                             disabled
-                            style={[buttons.GralButton, buttons.ButtonFacebook]}>
+                            style={[buttons.LoginButtons, buttons.ButtonFacebook]}>
                             <Text style={[text.BText, text.TLight,{paddingRight:20}]}>
                                 Iniciar Facebook 
                             </Text>
@@ -82,7 +82,7 @@ class Login extends React.Component {
                         <TouchableOpacity 
                             onPress={() => this.loginNav()}
                             disabled
-                            style={[buttons.GralButton, buttons.ButtonGmail]}>
+                            style={[buttons.LoginButtons, buttons.ButtonGmail]}>
                             <Text style={[text.BText, text.TLight,{paddingRight:20}]}>
                                 Registro Gmail
                             </Text>
@@ -92,21 +92,23 @@ class Login extends React.Component {
                               color='#FFFFFF'
                                />
                         </TouchableOpacity>
+                        <View style={layout.GralTextCont,{marginTop:'20%'}}>
+                        <Text style={[text.GralText, text.Strong, text.TLight]}>
+                            Registro
+                            </Text>
+                        </View>
+
+                        <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate('Register')}
+                            style={[buttons.LoginButtons, buttons.ButtonRegisterLogin]}>
+                            <Text style={[text.BText],{color:'#7C0E93'}}>
+                            Registrarse Aqui
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                     
-                    <View style={layout.GralTextCont}>
-                        <Text style={[text.GralText, text.Strong, text.TLight]}>
-                        Registro
-                        </Text>
-                    </View>
 
-                    <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate('Register')}
-                        style={[buttons.GralButton, buttons.BLight]}>
-                        <Text style={[text.BText, text.TLightBlue]}>
-                        Registrarse Aqui
-                        </Text>
-                    </TouchableOpacity>
+
                     </LinearGradient>
            </View>
       );

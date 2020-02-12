@@ -56,9 +56,15 @@ export const colors = {
 
 	/////// New Pallettes
 	BackgroundColorDefault: '#66E49B', /////base
+	main:'#0E9347',
+	opacityMain:'#9ED3B5',
 	Base: '#66E49B',
 	AccentPurple: '#7C0E93',
 	AccentRed: '#93110E',
+	AccentBlue:'#5B8EFF',
+	baseColor:'#89C763',
+	
+
 
 	
 };
@@ -83,8 +89,15 @@ export const layout = StyleSheet.create({
         paddingHorizontal: width / 12,
         alignItems: 'center',
         position: 'relative',
-		//backgroundColor: colors.VTBgGray,
-		backgroundColor: colors.BackgroundColorDefault,
+		backgroundColor: colors.VTBgGray
+	},
+	MainContainerProfile :{
+        flex:1,
+        // paddingTop: (Platform.OS) === 'ios' ? 20 : 0,
+        paddingHorizontal: width / 12,
+        alignItems: 'center',
+        position: 'relative',
+		backgroundColor: colors.baseColor,
     },
     centerCenter: {
     	width: '100%',
@@ -1120,7 +1133,7 @@ export const drawer = StyleSheet.create({
 // Text styles
 export const text = StyleSheet.create({
 	GralText: {
-		fontSize: fzbase * mult_04,
+		fontSize: fzbase * mult_06,
 		paddingBottom: 10,
 		textAlign: 'center',
 		width: '85%',
@@ -1203,6 +1216,12 @@ export const text = StyleSheet.create({
 	BText:{
 		fontFamily: fonts.bold,
 		fontSize: fzbase * mult_03,
+		backgroundColor: 'transparent',
+		textAlign: 'center',
+	},
+	ButtonTextLogin:{
+		fontFamily: fonts.bold,
+		fontSize: fzbase * mult_06,
 		backgroundColor: 'transparent',
 		textAlign: 'center',
 	},
@@ -1294,12 +1313,27 @@ export const forms = StyleSheet.create({
 		width: '100%',
 		minHeight: 40,
 		paddingHorizontal: 20,
-		borderRadius: 20,
+		borderRadius: 5,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginBottom: 10,
 		position: 'relative',
 	},
+	InputContentLogin : {
+		//backgroundColor: colors.White,
+		width: '100%',
+		minHeight: 40,
+		paddingHorizontal: 20,
+		borderRadius: 5,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 10,
+		position: 'relative',
+		height:'6%',
+		borderBottomColor: '#000', // Add this to specify bottom border color
+		borderBottomWidth: 2 
+	},
+	
 	CurrencyIndCont: {
 		position: 'absolute',
 		top: 7.5,
@@ -1355,9 +1389,10 @@ export const forms = StyleSheet.create({
 		justifyContent: 'center',
 		fontFamily: fonts.light,
 		fontSize: fzbase * mult_04,
-		color: colors.VTDarkGray,
+		color: colors.White,
 		borderWidth: 0,
 		flexWrap: 'wrap',
+		
 	},
 	AutoCompleteContainer: {
 		width: '100%',
@@ -1481,10 +1516,21 @@ export const buttons = StyleSheet.create({
 	    justifyContent: 'center',
 	    alignItems: 'center',
 	    height: 42,
-	    //borderRadius: 21,
+	    borderRadius: 8,
 	    flexDirection: 'row',
 	    marginBottom: 10,
-	    width: '100%',
+		width: '100%',
+	},
+	LoginButtons: {
+	    padding: 10,
+	    justifyContent: 'center',
+	    alignItems: 'center',
+	    height: 42,
+	    borderRadius: 8,
+	    flexDirection: 'row',
+	    marginBottom: 10,
+		width: '100%',
+		height:'8%'
 	},
 	ReopenGralButton: {
 	    padding: 10,
@@ -1599,6 +1645,14 @@ export const buttons = StyleSheet.create({
 	},
 	ButtonGmail: {
 		backgroundColor: colors.Gmail,
+	},
+	ButtonGmail: {
+		backgroundColor: colors.Gmail,
+	},
+	ButtonRegisterLogin: {
+		backgroundColor: colors.White,
+		borderColor: colors.AccentPurple,
+		borderWidth: 2,
 	},
 
 	// --

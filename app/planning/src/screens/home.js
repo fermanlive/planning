@@ -60,8 +60,8 @@ this.setState({
   })
     render() {
       return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={[text.TravelInfoTitle, text.Regular, text.TBlack]}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:'#66E49B' }}>
+          <Text style={[text.TravelInfoTitle, text.Regular, text.TLight]}>
           Relacion de gastos para Agosto
           </Text>
           <View style={layout.MainTabsCont}>
