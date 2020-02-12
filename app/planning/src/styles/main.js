@@ -53,6 +53,13 @@ export const colors = {
 	success: '#16E3B4',
 	warning: '#FFD340',
 	error: '#F06A6A',
+
+	/////// New Pallettes
+	BackgroundColorDefault: '#66E49B', /////base
+	Base: '#66E49B',
+	AccentPurple: '#7C0E93',
+	AccentRed: '#93110E',
+
 	
 };
 
@@ -76,7 +83,8 @@ export const layout = StyleSheet.create({
         paddingHorizontal: width / 12,
         alignItems: 'center',
         position: 'relative',
-        backgroundColor: colors.VTBgGray,
+		//backgroundColor: colors.VTBgGray,
+		backgroundColor: colors.BackgroundColorDefault,
     },
     centerCenter: {
     	width: '100%',
@@ -1582,6 +1590,17 @@ export const buttons = StyleSheet.create({
 		borderColor: colors.VTLightGray,
 		borderWidth: 2,
 	},
+	//////Nuevos colores Botoner
+	ButtonAccentPurple: {
+		backgroundColor: colors.AccentPurple,
+	},
+	ButtonFacebook: {
+		backgroundColor: colors.Facebook,
+	},
+	ButtonGmail: {
+		backgroundColor: colors.Gmail,
+	},
+
 	// --
 	// Camera buttons
 	CameraButtonHome: {
