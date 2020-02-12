@@ -5,6 +5,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Icon } from 'react-native-elements';
 
+const {colors} = require ('./src/styles/main');
+
 ///Home simulator
 import HistoricScreen from './src/screens/history';
 import SimulatorScreen from './src/screens/simulator';
@@ -47,7 +49,7 @@ const homeStack = createBottomTabNavigator({
       navigationOptions: {
         tabBarLabel: 'Home',
         tabBarIcon: ({tintColor, activeTintColor}) => (
-           <Icon name="home" type='material-community' size={30} color={'#3b5998'} />
+           <Icon name="home" type='material-community' size={30} color={colors.main} />
            )
       } 
     },  
@@ -56,7 +58,7 @@ const homeStack = createBottomTabNavigator({
       navigationOptions: {
         tabBarLabel: 'Simulador',
         tabBarIcon: ({tintColor, activeTintColor}) => (
-           <Icon name="calculator" type='material-community' size={30} color={'#3b5998'} />
+           <Icon name="calculator" type='material-community' size={30} color={colors.main} />
            )
       }
     },
@@ -65,7 +67,7 @@ const homeStack = createBottomTabNavigator({
       navigationOptions: {
         tabBarLabel: 'Historial',
         tabBarIcon: ({tintColor, activeTintColor}) => (
-           <Icon name="calendar-month-outline" type='material-community' size={30} color={'#3b5998'} />
+           <Icon name="calendar-month-outline" type='material-community' size={30} color={colors.main} />
            )
       } 
     },
@@ -74,14 +76,15 @@ const homeStack = createBottomTabNavigator({
       navigationOptions: {
         tabBarLabel: 'Perfil',
         tabBarIcon: ({tintColor, activeTintColor}) => (
-           <Icon name="account-circle" type='material-community' size={30} color={'#3b5998'} />
+           <Icon name="account-circle" type='material-community' size={30} color={colors.main} />
            )
       } 
     },
     },{
     initialRouteName:'Hogar',
     tabBarOptions: {
-      activeTintColor: '#000000',
+      activeTintColor: colors.main,
+      inactiveTintColor: colors.opacityMain,
       showIcon: true,
       labelStyle: {
         fontSize: 12,
