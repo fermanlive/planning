@@ -30,6 +30,7 @@ class Home extends React.Component {
       chosenDate: 'Seleccionar fecha' ,
       chosenDateShow: 'Seleccionar fecha',
       displayTab:true,
+      ModalIncome:false,
     };
 }
 
@@ -319,7 +320,7 @@ this.setState({
                   name='plus'
                   type='material-community'
                   color='#f50'
-                  onPress={() => {this.setState({modalVisible : true})}}
+                  onPress={() => {this.setState({ModalIncome : true})}}
                   />
                   <Text style={[layout.BillItemText2, text.Strong, text.TLightGray,]}>Agregar {"\n"} Ingreso</Text>
                 </View>
@@ -357,109 +358,10 @@ this.setState({
               />
               </View>
             }
-
-            <Modal
-            animationType="slide"
-            transparent={false}
-            visible={this.state.modalVisible}>  
-              <View style={[layout.GralTextCont, {marginBottom: 60,}]}>
-                <Text style={[text.GralText, text.Regular]}>
-                Recuperar Contraseña
-                </Text>
-              </View>
-
-              <View style={layout.InputGroup}>
-                  <Text style={text.InputLabel}>
-                  Nombre del gasto
-                  </Text>
-                  <View style={[forms.InputCont, forms.LeftAlingment,forms.AlertInput]}>
-                      <TextInput
-                          style={forms.Input}
-                          //onChangeText={(email) => this.validate('email','email','emailError',email)}
-                          placeholder='Ingresar Email'
-                          keyboardType = "email-address"
-                      />
-                  </View>
-                  <View style={layout.textAlertCont}>
-                          <Text style={[layout.textAlertError, text.Regular]}>
-                            Ingresar Email de forma correcta
-                          </Text>
-                  </View>
-              </View>
-
-              <View style={layout.InputGroup}>
-                  <Text style={text.InputLabel}>
-                  Tipo de gasto
-                  </Text>
-                  <View style={[forms.InputCont, forms.LeftAlingment, forms.AlertInput]}>
-                        <Picker
-                          selectedValue={this.state.language}
-                          style={{height: 50, width: 100}}
-                          onValueChange={(itemValue, itemIndex) =>
-                            this.setState({language: itemValue})
-                          }>
-                          <Picker.Item label="Java" value="java" />
-                          <Picker.Item label="JavaScript" value="js" />
-                        </Picker>
-                  </View>
-                  <View style={layout.textAlertCont}>
-                          <Text style={[layout.textAlertError, text.Regular]}>
-                              Error: Emails no conciden.
-                          </Text>
-                  </View>
-              </View>
-              <View style={layout.InputGroup}>
-                        <Text style={text.InputLabel}>
-                            Fecha
-                        </Text>
-                        <View style={[forms.InputCont, forms.LeftAlingment, 
-                         forms.AlertInput]}>
-                            <View style={forms.InputInteraction}>
-                                
-                            </View>
-                            <TouchableOpacity
-                                style={forms.DatePickerCont}
-                                onPress={this._showDateTimePicker}
-                            >
-                                <Text
-                                style={forms.DatePickerText}>
-                                    {this.state.chosenDateShow}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                        
-                        <DateTimePicker
-                            isVisible={this.state.isDateTimePickerVisible}
-                            onConfirm={this._handleDatePicked}
-                            onCancel={this._hideDateTimePicker}
-                        />
-                        <View style={layout.textAlertCont}>
-                            <Text style={[layout.textAlertError, text.Regular]}>
-                                Seleccionar fecha
-                            </Text>
-                        </View>
-                    </View>
-
-              <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between',}}> 
-                <TouchableOpacity 
-                    // onPress={this.props.leftFunction}
-                    onPress={() => {this.setState({modalVisible : false})}}
-                    style={[buttons.GralButton, buttons.BLineLight, {marginBottom: 0, width: '47%',}]}
-                    >
-                    <Text style={[text.BText, text.TLightBlue]}>
-                        Cancelar
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity 
-                    // onPress={this.props.rightFunction}
-                    style={[buttons.GralButton, buttons.BDarkBlue, {marginBottom: 0, width: '47%',}]}
-                    >
-                    <Text style={[text.BText, text.TLight]}>
-                      Guardar
-                    </Text>
-                </TouchableOpacity>
-                </View>
-            </Modal>
+            <AddExpense 
+               activity_loading={this.state.ModalIncome} 
+            />
+      
             <Loading 
             activity_loading={this.state.activity_loading} 
             activity_text={this.state.activity_text} 
