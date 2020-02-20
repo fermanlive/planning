@@ -52,7 +52,7 @@ class forgetPassword extends React.Component {
 
             <TouchableOpacity 
                 onPress={() => this.validateMail()}
-                style={[buttons.GralButton, buttons.BLightBlue]}>
+                style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
                 <Text style={[text.BText, text.TLight]}>
                   Enviar
                 </Text>

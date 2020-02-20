@@ -11,6 +11,7 @@ const {colors} = require ('./src/styles/main');
 import HistoricScreen from './src/screens/history';
 import SimulatorScreen from './src/screens/simulator';
 import ProfileScreen from './src/screens/profile';
+import SaveScreen from './src/screens/saves';
 
 import HomeScreen from './src/screens/home';
 import CreditCardScreen from './src/screens/creditCard';
@@ -70,6 +71,15 @@ const homeStack = createBottomTabNavigator({
            <Icon name="calendar-month-outline" type='material-community' size={30} color={colors.main} />
            )
       } 
+    },
+    Ahorros: {
+      screen: SaveScreen,
+      navigationOptions: {
+        tabBarLabel: 'Ahorros',
+        tabBarIcon: ({tintColor, activeTintColor}) => (
+           <Icon name="currency-usd" type='material-community' size={30} color={colors.main} />
+           )
+      }
     },
     Profile: {
       screen: ProfileScreen,

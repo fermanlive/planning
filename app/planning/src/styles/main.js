@@ -97,7 +97,7 @@ export const layout = StyleSheet.create({
         paddingHorizontal: width / 12,
         alignItems: 'center',
         position: 'relative',
-		backgroundColor: colors.baseColor,
+		backgroundColor: colors.Base,
     },
     centerCenter: {
     	width: '100%',
@@ -452,9 +452,11 @@ export const layout = StyleSheet.create({
 		width: '100%',
 		paddingVertical: fzbase,
 		paddingHorizontal: fzbase * 1.5,
-		//borderRadius: 15,
+		height: '60%',
+		borderRadius: 15,
 		justifyContent: 'center',
 		alignItems: 'center',
+		backgroundColor:'red'
 	},
 	ApproveCard: {
 		backgroundColor: colors.VTTurquoise,
@@ -1250,6 +1252,16 @@ export const text = StyleSheet.create({
 	TFacebookColor: {
 		color: colors.Facebook,
 	},
+	TAccentPurple: {
+		color: colors.AccentPurple,
+	},
+	TextOpacityMain: {
+		color: colors.opacityMain,
+	},
+
+
+	////////// Text color variables
+
 	TLightBlue: {
 		color: colors.VTLightBlue,
 	},
@@ -1640,6 +1652,12 @@ export const buttons = StyleSheet.create({
 	ButtonAccentPurple: {
 		backgroundColor: colors.AccentPurple,
 	},
+	ButtonAccentBlue: {
+		backgroundColor: colors.AccentBlue,
+	},
+	ButtonAccentRed: {
+		backgroundColor: colors.AccentRed,
+	},
 	ButtonFacebook: {
 		backgroundColor: colors.Facebook,
 	},
@@ -1724,7 +1742,7 @@ export const buttons = StyleSheet.create({
 	},
 	MainTabButtonActive: {
 		borderBottomWidth: (Platform.OS) === 'android' ? 8 : 4,
-		borderColor: colors.Facebook,
+		borderColor: colors.AccentPurple,
 	},
 	MainTabText: {
 		fontSize: fzbase * mult_02,

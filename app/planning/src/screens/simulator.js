@@ -192,7 +192,7 @@ class Simulator extends React.Component {
             :null}
               <TouchableOpacity 
                   onPress={() => this.setState({modalVisible:true})}
-                  style={[buttons.GralButton, buttons.BLightBlue]}>
+                  style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
                   <Text style={[text.BText, text.TLight]}>
                     Calcular
                   </Text>
@@ -220,7 +220,7 @@ class Simulator extends React.Component {
               </ScrollView>
               <TouchableOpacity 
                 onPress={() => this.setState({modalVisible:false})}
-                style={[buttons.GralButton, buttons.BLightBlue]}>
+                style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
                 <Text style={[text.BText, text.TLight]}>
                   Cerrar
                 </Text>

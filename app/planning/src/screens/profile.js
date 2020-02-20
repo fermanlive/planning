@@ -94,7 +94,7 @@ class Profile extends React.Component {
             :
                 <TouchableOpacity 
                     onPress={() => {this._toggleEdit();} }
-                    style={[buttons.GralButton, buttons.BLightBlue]}>
+                    style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
                     <Text style={[text.BText, text.TLight]}>
                         Actualizar
                     </Text>
@@ -103,15 +103,15 @@ class Profile extends React.Component {
             }      
             <TouchableOpacity 
                 onPress={() => this.props.navigation.navigate('Login')}
-                style={[buttons.GralButton, buttons.BLightBlue]}>
+                style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
                 <Text style={[text.BText, text.TLight]}>
                     Cerrar Sesión
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity 
                 onPress={() => this.setState({modalVisible: true})}
-                style={[buttons.GralButton, buttons.BDarkBlue]}>
-                <Text style={[text.BText, text.TLight]}>
+                style={[buttons.GralButton, buttons.ButtonRegisterLogin]}>
+                <Text style={[text.BText, text.TAccentPurple]}>
                     ¿Deseas ayudarnos con una encuesta?
                 </Text>
             </TouchableOpacity>
@@ -159,7 +159,7 @@ class Profile extends React.Component {
                 </View>
                 <TouchableOpacity 
                 onPress={() => this.setState({modalVisible: false})}
-                style={[buttons.GralButton, buttons.BLightBlue]}>
+                style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
                     <Text style={[text.BText, text.TLight]}>
                         Cerrar Modal
                     </Text>
