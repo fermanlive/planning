@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text , Button,Image,TextInput,TouchableOpacity,StyleSheet,Modal} from 'react-native';
-const {layout, text, forms, buttons} = require ('../styles/main');
+const {layout, text, forms, buttons,colors} = require ('../styles/main');
 import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Stars from 'react-native-stars';
+import {Shapes} from "react-native-background-shapes";
 
 
 class Profile extends React.Component {
@@ -21,9 +22,24 @@ class Profile extends React.Component {
     render() {
       return (
         <View style={ [layout.MainContainerProfile, layout.AlignCenter] }>
-
+            <Text style={[text.TitleView, text.Strong, text.TTurquoise]}>
+               Perfil
+            </Text>
+            <Shapes
+                primaryColor={colors.BackgroundColorDefault}
+                secondaryColor={colors.main}
+                height={1}
+                borderRadius={20}
+                figures={[
+                {name: 'circle', position: 'center', size: 60},
+                {name: 'donut', position: 'flex-start', axis: 'top', size: 80},
+                {name: 'circle', position: 'center', axis: 'right', size: 100},
+                {name: 'donut', position: 'flex-end', axis: 'right', size: 80},
+                {name: 'circle', position: 'flex-end', axis: 'left', size: 100},
+                ]}
+            />
             { this.state.Editable ? 
-                <View style = { layout.MainContainerSV } >
+                <View style = { layout.MainContainerProfileDetails } >
                     <View style={layout.PhotoPreviewContSml}>
                         <Image
                         style={{width:'50%',height:'50%' ,resizeMode:'contain'}}
@@ -68,7 +84,7 @@ class Profile extends React.Component {
                     </View>
                 </View>
             : 
-            <View style = { layout.MainContainerSV } >
+            <View style = { layout.MainContainerProfileDetails } >
                 <View style={layout.PhotoPreviewContSml}>
                     <Image
                     style={{width:'50%',height:'50%' ,resizeMode:'contain'}}
@@ -159,7 +175,7 @@ class Profile extends React.Component {
                 </View>
                 <TouchableOpacity 
                 onPress={() => this.setState({modalVisible: false})}
-                style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
+                style={[buttons.GralButton, buttons.BLightBlue]}>
                     <Text style={[text.BText, text.TLight]}>
                         Cerrar Modal
                     </Text>

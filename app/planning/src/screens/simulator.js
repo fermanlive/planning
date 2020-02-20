@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text,TextInput,TouchableOpacity,ScrollView,StyleSheet,Modal } from 'react-native';
-const {layout, text, forms, buttons} = require ('../styles/main');
+const {layout, text, forms, buttons,colors} = require ('../styles/main');
 import ModalSelector from 'react-native-modal-selector';
 import { Table, Row, Rows } from 'react-native-table-component';
+import {Shapes} from "react-native-background-shapes";
 
 class Simulator extends React.Component {
   constructor(props) {
@@ -52,6 +53,19 @@ class Simulator extends React.Component {
     ];
       return(
         <View style={ [layout.MainContainer] }>
+          <Shapes
+            primaryColor={colors.BackgroundColorDefault}
+            secondaryColor={colors.main}
+            height={1}
+            borderRadius={20}
+            figures={[
+            {name: 'circle', position: 'center', size: 60},
+            {name: 'donut', position: 'flex-start', axis: 'top', size: 80},
+            {name: 'circle', position: 'center', axis: 'right', size: 100},
+            {name: 'donut', position: 'flex-end', axis: 'right', size: 80},
+            {name: 'circle', position: 'flex-end', axis: 'left', size: 100},
+            ]}
+          />
           <View style={[layout.GralTextCont, {marginBottom: 60,marginTop:30}]}>
               <Text style={[text.GralText, text.Regular]}>
               Simulacion de credito 
@@ -206,7 +220,8 @@ class Simulator extends React.Component {
                 <Text style={[text.TravelInfoTitle, text.Regular, text.TBlack]}>
                   Calculo de intereses
                 </Text>
-                <Table borderStyle={{borderWidth: 5, borderColor: '#c8e1ff'}}>
+                <Table borderStyle={{borderWidth: 5, borderColor: colors.main}}
+                >
                   <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
                   <Rows data={this.state.tableData} textStyle={styles.text}/>
                 </Table>
@@ -233,7 +248,7 @@ class Simulator extends React.Component {
   
   const styles = StyleSheet.create({
     container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-    head: { height: 40, backgroundColor: '#f1f8ff' },
+    head: { height: 40, backgroundColor: colors.opacityMain },
     text: { margin: 6 }
   });
   export default Simulator;

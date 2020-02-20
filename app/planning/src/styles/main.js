@@ -115,6 +115,13 @@ export const layout = StyleSheet.create({
 		width: '100%',
 		marginVertical: 20,
 	},
+	MainContainerProfileDetails :{
+		flex: 1,
+		width: '100%',
+		marginVertical: 20,
+		borderRadius:15,
+		backgroundColor:colors.White
+	},
 	MainContainerSV2 :{
 		flex: 1,
 		width: '100%',
@@ -457,6 +464,17 @@ export const layout = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor:'red'
+	},
+	CardContSaves: {
+		width: '100%',
+		paddingVertical: fzbase,
+		paddingHorizontal: fzbase * 1.5,
+		height: 140,
+		borderRadius: 15,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor:'red',
+		marginBottom:'3%',
 	},
 	ApproveCard: {
 		backgroundColor: colors.VTTurquoise,
@@ -1150,6 +1168,13 @@ export const text = StyleSheet.create({
 		fontSize: fzbase * mult_05,
 		paddingBottom: 10,
 		textAlign: 'left',
+	},
+	// Title View
+	TitleView: {
+		fontSize: fzbase * mult_11,
+		textAlign: 'center',
+		width: '100%',
+		marginTop:'10%'
 	},
 	// Travel info Text style
 	TravelInfoTitle: {

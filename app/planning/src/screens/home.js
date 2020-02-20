@@ -7,7 +7,7 @@ import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
 import AddExpense from '../components/AddExpense';
 import { Card, SimpleCard } from "@paraboly/react-native-card";
-
+import {Shapes} from "react-native-background-shapes";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 var {height, width} = Dimensions.get('window');
@@ -187,7 +187,6 @@ this.setState({
             { this.state.displayTab  ?
             <View 
               style = {layout.TravelCardCont}>
-
               <Text style={[text.TravelInfoSubtitle, text.Regular, text.TLight,]}>
                 2020/10/11 a  2020/10/12
               </Text>
