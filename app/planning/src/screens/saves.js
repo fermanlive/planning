@@ -15,11 +15,22 @@ class Profile extends React.Component {
           modalVisible:false,
           elements:[
             {
-              id:"1"
+              id:"1",
+              value:30,
             },
             {
-              id:"2"
-            }
+              id:"2",
+              value:2,
+            },
+            {
+              id:"3",
+              value:70,
+            },
+            {
+              id:"4",
+              value:0,
+            },
+            
           ]
         };
     }
@@ -53,28 +64,36 @@ class Profile extends React.Component {
             onPress={() => this.setState({modalVisible : true})}
             >
               <View 
-                style = {layout.CardContSaves}>
-                <Text style={[text.TravelInfoSubtitle, text.Regular, text.TLight,]}>
-                  2020/10/11 a  2020/10/12
+                style = {[layout.CardContSaves,{borderColor:colors.AccentBlue}]}>
+                <Text style={[text.TravelInfoSubtitle, text.Strong, text.TAccentBlue,]}>
+                  Meta 
                 </Text>
                 <View style={layout.TravelCardInfoCont}>
+                  <ProgressCircle
+                        percent={item.value}
+                        radius={40}
+                        borderWidth={10}
+                        color={colors.AccentBlue}
+                        shadowColor={'white'}
+                        bgColor="#fff"
+                    >
+                        <Text style={{ fontSize: 18 }}>{item.value+'%'}</Text>
+                    </ProgressCircle>
                   <View style={layout.TravelCardInfoColumn}>
-                    <Text style={[layout.TravelCardInfoTitle, text.Strong, text.TLight]}>
-                        Ingresos
+                    <Text style={[layout.TravelCardInfoTitle, text.Strong, text.TAccentPurple]}>
+                        Meta
                     </Text>
                     <View style={{flexDirection: 'row',}}>
-                      <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
+                      <Text style={[layout.TravelCardInfoValue, text.Medium, text.TAccentPurple]}>
                       $ 2.350.000,00
                       </Text>
                     </View>
-                  </View>
-                  <View style={layout.TravelCardInfoColumn}>
-                    <Text style={[layout.TravelCardInfoTitle, text.Strong, text.TLight]}>
-                        Egresos
+                    <Text style={[layout.TravelCardInfoTitle, text.Strong, text.TAccentBlue]}>
+                        Actual
                     </Text>
                     <View style={{flexDirection: 'row',}}>
-                      <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
-                      $ 2.000.000,00
+                      <Text style={[layout.TravelCardInfoValue, text.Medium, text.TAccentBlue]}>
+                      $ 500.000,00
                       </Text>
                     </View>
                   </View>
@@ -97,16 +116,6 @@ class Profile extends React.Component {
                         </Text>
                     </View>
                     <View style={[layout.GralTextCont, {marginBottom: 30,marginTop:30}]}>
-                        <ProgressCircle
-                            percent={30}
-                            radius={50}
-                            borderWidth={8}
-                            color={colors.main}
-                            shadowColor={colors.opacityMain}
-                            bgColor="#fff"
-                        >
-                            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
-                        </ProgressCircle>
                         <TouchableOpacity 
                             onPress={() => this.setState({modalVisible: false})}
                             style={[buttons.GralButton, buttons.ButtonAccentBlue]}>

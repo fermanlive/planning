@@ -473,8 +473,9 @@ export const layout = StyleSheet.create({
 		borderRadius: 15,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor:'red',
+		backgroundColor:'white',
 		marginBottom:'3%',
+		borderWidth:3
 	},
 	ApproveCard: {
 		backgroundColor: colors.VTTurquoise,
@@ -492,7 +493,6 @@ export const layout = StyleSheet.create({
 		width: '100%',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		marginTop: fzbase,
 	},
 	ButtonsSpends: {
 		width: '100%',
@@ -1287,7 +1287,9 @@ export const text = StyleSheet.create({
 	TextColorMain: {
 		color: colors.main,
 	},
-	
+	TAccentBlue: {
+		color: colors.AccentBlue,
+	},
 
 	////////// Text color variables
 
