@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text,TextInput,TouchableOpacity } from 'react-native';
-const {layout, text, forms, buttons} = require ('../styles/main');
+const {layout, text, forms, buttons,colors} = require ('../styles/main');
 import {Shapes} from "react-native-background-shapes";
 
 class Dictionary extends React.Component {

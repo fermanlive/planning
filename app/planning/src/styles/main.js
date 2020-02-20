@@ -129,8 +129,7 @@ export const layout = StyleSheet.create({
 	MainContainerSVFlatlist :{
 		flex: 1,
 		width: '100%',
-		marginVertical: 20,
-		flexDirection: 'row',
+		flexDirection: 'row'
 	},
 	NotificationMainContainerSV :{
 		flex: 1,
@@ -456,7 +455,7 @@ export const layout = StyleSheet.create({
 	// --
 	// Actual travel card styles
 	TravelCardCont: {
-		width: '100%',
+		width: '80%',
 		paddingVertical: fzbase,
 		paddingHorizontal: fzbase * 1.5,
 		height: '60%',
@@ -464,6 +463,7 @@ export const layout = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor:'red'
+		
 	},
 	CardContSaves: {
 		width: '100%',
@@ -498,6 +498,7 @@ export const layout = StyleSheet.create({
 		width: '100%',
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
+		height:'10%'
 		
 	},
 	ButtonsSpends2: {

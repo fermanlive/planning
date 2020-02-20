@@ -31,6 +31,7 @@ class Home extends React.Component {
       chosenDateShow: 'Seleccionar fecha',
       displayTab:true,
       ModalIncome:false,
+      filterTab:2,
       elements:[],
       balance:[
         {
@@ -131,6 +132,7 @@ this.setState({
   _toggleIcons = () => this.setState({ showIcons: !this.state.showIcons });
   
   _filterTab = (filter) => {
+    this.setState({filterTab: filter});
     this.setState({elements: []});
     if(filter==2){
       // this.setState({elements: []});
@@ -154,7 +156,7 @@ this.setState({
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:'#66E49B' }}>
-          <View style={{backgroundColor:'white' ,width:width, height:height*3/7}}>
+          <View style={{backgroundColor:'white' ,width:width, height:height*3/7,alignItems: 'center'}}>
           <Text style={[text.TravelInfoTitle, text.Regular, text.TAccentPurple]}>
           Relacion de gastos para Agosto
           </Text>
@@ -276,36 +278,39 @@ this.setState({
           </View>
           <View style={layout.MainTabsCont}>
             <TouchableHighlight
-              style={[buttons.MainTabButton, !this.state.displayTab ? buttons.MiddleTab : buttons.MainTabButtonActive ]}
+              style={[buttons.MainTabButton, 
+                this.state.filterTab == 2 ? buttons.MainTabButtonActive : buttons.MiddleTab ]}
               onPress={() => this._filterTab(2)}
               //onPress={() => this.setState({displayTab:true})}
               >
-                <Text style={[buttons.MainTabText, 
-                  !this.state.displayTab ? text.Regular : text.Strong,  
-                  !this.state.displayTab ? text.TextOpacityMain: text.TAccentPurple
+                <Text style={[buttons.MainTabText,
+                  this.state.filterTab == 2 ? text.Strong : text.Regular,  
+                  this.state.filterTab == 2 ? text.TAccentPurple: text.TLight
                   ]}>
                   Todas
                 </Text>
             </TouchableHighlight>
 
             <TouchableHighlight
-              style={[buttons.MainTabButton, this.state.displayTab ? buttons.MiddleTab : buttons.MainTabButtonActive ]}
+              style={[buttons.MainTabButton,
+                this.state.filterTab == 0 ? buttons.MainTabButtonActive : buttons.MiddleTab ]}
               onPress={() => this._filterTab(0)}
               >
                 <Text style={[buttons.MainTabText,
-                  this.state.displayTab ? text.Regular : text.Strong,  
-                  this.state.displayTab ? text.TextOpacityMain: text.TAccentPurple
+                  this.state.filterTab == 0 ? text.Strong : text.Regular,  
+                  this.state.filterTab == 0 ? text.TAccentPurple: text.TLight
                   ]}>
                   Ingresos
                 </Text>
             </TouchableHighlight>
             <TouchableHighlight
-              style={[buttons.MainTabButton, this.state.displayTab ? buttons.MiddleTab : buttons.MainTabButtonActive ]}
+              style={[buttons.MainTabButton,
+                this.state.filterTab == 1 ? buttons.MainTabButtonActive : buttons.MiddleTab ]}
               onPress={() => this._filterTab(1)}
               >
                 <Text style={[buttons.MainTabText,
-                  this.state.displayTab ? text.Regular : text.Strong,  
-                  this.state.displayTab ? text.TextOpacityMain: text.TAccentPurple
+                  this.state.filterTab == 1 ? text.Strong : text.Regular,  
+                  this.state.filterTab == 1 ? text.TAccentPurple: text.TLight
                   ]}>
                   Egresos
                 </Text>
@@ -365,7 +370,7 @@ this.setState({
                   backgroundColor='#000000'
                   onPress={() => {this._toggleIcons();} }
                   />
-                  <Text style={[layout.BillItemText2, text.Strong, text.TextOpacityMain,]}>Regresar</Text>
+                  <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Regresar</Text>
                 </View>
                 <View style={[layout.ButtonsSpends3]}>
                   <Icon
@@ -375,7 +380,7 @@ this.setState({
                   color={colors.main}
                   onPress={() => {this.setState({ModalIncome : true})}}
                   />
-                  <Text style={[layout.BillItemText2, text.Strong, text.TextOpacityMain,]}>Agregar {"\n"} Ingreso</Text>
+                  <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Agregar {"\n"} Ingreso</Text>
                 </View>
                 <View style={[layout.ButtonsSpends3]}>
                   <Icon
@@ -385,7 +390,7 @@ this.setState({
                   color={colors.main}
                   onPress={() => {this.setState({modalVisible : true})}}
                   />
-                  <Text style={[layout.BillItemText2, text.Strong, text.TextOpacityMain,]}>Agregar {"\n"} Egreso</Text>
+                  <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Agregar {"\n"} Egreso</Text>
                 </View>
                 <View style={[layout.ButtonsSpends3]}>
                   <Icon
@@ -396,7 +401,7 @@ this.setState({
                   backgroundColor='#000000'
                   onPress={() => this.props.navigation.navigate('DictionaryScreen')}
                   />
-                  <Text style={[layout.BillItemText2, text.Strong, text.TextOpacityMain,]}>Diccionario</Text>
+                  <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Diccionario</Text>
                 </View>
               </View>
             :
@@ -411,10 +416,10 @@ this.setState({
               />
               </View>
             }
-            <AddExpense 
+            {/* <AddExpense 
                activity_loading={this.state.ModalIncome} 
             />
-      
+       */}
             <Loading 
             activity_loading={this.state.activity_loading} 
             activity_text={this.state.activity_text} 
