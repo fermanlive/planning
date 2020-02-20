@@ -1284,7 +1284,10 @@ export const text = StyleSheet.create({
 	TextOpacityMain: {
 		color: colors.opacityMain,
 	},
-
+	TextColorMain: {
+		color: colors.main,
+	},
+	
 
 	////////// Text color variables
 
@@ -1461,7 +1464,7 @@ export const forms = StyleSheet.create({
 	},
 	// Picker select Styles
 	PickerOverlay: {
-		backgroundColor: colors.Facebook,
+		backgroundColor: colors.opacityMain,
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: width / 12,

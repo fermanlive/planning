@@ -57,7 +57,7 @@ class Simulator extends React.Component {
             primaryColor={colors.BackgroundColorDefault}
             secondaryColor={colors.main}
             height={1}
-            borderRadius={20}
+            borderRadius={2}
             figures={[
             {name: 'circle', position: 'center', size: 60},
             {name: 'donut', position: 'flex-start', axis: 'top', size: 80},
@@ -88,9 +88,9 @@ class Simulator extends React.Component {
                   optionContainerStyle = {[forms.PickerOptionCont, {margin: 0, padding: 0,}]}
                   optionStyle ={forms.PickerOptionCont}
                   optionTextStyle = {forms.PickerOptionText}
-                  selectedItemTextStyle = {[text.Regular, text.TLightBlue]}
+                  selectedItemTextStyle = {[text.Regular, text.TextColorMain]}
                   cancelStyle = {[buttons.GralButton, buttons.BLight, {marginTop: 15,}]}
-                  cancelTextStyle = {[text.BText, text.TLightBlue]}
+                  cancelTextStyle = {[text.BText, text.TextColorMain]}
                   >                            
 
                   <View style={[forms.InputCont, forms.LeftAlingment, 
