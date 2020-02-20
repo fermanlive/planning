@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, Text , FlatList, ScrollView,TouchableOpacity} from 'react-native';
+import { View, Text , FlatList, ScrollView,TouchableOpacity,TextInput} from 'react-native';
 const {layout, text, forms, buttons,colors} = require ('../styles/main');
-import { Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Stars from 'react-native-stars';
 import {Shapes} from "react-native-background-shapes";
+import ProgressCircle from 'react-native-progress-circle';
+import Modal from "react-native-modal";
 
 class Profile extends React.Component {
     constructor(props) {
@@ -43,14 +42,16 @@ class Profile extends React.Component {
                 ]}
             />
             <Text style={[text.TitleView, text.Strong, text.TLight]}>
-               Relacion de gastos para Agosto
+               Listado de tus ahorrros
             </Text>
             <FlatList
             data = {this.state.elements}
             style={layout.MainContainerSV}
             keyExtractor={item => item.id}
             renderItem={({item}) =>
-            <TouchableOpacity>
+            <TouchableOpacity
+            onPress={() => this.setState({modalVisible : true})}
+            >
               <View 
                 style = {layout.CardContSaves}>
                 <Text style={[text.TravelInfoSubtitle, text.Regular, text.TLight,]}>
@@ -82,6 +83,40 @@ class Profile extends React.Component {
             </TouchableOpacity>   
             }
             />  
+              <Modal
+                backdropColor = {colors.opacityMain}
+                backdropOpacity = {0.9}
+                style = { {padding: 0, margin: 0,} }
+                isVisible={this.state.modalVisible}>  
+                 <View 
+                    style={layout.ModalTrialInfoCont}
+                  >
+                    <View style={[layout.GralTextCont, {marginBottom: 30,marginTop:30}]}>
+                        <Text style={[text.GralText, text.Regular]}>
+                        Meta: Viaje a Cartagena 
+                        </Text>
+                    </View>
+                    <View style={[layout.GralTextCont, {marginBottom: 30,marginTop:30}]}>
+                        <ProgressCircle
+                            percent={30}
+                            radius={50}
+                            borderWidth={8}
+                            color={colors.main}
+                            shadowColor={colors.opacityMain}
+                            bgColor="#fff"
+                        >
+                            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
+                        </ProgressCircle>
+                        <TouchableOpacity 
+                            onPress={() => this.setState({modalVisible: false})}
+                            style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
+                            <Text style={[text.BText, text.TLight]}>
+                                Cerrar Sesión
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                  </View>
+              </Modal>
         </View>
       );
     }
