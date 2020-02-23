@@ -1703,6 +1703,11 @@ export const buttons = StyleSheet.create({
 		borderColor: colors.AccentPurple,
 		borderWidth: 2,
 	},
+	ButtonRegisterLoginAccentBlue: {
+		backgroundColor: colors.White,
+		borderColor: colors.AccentBlue,
+		borderWidth: 2,
+	},
 
 	// --
 	// Camera buttons

@@ -156,7 +156,7 @@ this.setState({
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:'#66E49B' }}>
-          <View style={{backgroundColor:'white' ,width:width, height:height*3/7,alignItems: 'center'}}>
+          <View style={{backgroundColor:'white' ,width:width, height:height*3/7,alignItems: 'center',borderBottomWidth:5,borderColor:colors.AccentPurple}}>
           <Text style={[text.TravelInfoTitle, text.Regular, text.TAccentPurple]}>
           Relacion de gastos para Agosto
           </Text>

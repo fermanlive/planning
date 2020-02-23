@@ -55,6 +55,12 @@ class Profile extends React.Component {
             <Text style={[text.TitleView, text.Strong, text.TLight]}>
                Listado de tus ahorrros
             </Text>
+            <TouchableOpacity 
+                style={[buttons.GralButton, buttons.ButtonRegisterLoginAccentBlue,{marginTop:10}]}>
+                <Text style={[text.BText, text.TAccentBlue]}>
+                    ¿Deseas agregar un ahorrro?
+                </Text>
+            </TouchableOpacity>
             <FlatList
             data = {this.state.elements}
             style={layout.MainContainerSV}
