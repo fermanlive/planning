@@ -9,6 +9,7 @@ class Api extends RestController {
     {
         // Construct the parent class
         parent::__construct();
+        $this->load->model('user_model');
     }
 
     public function users_get()
@@ -52,5 +53,32 @@ class Api extends RestController {
                 ], 404 );
             }
         }
+    }
+
+    public function CreateUser_get(){   
+
+        $email = $this->get('email');
+        $password = $this->get('password');
+        $name = $this->get('name');
+        $surname = $this->get('surname');
+
+        if ( $email === null || $password === null)
+        {
+            $this->response( [
+                'status' => false,
+                'message' => 'Email y contraseña no recibidos'
+            ], 404 );
+        }else{
+            $CreateUser = $this->user_model->CreateUser($email,$password,$name,$surname);
+            if($CreateUser){
+                $data="Usuario creado";
+                $this->response($data,200);
+            }else{
+                $data="Usuario no creado";
+                $this->response($data,404);
+            }
+
+        }
+        
     }
 }
