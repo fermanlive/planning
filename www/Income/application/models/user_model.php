@@ -10,7 +10,7 @@ if (!defined('BASEPATH'))
  * @author Andrés Cruz <andres@code-labs.com>
  * @author Developer <info@code-labs.com>
  */
-class User_model extends CI_Model {
+class Income_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();  
@@ -20,9 +20,9 @@ class User_model extends CI_Model {
     
     }
 
-    public function CreateUser($email,$password,$name,$surname){
+    public function CreateIncome($name,$date_income,$value,$idusers){
 
-        $md5password = do_hash($password, 'md5');
+        
 
         //Array con los datos del usuario
         $data = array(

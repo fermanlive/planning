@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 use chriskacerguis\RestServer\RestController;
 
-class Users extends RestController {
+class Incomes extends RestController {
 
     function __construct()
     {
