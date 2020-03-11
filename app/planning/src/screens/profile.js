@@ -5,6 +5,7 @@ import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Stars from 'react-native-stars';
 import {Shapes} from "react-native-background-shapes";
+import {clearCredentials} from '../helpers/users_services';
 
 
 class Profile extends React.Component {
@@ -18,8 +19,8 @@ class Profile extends React.Component {
         };
     }
   _toggleEdit = () => this.setState({ Editable: !this.state.Editable });
-
-    render() {
+  _closeSession = async () => {await clearCredentials , this.props.navigation.navigate('Login')};
+    render() { 
       return (
         <View style={ [layout.MainContainerProfile, layout.AlignCenter] }>
             <Text style={[text.TitleView, text.Strong, text.TTurquoise]}>
@@ -118,7 +119,7 @@ class Profile extends React.Component {
 
             }      
             <TouchableOpacity 
-                onPress={() => this.props.navigation.navigate('Login')}
+                onPress={() => this._closeSession()}
                 style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
                 <Text style={[text.BText, text.TLight]}>
                     Cerrar Sesión

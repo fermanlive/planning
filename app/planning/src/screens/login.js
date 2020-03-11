@@ -4,17 +4,31 @@ const {layout, text, login, forms, buttons} = require ('../styles/main');
 
 import { Icon, colors } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {RequestLogin} from '../helpers/users_services';
+import {RequestLogin,getSession} from '../helpers/users_services';
 
 class Login extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { count: 0 }
+    this.state = { 
+        count: 0, 
+        user: null,
+        password:null,
+
+    }
   }
 
   async login(){
-    var loginResponse = await RequestLogin('fernando.link32@gmail.com','1234');
+    var loginResponse = await RequestLogin(this.state.user,this.state.password);
+    console.warn(loginResponse);
+    if(loginResponse){
+        this.props.navigation.navigate('Home');
+    }
    }
+
+     async componentDidMount(){
+       var lectura = await getSession();
+       console.warn(lectura);
+    }
 
     render() {
       return (
@@ -33,7 +47,6 @@ class Login extends React.Component {
                         </Text>
                         <View style={forms.InputContentLogin}>
                             <TextInput
-                                value={this.state.user}
                                 style={[forms.InputLogin, forms.CenterAlingment]}
                                 onChangeText={(user) => this.setState({user})}
                                 placeholder= "Usuario"
@@ -47,7 +60,7 @@ class Login extends React.Component {
                         <View style={forms.InputContentLogin}>
                             <TextInput
                                 style={[forms.InputLogin, forms.CenterAlingment]}
-                                onChangeText={(pass) => this.setState({pass})}
+                                onChangeText={(password) => this.setState({password})}
                                 placeholder="Contraseña"
                                 secureTextEntry={this.state.passwordHidden}
                             />

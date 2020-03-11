@@ -1,4 +1,4 @@
-import {AsyncStorage, Alert} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 const CONST = require('../constants/constants');
 
 // ____________________________Async Storage Services________________________________________
@@ -24,21 +24,27 @@ export async function clearCredentials() {
       //console.log("getSession-error= "+error);
     }
   };
+  export async function setSession(data) {
+    try {
+      var saveSession = await AsyncStorage.setItem('session', JSON.stringify(data));
+      return  true;
+    } catch (error) {
+      //console.log("setSession-error= "+error);
+    }
+  };
 
   export async function RequestLogin(user,pass){
     try{
-        user = 'fernandohalo2@hotmail.com';
-        pass = 1;
       var parameters= `email/`+ user + `/password/`+pass;
       var data = await fetchRequest("users/Login",parameters);
       console.warn(data);
-/*       if(data.idUsers){
-        var session = {id:data.idUsers, token:data.session_hash, profiles:data.userTypes, email:data.userEmail, names:data.names, idType:data.userIdType, idNum:data.userIdNumber, phone:data.userPhone,companyId:data.Companies_idCompanies,language:data.language};
+      if(data.status){
+        var session = {id:data.idusers, name:data.name, surname:data.surname, email:data.email};
         var save = await setSession(session);
         return save;
       }else{
         return data;
-      } */
+      }
     } catch (error) {
       //console.log("doLogin-error= "+error);
     }

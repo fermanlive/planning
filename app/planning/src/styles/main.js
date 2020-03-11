@@ -1426,7 +1426,7 @@ export const forms = StyleSheet.create({
 	InputLogin: {
 		backgroundColor: 'transparent',
 		flex: 1,
-		width: '50%',
+		width: '70%',
 		height: 44,
 		alignItems: 'center',
 		justifyContent: 'center',
