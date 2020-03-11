@@ -4,12 +4,18 @@ const {layout, text, login, forms, buttons} = require ('../styles/main');
 
 import { Icon, colors } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
+import {RequestLogin} from '../helpers/users_services';
 
 class Login extends React.Component {
   constructor(props) {
     super(props)
     this.state = { count: 0 }
   }
+
+  async login(){
+    var loginResponse = await RequestLogin('fernando.link32@gmail.com','1234');
+   }
+
     render() {
       return (
               <View style = {{ flex: 1, }}>
@@ -59,7 +65,7 @@ class Login extends React.Component {
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
-                            onPress={() => this.props.navigation.navigate('Home')}
+                            onPress={() => this.login()}
                             disabled={this.state.isDisable}
                             style={[buttons.LoginButtons, buttons.ButtonAccentPurple]}>
                             <Text style={[text.BText, text.TLight]}>

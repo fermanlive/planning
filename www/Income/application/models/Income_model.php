@@ -4,11 +4,8 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 /**
- * Clase encargada de las operaciones con el modelo de usuarios
- * en la base de datos.
  *
- * @author Andrés Cruz <andres@code-labs.com>
- * @author Developer <info@code-labs.com>
+ * @author Daniel Fernando Murcia <fernando.link32@gmail.com>
  */
 class Income_model extends CI_Model {
 

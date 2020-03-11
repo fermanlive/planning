@@ -86,7 +86,7 @@ class Users extends RestController {
 
         $email = $this->get('email');
         $password = $this->get('password');
-
+        
         if ( $email === null || $password === null)
         {
             $this->response( [
