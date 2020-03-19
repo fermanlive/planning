@@ -67,9 +67,9 @@ class Simulator extends React.Component {
             ]}
           />
           <View style={[layout.GralTextCont, {marginBottom: 60,marginTop:30}]}>
-              <Text style={[text.GralText, text.Regular]}>
-              Simulacion de credito 
-              </Text>
+            <Text style={[text.TitleView, text.Strong, text.TLight]}>
+               Listado de tus ahorrros
+            </Text>
           </View>
           <ScrollView
             style = { layout.MainContainerSV2 }

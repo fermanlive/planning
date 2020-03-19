@@ -57,6 +57,11 @@ class Profile extends React.Component {
             </Text>
             <TouchableOpacity 
                 style={[buttons.GralButton, buttons.ButtonRegisterLoginAccentBlue,{marginTop:10}]}>
+                <Icon
+                name='plus'
+                type='font-awesome'
+                color='#FFFFFF'
+                  />
                 <Text style={[text.BText, text.TAccentBlue]}>
                     ¿Deseas agregar un ahorrro?
                 </Text>
