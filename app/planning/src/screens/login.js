@@ -19,9 +19,11 @@ class Login extends React.Component {
 
   async login(){
     var loginResponse = await RequestLogin(this.state.user,this.state.password);
-    console.warn(loginResponse);
-    if(loginResponse){
+    
+    if(typeof loginResponse !== 'undefined' && loginResponse.length > 0){
         this.props.navigation.navigate('Home');
+    }else{
+        
     }
    }
 

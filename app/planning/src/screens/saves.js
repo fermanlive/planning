@@ -4,6 +4,7 @@ const {layout, text, forms, buttons,colors} = require ('../styles/main');
 import {Shapes} from "react-native-background-shapes";
 import ProgressCircle from 'react-native-progress-circle';
 import Modal from "react-native-modal";
+import { Icon } from 'react-native-elements';
 
 class Profile extends React.Component {
     constructor(props) {
@@ -60,7 +61,7 @@ class Profile extends React.Component {
                 <Icon
                 name='plus'
                 type='font-awesome'
-                color='#FFFFFF'
+                color='#5B8EFF'
                   />
                 <Text style={[text.BText, text.TAccentBlue]}>
                     ¿Deseas agregar un ahorrro?
