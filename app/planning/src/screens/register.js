@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text,TextInput,TouchableOpacity,ScrollView } from 'react-native';
 const {layout, text, forms, buttons} = require ('../styles/main');
+import LinearGradient from 'react-native-linear-gradient';
 
 
 class Register extends React.Component {
@@ -9,7 +10,11 @@ class Register extends React.Component {
     }
     render() {
       return (
-        <View style={ [layout.MainContainer] }>
+        <View style = {{ flex: 1, }}>
+        <LinearGradient 
+        colors={['#89C763', '#0E9347']}
+        style={{ height: '100%', width:'100%' }}
+        >
           <View style={[layout.GralTextCont, {marginBottom: 60,marginTop:30}]}>
               <Text style={[text.GralText, text.Regular]}>
               Registro 
@@ -137,6 +142,7 @@ class Register extends React.Component {
               </Text>
           </TouchableOpacity>
           </ScrollView>
+          </LinearGradient>
         </View>
       );
     }
