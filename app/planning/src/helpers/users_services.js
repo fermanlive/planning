@@ -10,7 +10,7 @@ export async function clearCredentials() {
     } catch (error) {
       //console.log("setCredentials-error= "+error);
     }
-  };
+  }
   
   export async function getSession() {
     try {
@@ -23,7 +23,8 @@ export async function clearCredentials() {
     } catch (error) {
       //console.log("getSession-error= "+error);
     }
-  };
+  }
+  
   export async function setSession(data) {
     try {
       var saveSession = await AsyncStorage.setItem('session', JSON.stringify(data));
@@ -31,7 +32,7 @@ export async function clearCredentials() {
     } catch (error) {
       //console.log("setSession-error= "+error);
     }
-  };
+  }
 
   export async function RequestLogin(user,pass){
     try{
