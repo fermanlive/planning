@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 import {TextInput,TouchableOpacity,ScrollView,Modal } from 'react-native';
