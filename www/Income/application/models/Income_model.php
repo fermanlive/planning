@@ -7,8 +7,7 @@ if (!defined('BASEPATH'))
  * Clase encargada de las operaciones con el modelo de usuarios
  * en la base de datos.
  *
- * @author Andrés Cruz <andres@code-labs.com>
- * @author Developer <info@code-labs.com>
+
  */
 class Income_model extends CI_Model {
 

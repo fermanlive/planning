@@ -9,7 +9,7 @@ class Users extends RestController {
     {
         // Construct the parent class
         parent::__construct();
-        $this->load->model('user_model');
+        $this->load->model('User_model');
     }
 
     public function users_get()
@@ -69,7 +69,7 @@ class Users extends RestController {
                 'message' => 'Email y contraseña no recibidos'
             ], 404 );
         }else{
-            $CreateUser = $this->user_model->CreateUser($email,$password,$name,$surname);
+            $CreateUser = $this->User_model->CreateUser($email,$password,$name,$surname);
             if($CreateUser){
                 $data="Usuario creado";
                 $this->response($data,200);
@@ -94,7 +94,7 @@ class Users extends RestController {
                 'message' => 'Email y contraseña no recibidos'
             ], 404 );
         }else{
-            $LoginAnswer = $this->user_model->Login($email,$password);
+            $LoginAnswer = $this->User_model->Login($email,$password);
             if($LoginAnswer){
                 $data=[
                     'Userinfo' => $LoginAnswer,
@@ -118,7 +118,7 @@ class Users extends RestController {
 
         if ( $password != null)
         {
-            $ChangePasswordAnswer = $this->user_model->ChangePassword($password,$idusers);
+            $ChangePasswordAnswer = $this->User_model->ChangePassword($password,$idusers);
 
             if($ChangePasswordAnswer){
                 $data="Cambio de clave realizado";
@@ -140,7 +140,7 @@ class Users extends RestController {
         $name = $this->get('name');
         if ( $name != null || $surname != null)
         {
-            $EditUserAnswer = $this->user_model->EditUser($name,$surname,$idusers);
+            $EditUserAnswer = $this->User_model->EditUser($name,$surname,$idusers);
             if($EditUserAnswer){
                 $data="Información de Usuario Actualizada";
                 $this->response($data,200);

@@ -7,8 +7,7 @@ if (!defined('BASEPATH'))
  * Clase encargada de las operaciones con el modelo de usuarios
  * en la base de datos.
  *
- * @author Andrés Cruz <andres@code-labs.com>
- * @author Developer <info@code-labs.com>
+
  */
 class User_model extends CI_Model {
 
@@ -34,7 +33,7 @@ class User_model extends CI_Model {
         );
 
         $this->db->set($data);
-        $this->db->insert('Users');
+        $this->db->insert('users');
         $insert_id = $this->db->insert_id();
         return $insert_id > 0 ? true : false ;
     }
@@ -45,7 +44,7 @@ class User_model extends CI_Model {
 
         
         $this->db->select('*');
-        $this->db->from('Users');
+        $this->db->from('users');
         $this->db->where('email',$email);
         $this->db->where('password',$md5password);
         $query = $this->db->get();
@@ -67,7 +66,7 @@ class User_model extends CI_Model {
         );
 
         $this->db->set($data);
-        $this->db->update('Users');
+        $this->db->update('users');
         $this->db->where('idusers',$idusers);
         return $this->db->affected_rows() > 0 ? true : false ;
     }

@@ -7,10 +7,9 @@ if (!defined('BASEPATH'))
  * Clase encargada de las operaciones con el modelo de usuarios
  * en la base de datos.
  *
- * @author Andrés Cruz <andres@code-labs.com>
- * @author Developer <info@code-labs.com>
+
  */
-class Income_model extends CI_Model {
+class Save_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();  
@@ -19,7 +18,7 @@ class Income_model extends CI_Model {
     
     }
 
-    public function CreateIncome($value,$name,$typeCategory,$Iduser){
+    public function CreateSave($value,$name,$typeCategory,$Iduser){
 
         //Array con los datos del usuario
         $data = array(
@@ -30,12 +29,12 @@ class Income_model extends CI_Model {
         );
 
         $this->db->set($data);
-        $this->db->insert('Income');
+        $this->db->insert('Save');
         $insert_id = $this->db->insert_id();
         return $insert_id > 0 ? true : false ;
     }
 
-    public function EditIncome($value,$name,$typeCategory,$Iduser){
+    public function EditSave($value,$name,$typeCategory,$Iduser){
 
         //Array con los datos del usuario
         $data = array(
@@ -46,16 +45,16 @@ class Income_model extends CI_Model {
         );
 
         $this->db->set($data);
-        $this->db->update('Income');
+        $this->db->update('Save');
         $this->db->where('Iduser',$Iduser);
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
-    public function getIncome($IdIncome,$Iduser){
+    public function getSave($IdSave,$Iduser){
 
         $this->db->select('*');
-        $this->db->from('Income');
-        $this->db->where('IdIncome',$IdIncome);
+        $this->db->from('Save');
+        $this->db->where('IdSave',$IdSave);
         $this->db->where('Iduser',$Iduser);
         $query = $this->db->get();
         $result = $query->result_array();
@@ -67,10 +66,10 @@ class Income_model extends CI_Model {
         } 
     }
 
-    public function getIncomes($Iduser,$period){
+    public function getSaves($Iduser,$period){
 
         $this->db->select('*');
-        $this->db->from('Income');
+        $this->db->from('Save');
         $this->db->where('Iduser',$Iduser);
         $query = $this->db->get();
         $result = $query->result_array();
