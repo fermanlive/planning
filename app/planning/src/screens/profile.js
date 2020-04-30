@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text , Button,Image,TextInput,TouchableOpacity,StyleSheet,Modal} from 'react-native';
+import { View, Text ,Image,TextInput,TouchableOpacity,StyleSheet,Modal} from 'react-native';
 const {layout, text, forms, buttons,colors} = require ('../styles/main');
-import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Stars from 'react-native-stars';
 import {Shapes} from "react-native-background-shapes";
@@ -12,7 +11,7 @@ class Profile extends React.Component {
     constructor(props) {
    
         super(props);
-        const { navigation } = this.props;
+        // const { navigation } = this.props;
         this.state = { 
           Editable:false,
           modalVisible:false

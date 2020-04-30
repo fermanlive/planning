@@ -8,7 +8,7 @@ class CreditCardView extends React.Component {
   constructor(props) {
    
     super(props);
-    const { navigation } = this.props;
+    // const { navigation } = this.props;
     this.state = {
       textInputValue: ''
   };

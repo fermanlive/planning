@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, TextInput, Image,TouchableOpacity  } from 'react-native';
+import { View, Text, TextInput, Image,TouchableOpacity  } from 'react-native';
 const {layout, text, login, forms, buttons} = require ('../styles/main');
 
 import { Icon, colors } from 'react-native-elements';
@@ -13,6 +13,7 @@ class Login extends React.Component {
         count: 0, 
         user: null,
         password:null,
+        alertModal:false
 
     }
   }
@@ -23,7 +24,7 @@ class Login extends React.Component {
     if(typeof loginResponse !== 'undefined' && loginResponse.length > 0){
         this.props.navigation.navigate('Home');
     }else{
-        
+        this.setState({alertModal: true});
     }
    }
 

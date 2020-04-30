@@ -6,11 +6,11 @@ import ProgressCircle from 'react-native-progress-circle';
 import Modal from "react-native-modal";
 import { Icon } from 'react-native-elements';
 
-class Profile extends React.Component {
+class Saves extends React.Component {
     constructor(props) {
    
         super(props);
-        const { navigation } = this.props;
+        // const { navigation } = this.props;
         this.state = { 
           Editable:false,
           modalVisible:false,
