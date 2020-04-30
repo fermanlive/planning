@@ -5,8 +5,7 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  StyleSheet,
-} from 'react-native';
+  } from 'react-native';
 import {TextInput,TouchableOpacity,ScrollView,Modal } from 'react-native';
 const {layout, text, forms, buttons} = require ('../styles/main');
 

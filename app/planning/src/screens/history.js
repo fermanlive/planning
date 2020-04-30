@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, Text ,TouchableOpacity,Modal,TouchableHighlight,FlatList,TextInput,ScrollView,Picker} from 'react-native';
+import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,TextInput,ScrollView,Picker} from 'react-native';
 import {
   PieChart
 } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
-import AddExpense from '../components/AddExpense';
-import { Card, SimpleCard } from "@paraboly/react-native-card";
-import {Shapes} from "react-native-background-shapes";
-import DateTimePicker from "react-native-modal-datetime-picker";
+// import AddExpense from '../components/AddExpense';
+// import { Card, SimpleCard } from "@paraboly/react-native-card";
+// import {Shapes} from "react-native-background-shapes";
+// import DateTimePicker from "react-native-modal-datetime-picker";
 import ModalSelector from 'react-native-modal-selector';
 
 var {height, width} = Dimensions.get('window');
@@ -24,7 +24,7 @@ class History extends React.Component {
   constructor(props) {
    
     super(props);
-    const { navigation } = this.props;
+    // const { navigation } = this.props;
     this.state = { 
       modalVisible:false,
       showIcons:false,
