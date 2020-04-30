@@ -6,9 +6,9 @@ import {
 } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
-import AddExpense from '../components/AddExpense';
-import { Card, SimpleCard } from "@paraboly/react-native-card";
-import {Shapes} from "react-native-background-shapes";
+// import AddExpense from '../components/AddExpense';
+// import { Card, SimpleCard } from "@paraboly/react-native-card";
+// import {Shapes} from "react-native-background-shapes";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 var {height, width} = Dimensions.get('window');
