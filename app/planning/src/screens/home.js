@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text ,TouchableOpacity,Modal,TouchableHighlight,FlatList,TextInput,ScrollView,Picker} from 'react-native';
+import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,ScrollView} from 'react-native';
+// import {Modal,TextInput,Picker} from 'react-native';
 import {
   PieChart
 } from 'react-native-chart-kit';
