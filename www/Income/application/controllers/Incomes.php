@@ -63,7 +63,7 @@ class Incomes extends RestController {
         $IdPeriod = $this->get('idperiod');
         $value= $this->get('value');
 
-        $CreateIncome = $this->user_model->CreateIncome($name,$IdCategory,$dateIncome,$value);
+        $CreateIncome = $this->income_model->CreateIncome($name,$IdCategory,$dateIncome,$value);
         if($CreateIncome){
             $this->response([
                 'status' => true,
@@ -85,7 +85,7 @@ class Incomes extends RestController {
 
         $IdIncome = $IdIncome == null ? 0: $IdIncome;
 
-        $ReadIncome = $this->user_model->ReadIncome($IdUser,$IdIncome);
+        $ReadIncome = $this->income_model->ReadIncome($IdUser,$IdIncome);
         if($ReadIncome){
             $this->response([
                 'status' => true,
@@ -95,6 +95,50 @@ class Incomes extends RestController {
             $this->response([
                 'status' => false,
                 'message' => $ReadIncome
+            ],404);
+        }
+
+    }
+
+    public function UpdateIncome_get(){   
+
+        $name = $this->get('name');
+        $IdCategory = $this->get('idcategory');
+        $dateIncome = $this->get('dateincome');
+        $value= $this->get('value');
+        $IdUser = $this->get('iduser');
+        $IdIncome = $this->get('idincome');
+
+        $UpdateIncome = $this->income_model->UpdateIncome($name,$IdCategory,$dateIncome,$value,$IdUser,$IdIncome);
+        if($UpdateIncome){
+            $this->response([
+                'status' => true,
+                'message' => 'Ingreso actualizado'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Ingreso no actualizado'
+            ],404);
+        }
+
+    }
+
+    public function DeleteIncome_get(){  
+
+        $IdUser = $this->get('iduser');
+        $IdIncome = $this->get('idincome');
+
+        $DeleteIncome = $this->income_model->DeleteIncome($IdUser,$IdIncome);
+        if($DeleteIncome){
+            $this->response([
+                'status' => true,
+                'message' => 'Ingreso eliminado'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Ingreso no eliminado'
             ],404);
         }
 
