@@ -18,64 +18,69 @@ class Period_model extends CI_Model {
     
     }
 
-    public function CreatePeriod($value,$name,$typeCategory,$Iduser){
+    public function CreatePeriod($date_start,$date_end,$name,$idusers){
 
         //Array con los datos del usuario
         $data = array(
-            'value' => $value,
+            'date_start' => $date_start,
+            'date_end' => $date_end,
+            'users_idusers' => $idusers,
             'name' => $name,
-            'typeCategory' => $typeCategory,
-            'Iduser' => $Iduser,
         );
 
         $this->db->set($data);
-        $this->db->insert('Period');
+        $this->db->insert('period');
         $insert_id = $this->db->insert_id();
         return $insert_id > 0 ? true : false ;
     }
 
-    public function EditPeriod($value,$name,$typeCategory,$Iduser){
+    public function ReadPeriod($idusers,$idperiod){
+
+        $this->db->select('*');
+        $this->db->from('period');
+        if($idperiod > 0){
+            $this->db->where('idperiod',$idperiod);
+        } 
+
+        $this->db->where('Iduser',$Iduser);
+        $query = $this->db->get();
+        $result = $query->result_array();
+        $result = count($result)> 0 ? $result: [];
+        return $result;
+    }
+
+    public function UpdatePeriod($date_start,$date_end,$name,$idusers,$idperiod){
 
         //Array con los datos del usuario
         $data = array(
-            'value' => $value,
-            'name' => $name,
-            'typeCategory' => $typeCategory,
-            'Iduser' => $Iduser,
+            'date_start' => $date_start,
+            'date_end' => $date_end,
+            'name' => $name
         );
 
         $this->db->set($data);
-        $this->db->update('Period');
-        $this->db->where('Iduser',$Iduser);
+        $this->db->where('idusers',$idusers);
+        $this->db->where('idperiod',$idperiod);
+        $this->db->update('period');
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
-    public function getPeriod($IdPeriod,$Iduser){
+    public function DeletePeriod($idusers,$idperiod){
 
-        $this->db->select('*');
-        $this->db->from('Period');
-        $this->db->where('IdPeriod',$IdPeriod);
-        $this->db->where('Iduser',$Iduser);
-        $query = $this->db->get();
-        $result = $query->result_array();
-        
-        if(count($query->result_array()) == 1){
-            return $result[0];
-        }else {
-            return false;
-        } 
+        //Array con los datos del usuario
+        $data = array(
+            'status' => 0 //eliminado
+        );
+
+        $this->db->set($data);
+        $this->db->where('idusers',$idusers);
+        $this->db->where('idperiod',$idperiod);
+        $this->db->update('period');
+        return $this->db->affected_rows() > 0 ? true : false;
     }
 
-    public function getPeriods($Iduser,$period){
 
-        $this->db->select('*');
-        $this->db->from('Period');
-        $this->db->where('Iduser',$Iduser);
-        $query = $this->db->get();
-        $result = $query->result_array();
-    
-        return $result;
-    }
+
 
 
 }

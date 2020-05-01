@@ -104,7 +104,7 @@ class Periods extends RestController {
         $idusers = $this->get('idusers');
         $idperiod = $this->get('idperiod');
 
-        $UpdatePeriod = $this->period_model->UpdatePeriod($datestart,$date_end,$name,$idusers,$idperiod);
+        $UpdatePeriod = $this->period_model->UpdatePeriod($date_start,$date_end,$name,$idusers,$idperiod);
         if($UpdatePeriod){
             $this->response( [
                 'status' => true,
