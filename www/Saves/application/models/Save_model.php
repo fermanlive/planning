@@ -18,14 +18,14 @@ class Save_model extends CI_Model {
     
     }
 
-    public function CreateSave($value,$name,$typeCategory,$Iduser){
+    public function CreateSave($current_value,$name,$goal,$users_idusers){
 
         //Array con los datos del usuario
         $data = array(
-            'value' => $value,
+            'current_value' => $current_value,
             'name' => $name,
-            'typeCategory' => $typeCategory,
-            'Iduser' => $Iduser,
+            'goal' => $goal,
+            'users_idusers' => $users_idusers,
         );
 
         $this->db->set($data);
@@ -34,48 +34,42 @@ class Save_model extends CI_Model {
         return $insert_id > 0 ? true : false ;
     }
 
-    public function EditSave($value,$name,$typeCategory,$Iduser){
+    public function getSave($IdSave,$users_idusers){
+        $this->db->select('*');
+        $this->db->from('Save');
+        if($IdSave > 0){
+            $this->db->where('id_saves',$IdSave);
+        } 
+        $this->db->where('users_idusers',$users_idusers);
+        $query = $this->db->get();
+        $result = $query->result_array();
+        $result = count($result)> 0 ? $result: [];
+        return $result;
+    }
+
+    public function EditSave($current_value,$name,$goal,$users_idusers,$IdSave){
 
         //Array con los datos del usuario
         $data = array(
-            'value' => $value,
+            'current_value' => $current_value,
             'name' => $name,
-            'typeCategory' => $typeCategory,
-            'Iduser' => $Iduser,
+            'goal' => $goal
         );
 
         $this->db->set($data);
+        $this->db->where('id_saves',$IdSave);
+        $this->db->where('users_idusers',$users_idusers);
         $this->db->update('Save');
-        $this->db->where('Iduser',$Iduser);
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
-    public function getSave($IdSave,$Iduser){
-
-        $this->db->select('*');
-        $this->db->from('Save');
-        $this->db->where('IdSave',$IdSave);
-        $this->db->where('Iduser',$Iduser);
-        $query = $this->db->get();
-        $result = $query->result_array();
-        
-        if(count($query->result_array()) == 1){
-            return $result[0];
-        }else {
-            return false;
-        } 
+    public function DeleteSave($IdSave,$users_idusers){
+        $this->db->where('users_idusers',$users_idusers);
+        $this->db->where('id_saves',$IdSave);
+        $this->db->delete('Save');
+        return $this->db->affected_rows() > 0 ? true : false ;
     }
 
-    public function getSaves($Iduser,$period){
-
-        $this->db->select('*');
-        $this->db->from('Save');
-        $this->db->where('Iduser',$Iduser);
-        $query = $this->db->get();
-        $result = $query->result_array();
-    
-        return $result;
-    }
 
 
 }
