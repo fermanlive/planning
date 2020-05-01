@@ -9,7 +9,7 @@ class Incomes extends RestController {
     {
         // Construct the parent class
         parent::__construct();
-        $this->load->model('user_model');
+        $this->load->model('income_model');
     }
 
     public function users_get()
@@ -55,102 +55,95 @@ class Incomes extends RestController {
         }
     }
 
-    public function CreateUser_get(){   
+    public function CreateIncome_get(){   
 
-        $email = $this->get('email');
-        $password = $this->get('password');
         $name = $this->get('name');
-        $surname = $this->get('surname');
+        $IdCategory = $this->get('idcategory');
+        $dateIncome = $this->get('dateincome');
+        $IdPeriod = $this->get('idperiod');
+        $value= $this->get('value');
 
-        if ( $email === null || $password === null)
-        {
-            $this->response( [
-                'status' => false,
-                'message' => 'Email y contraseña no recibidos'
-            ], 404 );
+        $CreateIncome = $this->income_model->CreateIncome($name,$IdCategory,$dateIncome,$value);
+        if($CreateIncome){
+            $this->response([
+                'status' => true,
+                'message' => 'Ingreso creado'
+            ],200);
         }else{
-            $CreateUser = $this->user_model->CreateUser($email,$password,$name,$surname);
-            if($CreateUser){
-                $data="Usuario creado";
-                $this->response($data,200);
-            }else{
-                $data="Usuario no creado";
-                $this->response($data,404);
-            }
-
+            $this->response([
+                'status' => false,
+                'message' => 'Ingreso no creado'
+            ],404);
         }
-        
+
     }
+
+    public function ReadIncome_get(){  
+
+        $IdUser = $this->get('iduser');
+        $IdIncome = $this->get('idincome');
+
+        $IdIncome = $IdIncome == null ? 0: $IdIncome;
+
+        $ReadIncome = $this->income_model->ReadIncome($IdUser,$IdIncome);
+        if($ReadIncome){
+            $this->response([
+                'status' => true,
+                'message' => $ReadIncome
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => $ReadIncome
+            ],404);
+        }
+
+    }
+
+    public function UpdateIncome_get(){   
+
+        $name = $this->get('name');
+        $IdCategory = $this->get('idcategory');
+        $dateIncome = $this->get('dateincome');
+        $value= $this->get('value');
+        $IdUser = $this->get('iduser');
+        $IdIncome = $this->get('idincome');
+
+        $UpdateIncome = $this->income_model->UpdateIncome($name,$IdCategory,$dateIncome,$value,$IdUser,$IdIncome);
+        if($UpdateIncome){
+            $this->response([
+                'status' => true,
+                'message' => 'Ingreso actualizado'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Ingreso no actualizado'
+            ],404);
+        }
+
+    }
+
+    public function DeleteIncome_get(){  
+
+        $IdUser = $this->get('iduser');
+        $IdIncome = $this->get('idincome');
+
+        $DeleteIncome = $this->income_model->DeleteIncome($IdUser,$IdIncome);
+        if($DeleteIncome){
+            $this->response([
+                'status' => true,
+                'message' => 'Ingreso eliminado'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Ingreso no eliminado'
+            ],404);
+        }
+
+    }
+
+
     
-    public function Login_get(){   
-
-        $email = $this->get('email');
-        $password = $this->get('password');
-
-        if ( $email === null || $password === null)
-        {
-            $this->response( [
-                'status' => false,
-                'message' => 'Email y contraseña no recibidos'
-            ], 404 );
-        }else{
-            $LoginAnswer = $this->user_model->Login($email,$password);
-            if($LoginAnswer){
-                $data=[
-                    'Userinfo' => $LoginAnswer,
-                    'Answer' => 'Login Succesfully',
-                    'status' => true
-                ];
-                $this->response($data,200);
-            }else{
-                $this->response( [
-                    'status' => false,
-                    'message' => 'Correo y/o contraseña Erroneas'
-                ], 404 );
-            }
-        }
-        
-    }
-    public function ChangePassword_get(){   
-
-        $password = $this->get('password');
-        $idusers = $this->get('idusers');
-
-        if ( $password != null)
-        {
-            $ChangePasswordAnswer = $this->user_model->ChangePassword($password,$idusers);
-
-            if($ChangePasswordAnswer){
-                $data="Cambio de clave realizado";
-                $this->response($data,200);
-            }else{
-                $data="Ha ocurrido un error, por favor valide la información";
-                $this->response($data,404);
-            }
-        }else{
-            $data="Información incompleta";
-            $this->response($data,404);
-        }
-    }
-
-    public function EditUser_get(){   
-
-        $idusers = $this->get('idusers');
-        $surname = $this->get('surname');
-        $name = $this->get('name');
-        if ( $name != null || $surname != null)
-        {
-            $EditUserAnswer = $this->user_model->EditUser($name,$surname,$idusers);
-            if($EditUserAnswer){
-                $data="Información de Usuario Actualizada";
-                $this->response($data,200);
-            }else{
-                $data="Ha ocurrido un error, por favor valide la información";
-                $this->response($data,404);
-            }
-        }else{
-            $data="Información incompleta";
-            $this->response($data,404);
-        }
-    }
 }
