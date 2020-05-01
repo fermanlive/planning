@@ -71,11 +71,15 @@ class Users extends RestController {
         }else{
             $CreateUser = $this->User_model->CreateUser($email,$password,$name,$surname);
             if($CreateUser){
-                $data="Usuario creado";
-                $this->response($data,200);
+                $this->response([
+                    'status' => true,
+                    'message' => 'Usuario Creado'
+                ],200);
             }else{
-                $data="Usuario no creado";
-                $this->response($data,404);
+                $this->response([
+                    'status' => false,
+                    'message' => 'Usuario no creado'
+                ],404);
             }
 
         }
@@ -121,15 +125,21 @@ class Users extends RestController {
             $ChangePasswordAnswer = $this->User_model->ChangePassword($password,$idusers);
 
             if($ChangePasswordAnswer){
-                $data="Cambio de clave realizado";
-                $this->response($data,200);
+                $this->response([
+                    'status' => true,
+                    'message' => 'Cambio de clave realizado'
+                ],200);
             }else{
-                $data="Ha ocurrido un error, por favor valide la información";
-                $this->response($data,404);
+                $this->response([
+                    'status' => false,
+                    'message' => 'Ha ocurrido un error, por favor valide la información'
+                ],404);
             }
         }else{
-            $data="Información incompleta";
-            $this->response($data,404);
+            $this->response([
+                'status' => false,
+                'message' => 'Información incompleta'
+            ],404);
         }
     }
 
@@ -142,15 +152,21 @@ class Users extends RestController {
         {
             $EditUserAnswer = $this->User_model->EditUser($name,$surname,$idusers);
             if($EditUserAnswer){
-                $data="Información de Usuario Actualizada";
-                $this->response($data,200);
+                $this->response([
+                    'status' => true,
+                    'message' => 'Información de Usuario Actualizada'
+                ],200);
             }else{
-                $data="Ha ocurrido un error, por favor valide la información";
-                $this->response($data,404);
+                $this->response([
+                    'status' => false,
+                    'message' => 'Ha ocurrido un error, por favor valide la información'
+                ],404);
             }
         }else{
-            $data="Información incompleta";
-            $this->response($data,404);
+            $this->response([
+                'status' => false,
+                'message' => 'Información incompleta'
+            ],404);
         }
     }
 }
