@@ -94,5 +94,19 @@ class Periods extends RestController {
             ], 404 );
         }    
     }
+
+    public function defaultPeriod_get(){
+
+        $date_start= date('Y-m-01');
+        $date_end = date('Y-m-t');
+        $idusers = $this->get('idusers');
+        $name = "primer periodo";
+
+        $createDefault = $this->period_model->CreatePeriod($date_start,$date_end,$name,$idusers);
+        $this->response( [
+            'status' => true,
+            'message' => 'creado'
+        ], 200 );
+    }
     
 }

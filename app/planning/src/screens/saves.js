@@ -143,4 +143,4 @@ class Saves extends React.Component {
     }
   }
 
-  export default Profile;
+  export default Saves;

@@ -285,6 +285,10 @@ export const layout = StyleSheet.create({
 		width: '100%',
 		paddingHorizontal: 15,
 	},
+	textSimple:{
+		fontSize: fzbase * mult_02,
+		color: 'black'
+	},
 	textAlertError:{
 		fontSize: fzbase * mult_02,
 		color: 'red'
@@ -1409,6 +1413,11 @@ export const forms = StyleSheet.create({
 		borderColor: '#00CCCB',
 		borderWidth: 1,
 		backgroundColor: 'rgba(0, 204, 203, 0.03)',
+	},
+	InputSimple: {
+		borderColor: '#F42464',
+		borderWidth: 1,
+		backgroundColor: '#FCEBED',
 	},
 	Input: {
 		backgroundColor: 'transparent',
