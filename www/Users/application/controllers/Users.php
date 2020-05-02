@@ -128,4 +128,21 @@ class Users extends RestController {
             ],404);
         }
     }
+    public function validateExistUser_get(){   
+
+        $email = $this->get('email');
+        $validateExistUser = $this->User_model->validateExistUser($email);
+
+        if($validateExistUser){
+            $this->response([
+                'status' => true,
+                'message' => 'Correo valido'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Correo Existente'
+            ],404);
+        }
+    }
 }

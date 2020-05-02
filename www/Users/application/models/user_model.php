@@ -82,4 +82,19 @@ class User_model extends CI_Model {
         $this->db->update('users',$data);
         return $this->db->affected_rows() > 0 ? true : false ;
     }
+
+    public function validateExistUser($email){
+        $email =strtolower($email);
+
+        $this->db->select('*');
+        $this->db->from('users');
+        $this->db->where('email',$email);
+        $query = $this->db->get();
+    
+        if(count($query->result_array()) == 1){
+            return false;
+        }else {
+            return true;
+        } 
+    }
 }

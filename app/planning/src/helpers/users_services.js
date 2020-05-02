@@ -75,6 +75,15 @@ export async function clearCredentials() {
       //console.log("doLogin-error= "+error);
     }
   }
+  export async function validateExistUser(email){
+    try{
+      var parameters= `email/`+ user + `/`;
+      var data = await fetchRequest("users/validateExistUser",parameters);
+      return data.status;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
 
 
   // ____________________________Comunication Services____________________________________________
