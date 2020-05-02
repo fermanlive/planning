@@ -3,6 +3,7 @@ import { View, Text,TextInput,TouchableOpacity,ScrollView } from 'react-native';
 const {layout, text, forms, buttons} = require ('../styles/main');
 import LinearGradient from 'react-native-linear-gradient';
 import {masterValidator} from '../helpers/validations';
+import {validateExistedUser} from '../helpers/users_services';
 
 class Register extends React.Component {
     constructor(props) {
@@ -48,21 +49,25 @@ class Register extends React.Component {
         // validate password
         var PASS_MIN_LEN = 5;
         if (this.state.password.length>=PASS_MIN_LEN) {
-
             if (this.state.password!=this.state.confirmPassword) {
                 this.setState({confirmPasswordError: true})
                 return;
             }
         }
+        if (this.state.email!=this.state.confirmEmail) {
+            this.setState({confirmPasswordError: true})
+            return;
+        }
 
         if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
 
-            const userExist = await validateExistedUser(this.state.email);
+            var userExist = await validateExistedUser(this.state.email);
             var aux = userExist;
-            if(userExist == false){
-
+            if(userExist.status == true){
+                console.warn('El email '+this.state.email+', ya fue registrado anteriormente' );
             }else{
-
+             var CreateUser = await CreateUser(this.state.email,this.state.password,this.state.name,this.state.surname);
+             console.warn(CreateUser.message);
             }
         }
 

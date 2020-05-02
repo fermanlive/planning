@@ -75,10 +75,10 @@ export async function clearCredentials() {
       //console.log("doLogin-error= "+error);
     }
   }
-  export async function validateExistUser(email){
+  export async function validateExistedUser(email){
     try{
       var parameters= `email/`+ user + `/`;
-      var data = await fetchRequest("users/validateExistUser",parameters);
+      var data = await fetchRequest("users/validateExistedUser",parameters);
       return data.status;
     } catch (error) {
       //console.log("doLogin-error= "+error);

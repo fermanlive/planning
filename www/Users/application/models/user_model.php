@@ -83,7 +83,7 @@ class User_model extends CI_Model {
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
-    public function validateExistUser($email){
+    public function validateExistedUser($email){
         $email =strtolower($email);
 
         $this->db->select('*');
