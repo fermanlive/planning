@@ -54,7 +54,7 @@ export async function clearCredentials() {
     try{
       var parameters= `email/`+ email + `/password/`+password+ `/name/`+name+ `/surname/`+surname;
       var data = await fetchRequest("users/CreateUser",parameters);
-      console.warn(data);
+      return data;
     } catch (error) {
       //console.log("doLogin-error= "+error);
     }
@@ -77,9 +77,9 @@ export async function clearCredentials() {
   }
   export async function validateExistedUser(email){
     try{
-      var parameters= `email/`+ user + `/`;
+      var parameters= `email/`+ email + `/`;
       var data = await fetchRequest("users/validateExistedUser",parameters);
-      return data.status;
+      return data;
     } catch (error) {
       //console.log("doLogin-error= "+error);
     }

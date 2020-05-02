@@ -3,7 +3,7 @@ import { View, Text,TextInput,TouchableOpacity,ScrollView } from 'react-native';
 const {layout, text, forms, buttons} = require ('../styles/main');
 import LinearGradient from 'react-native-linear-gradient';
 import {masterValidator} from '../helpers/validations';
-import {validateExistedUser} from '../helpers/users_services';
+import {validateExistedUser,CreateUser} from '../helpers/users_services';
 
 class Register extends React.Component {
     constructor(props) {
@@ -29,11 +29,9 @@ class Register extends React.Component {
         this.props.navigation.navigate('Home')
     }
     validate(kind,state,type,input){
-        console.warn(kind);
         this.setState({[state] : input});
         var verdict = masterValidator(kind,input);
         this.setState({[type] : verdict});
-        console.warn(type,verdict);
     }
     
     async validateSend(){
@@ -43,7 +41,6 @@ class Register extends React.Component {
         if(this.state.surnameError === '' || this.state.surnameError === true) {this.setState({surnameError : true}); allGood[1]=0}else{allGood[1]=1};  
         if(this.state.emailError === '' || this.state.emailError === true) {this.setState({emailError : true}); allGood[2]=0}else{allGood[2]=1};
         if(this.state.passwordError === '' || this.state.passwordError === true) {this.setState({passwordError : true}); allGood[3]=0}else{allGood[3]=1};
-        if(this.state.confirmEmailError === '' || this.state.confirmEmailError === true) {this.setState({confirmEmailError : true}); allGood[2]=0}else{allGood[3]=1};
         if(this.state.confirmPasswordError === '' || this.state.confirmPasswordError === true) {this.setState({confirmPasswordError : true}); allGood[3]=0}else{allGood[3]=1};
 
         // validate password
@@ -54,20 +51,15 @@ class Register extends React.Component {
                 return;
             }
         }
-        if (this.state.email!=this.state.confirmEmail) {
-            this.setState({confirmPasswordError: true})
-            return;
-        }
 
         if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
 
             var userExist = await validateExistedUser(this.state.email);
-            var aux = userExist;
-            if(userExist.status == true){
+            if(userExist.status){
                 console.warn('El email '+this.state.email+', ya fue registrado anteriormente' );
             }else{
-             var CreateUser = await CreateUser(this.state.email,this.state.password,this.state.name,this.state.surname);
-             console.warn(CreateUser.message);
+             var CreateUserResponse = await CreateUser(this.state.email,this.state.password,this.state.name,this.state.surname);
+             console.warn(CreateUserResponse.message);
             }
         }
 
@@ -151,26 +143,6 @@ class Register extends React.Component {
              :null}
           </View>
 
-          <View style={layout.InputGroup}>
-              <Text style={text.InputLabel}>
-              Confirmacion Email
-              </Text>
-              <View style={[forms.InputCont, forms.LeftAlingment,this.state.confirmEmailError?forms.AlertInput:null]}>
-                  <TextInput
-                      style={forms.Input}
-                      onChangeText={(confirmEmail) => this.validate('email','confirmEmail','confirmEmailError',confirmEmail)}
-                      placeholder="Confirmar Email"
-                      keyboardType = "email-address"
-                  />
-              </View>
-                {this.state.confirmEmailError?
-                    <View style={layout.textAlertCont}>
-                            <Text style={[layout.textAlertError, text.Regular]}>
-                                Error: Emails no conciden.
-                            </Text>
-                    </View>
-                :null}
-          </View>
           <View style={layout.InputGroup}>
               <Text style={text.InputLabel}>
               Contraseña

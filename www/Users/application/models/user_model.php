@@ -35,7 +35,18 @@ class User_model extends CI_Model {
         $this->db->set($data);
         $this->db->insert('users');
         $insert_id = $this->db->insert_id();
-        return $insert_id > 0 ? true : false ;
+        if($insert_id > 0){
+            $result = [
+                'status' => true,
+                'message' => $insert_id
+           ];
+        }else{
+             $result= [
+                'status' => false,
+                'message' => 'Usuario no Creado'
+            ];
+        }
+        return  $result;
     }
 
     public function Login($email,$password){
@@ -91,10 +102,10 @@ class User_model extends CI_Model {
         $this->db->where('email',$email);
         $query = $this->db->get();
     
-        if(count($query->result_array()) == 1){
-            return false;
-        }else {
+        if(count($query->result_array()) >= 1 ){
             return true;
+        }else {
+            return false;
         } 
     }
 }

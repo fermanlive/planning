@@ -2,7 +2,7 @@
 
 var _PROD_URL  = 'https://viatics.com/';          // PROD
 var _STAGE_URL = 'https://viatic.code-labs.com/'; // STAGE
-var _LOCAL_URL = 'http://192.168.0.14/';          // LOCAL
+var _LOCAL_URL = 'http://192.168.1.104/';          // LOCAL
 
 var _BASE_URL  = _LOCAL_URL; /* ONLY CHANGE THIS LINE !!! */
 

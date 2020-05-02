@@ -29,7 +29,9 @@ class Users extends RestController {
             ], 404 );
         }else{
             $CreateUser = $this->User_model->CreateUser($email,$password,$name,$surname);
-            if($CreateUser){
+            $idusers = $CreateUser['status'] ? $CreateUser['message']: 0;
+            $CreatePeriod = file_get_contents("http://localhost/planning/www/Periods/index.php/Periods/defaultPeriod/idusers/".$idusers."/");
+            if($CreateUser['status']){
                 $this->response([
                     'status' => true,
                     'message' => 'Usuario Creado'
