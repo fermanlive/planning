@@ -9,8 +9,8 @@ export class SimpleAlert extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            errorImg : require('../images/alert.png'),
-            successImg: require('../images/success.png')
+            errorImg : require('../../images/alert.png'),
+            successImg: require('../../images/success.png')
         }
     }
 
@@ -20,7 +20,7 @@ export class SimpleAlert extends Component {
         return(
             <Modal 
             isVisible={this.props.isModalVisible}
-            backdropColor = {'#0072A3'}
+            backdropColor = {'#66E49B'}
             backdropOpacity = {0.9}
             style = { {padding: 0, margin: 0,} }>
                 <View style={layout.ModalCont}>
@@ -39,7 +39,7 @@ export class SimpleAlert extends Component {
                         </Text>
                         <TouchableOpacity 
                             onPress={this.props.closeModal}
-                            style={[buttons.GralButton, buttons.BLightBlue, {marginBottom: 0,}]}
+                            style={[buttons.GralButton, buttons.ButtonAccentPurple, {marginBottom: 0,}]}
                             >
                             <Text style={[text.BText, text.TLight]}>
                                 {this.props.buttonLabel}
@@ -56,8 +56,8 @@ export class TwoButtonsAlert extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            errorImg : require('../images/icons/alerts/error_alert_icon.png'),
-            successImg: require('../images/icons/alerts/success_alert_icon.png')
+            errorImg : require('../../images/alert.png'),
+            successImg: require('../../images/success.png')
         }
     }
 
@@ -65,7 +65,7 @@ export class TwoButtonsAlert extends Component {
         return(
             <Modal 
             isVisible={this.props.isModalVisible}
-            backdropColor = {'#0072A3'}
+            backdropColor = {'#66E49B'}
             backdropOpacity = {0.9}
             style = { {padding: 0, margin: 0,} }>
                 <View style={layout.ModalCont}>
@@ -95,7 +95,7 @@ export class TwoButtonsAlert extends Component {
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 onPress={this.props.rightFunction}
-                                style={[buttons.GralButton, buttons.BLightBlue, {marginBottom: 0, width: '47%',}]}
+                                style={[buttons.GralButton, buttons.ButtonAccentPurple, {marginBottom: 0, width: '47%',}]}
                                 >
                                 <Text style={[text.BText, text.TLight]}>
                                     {this.props.rightButton}
@@ -113,8 +113,8 @@ export class TwoButtonsTextInputModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            errorImg : require('../images/icons/alerts/error_alert_icon.png'),
-            successImg: require('../images/icons/alerts/success_alert_icon.png')
+            errorImg : require('../../images/alert.png'),
+            successImg: require('../../images/success.png')
         }
     }
 
@@ -122,7 +122,7 @@ export class TwoButtonsTextInputModal extends Component {
         return(
             <Modal 
             isVisible={this.props.isModalVisible}
-            backdropColor = {'#0072A3'}
+            backdropColor = {'#66E49B'}
             backdropOpacity = {0.9}
             style = { {padding: 0, margin: 0,} }>
                 <View style={layout.ModalCont}>

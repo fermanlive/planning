@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text,TextInput,TouchableOpacity,ScrollView } from 'react-native';
+import { View, Text,TextInput,TouchableOpacity,ScrollView,CheckBox } from 'react-native';
 const {layout, text, forms, buttons} = require ('../styles/main');
 import LinearGradient from 'react-native-linear-gradient';
 import {masterValidator} from '../helpers/validations';
 import {validateExistedUser,CreateUser} from '../helpers/users_services';
+import {SimpleAlert} from '../components/modalAlert';
 
 class Register extends React.Component {
     constructor(props) {
@@ -23,6 +24,12 @@ class Register extends React.Component {
             confirmEmail:'',
             password:'',
             confirmPassword:'',
+            optin:false,
+            optinError:false,
+            isModalVisible:false,
+            isErrorModalVisible:false,
+            buttonLabel:'ok, entendido'
+
         };
     }
     handlePress = () => {
@@ -33,6 +40,12 @@ class Register extends React.Component {
         var verdict = masterValidator(kind,input);
         this.setState({[type] : verdict});
     }
+    closeModal(){
+        this._toggleModal();
+        this.props.navigation.pop();
+    }
+    _toggleModal = () =>
+    this.setState({ isModalVisible: !this.state.isModalVisible });
     
     async validateSend(){
         var allGood = [0,0,0,0];//[0,0,0,0]; //legth equal to zero to remove ignore password fields
@@ -43,6 +56,12 @@ class Register extends React.Component {
         if(this.state.passwordError === '' || this.state.passwordError === true) {this.setState({passwordError : true}); allGood[3]=0}else{allGood[3]=1};
         if(this.state.confirmPasswordError === '' || this.state.confirmPasswordError === true) {this.setState({confirmPasswordError : true}); allGood[3]=0}else{allGood[3]=1};
 
+        // if(!this.state.optin){
+        //     this.setState({optinError: true});
+        //     return;
+        // }else{
+        //     this.setState({optinError: false});
+        // }
         // validate password
         var PASS_MIN_LEN = 5;
         if (this.state.password.length>=PASS_MIN_LEN) {
@@ -56,10 +75,12 @@ class Register extends React.Component {
 
             var userExist = await validateExistedUser(this.state.email);
             if(userExist.status){
-                console.warn('El email '+this.state.email+', ya fue registrado anteriormente' );
+                this.setState({isErrorModalVisible: true});
+                this.setState({modalLine1: 'El email '+this.state.email+', ya fue registrado anteriormente'});
             }else{
              var CreateUserResponse = await CreateUser(this.state.email,this.state.password,this.state.name,this.state.surname);
-             console.warn(CreateUserResponse.message);
+             this.setState({modalLine1: 'CreateUserResponse.message'});
+             this.setState({isModalVisible: true});
             }
         }
 
@@ -183,6 +204,22 @@ class Register extends React.Component {
                 </View>
               :null}
           </View>
+          {/* <View style={layout.InputGroup}>
+            <CheckBox isChecked={this.state.optin}
+            />
+            <TouchableOpacity>
+              <Text style={text.InputLabel}>
+                Aceptar terminos y condiciones.
+              </Text>       
+            </TouchableOpacity>    
+              {this.state.optinError?
+                <View style={layout.textAlertCont}>
+                    <Text style={[layout.textAlertError, text.Regular]}>
+                        Se debe aceptar terminos y condiciones para continuar.
+                    </Text>
+                </View>
+              :null}
+          </View> */}
           <TouchableOpacity 
               onPress={() => this.validateSend()}
               style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
@@ -192,6 +229,22 @@ class Register extends React.Component {
           </TouchableOpacity>
           </ScrollView>
           </LinearGradient>
+            <SimpleAlert 
+                isModalVisible = {this.state.isModalVisible} 
+                imageType = {2}
+                line1 = {this.state.modalLine1}
+                line2 = {this.state.modalLine2}
+                buttonLabel = {this.state.buttonLabel}
+                closeModal={() => this.closeModal()}
+            />
+            <SimpleAlert 
+                isModalVisible = {this.state.isErrorModalVisible} 
+                imageType = {1}
+                line1 = {this.state.modalLine1}
+                line2 = {this.state.modalLine2}
+                buttonLabel = {this.state.buttonLabel}
+                closeModal={() => this.setState({isErrorModalVisible: !this.state.isErrorModalVisible})}
+            />
         </View>
       );
     }
