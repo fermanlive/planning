@@ -31,7 +31,7 @@ export class SimpleAlert extends Component {
                                 source={this.props.imageType==1? this.state.errorImg: this.state.successImg }
                             />
                         </View>
-                        <Text style={[text.GralText, text.Strong, text.TLightBlue]}>
+                        <Text style={[text.GralText, text.Strong, text.TAccentPurple]}>
                             {this.props.line1}
                         </Text>
                         <Text style={[text.GralText, text.Regular, text.TLightBlue, {marginBottom: 10,}]}>
@@ -76,7 +76,7 @@ export class TwoButtonsAlert extends Component {
                                 source={this.props.imageType==1? this.state.errorImg: this.state.successImg }
                             />
                         </View>
-                        <Text style={[text.GralText, text.Strong, text.TLightBlue]}>
+                        <Text style={[text.GralText, text.Strong, text.TAccentPurple]}>
                             {this.props.line1}
                         </Text>
                         <Text style={[text.GralText, text.Regular, text.TLightBlue, {marginBottom: 10,}]}>
@@ -95,7 +95,7 @@ export class TwoButtonsAlert extends Component {
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 onPress={this.props.rightFunction}
-                                style={[buttons.GralButton, buttons.ButtonAccentPurple, {marginBottom: 0, width: '47%',}]}
+                                style={[buttons.GralButton, buttons.ButtonAccentPurpler, {marginBottom: 0, width: '47%',}]}
                                 >
                                 <Text style={[text.BText, text.TLight]}>
                                     {this.props.rightButton}
@@ -128,7 +128,7 @@ export class TwoButtonsTextInputModal extends Component {
                 <View style={layout.ModalCont}>
                     <View style={layout.ModalTrialInfoCont}>
 
-                        <Text style={[text.GralText, text.Strong, text.TLightBlue]}>
+                        <Text style={[text.GralText, text.Strong, text.TAccentPurple]}>
                             {this.props.line1}
                         </Text>
 

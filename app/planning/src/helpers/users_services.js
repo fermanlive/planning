@@ -38,11 +38,10 @@ export async function clearCredentials() {
     try{
       var parameters= `email/`+ user + `/password/`+pass;
       var data = await fetchRequest("users/Login",parameters);
-      console.warn(data);
       if(data.status){
         var session = {id:data.idusers, name:data.name, surname:data.surname, email:data.email};
         var save = await setSession(session);
-        return save;
+        return data;
       }else{
         return data;
       }

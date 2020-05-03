@@ -5,6 +5,7 @@ const {layout, text, login, forms, buttons} = require ('../styles/main');
 import { Icon, colors } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {RequestLogin,getSession} from '../helpers/users_services';
+import {SimpleAlert} from '../components/modalAlert';
 
 class Login extends React.Component {
   constructor(props) {
@@ -13,7 +14,10 @@ class Login extends React.Component {
         count: 0, 
         user: null,
         password:null,
-        alertModal:false
+        isErrorModalVisible:false,
+        buttonLabel:'ok, entendido',
+        modalLine1:'',
+        passwordHidden:true,
 
     }
   }
@@ -21,16 +25,16 @@ class Login extends React.Component {
   async login(){
     var loginResponse = await RequestLogin(this.state.user,this.state.password);
     
-    if(typeof loginResponse !== 'undefined' && loginResponse.length > 0){
+    if(loginResponse.status){
         this.props.navigation.navigate('Home');
     }else{
-        this.setState({alertModal: true});
+        this.setState({modalLine1: loginResponse.message});
+        this.setState({isErrorModalVisible: true});
     }
    }
 
      async componentDidMount(){
        var lectura = await getSession();
-       console.warn(lectura);
     }
 
     render() {
@@ -128,10 +132,15 @@ class Login extends React.Component {
                             </Text>
                         </TouchableOpacity>
                     </View>
-                    
-
-
                     </LinearGradient>
+                    <SimpleAlert 
+                        isModalVisible = {this.state.isErrorModalVisible} 
+                        imageType = {1}
+                        line1 = {this.state.modalLine1}
+                        line2 = ""
+                        buttonLabel = {this.state.buttonLabel}
+                        closeModal={() => this.setState({isErrorModalVisible: false})}
+                    />
            </View>
       );
     }
