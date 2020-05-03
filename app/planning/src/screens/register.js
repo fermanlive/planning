@@ -4,7 +4,9 @@ const {layout, text, forms, buttons} = require ('../styles/main');
 import LinearGradient from 'react-native-linear-gradient';
 import {masterValidator} from '../helpers/validations';
 import {validateExistedUser,CreateUser} from '../helpers/users_services';
+
 import {SimpleAlert} from '../components/modalAlert';
+import Loading from '../components/Loading';
 
 class Register extends React.Component {
     constructor(props) {
@@ -41,11 +43,16 @@ class Register extends React.Component {
         this.setState({[type] : verdict});
     }
     closeModal(){
-        this._toggleModal();
+        this.toggleModal();
         this.props.navigation.pop();
     }
-    _toggleModal = () =>
+    toggleModal = () =>
     this.setState({ isModalVisible: !this.state.isModalVisible });
+
+    setBusyIndicator = (activity_loading, activity_text) => {
+        this.setState({activity_loading: activity_loading})
+        this.setState({activity_text: activity_text})
+    }
     
     async validateSend(){
         var allGood = [0,0,0,0];//[0,0,0,0]; //legth equal to zero to remove ignore password fields
@@ -72,15 +79,17 @@ class Register extends React.Component {
         }
 
         if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
-
+            this.setBusyIndicator(true, '');
             var userExist = await validateExistedUser(this.state.email);
             if(userExist.status){
+                this.setBusyIndicator(false, '');
                 this.setState({isErrorModalVisible: true});
                 this.setState({modalLine1: 'El email '+this.state.email+', ya fue registrado anteriormente'});
             }else{
-             var CreateUserResponse = await CreateUser(this.state.email,this.state.password,this.state.name,this.state.surname);
-             this.setState({modalLine1: 'CreateUserResponse.message'});
-             this.setState({isModalVisible: true});
+                this.setBusyIndicator(false, '');
+                var CreateUserResponse = await CreateUser(this.state.email,this.state.password,this.state.name,this.state.surname);
+                this.setState({modalLine1: CreateUserResponse.message});
+                this.setState({isModalVisible: true});
             }
         }
 
@@ -244,6 +253,10 @@ class Register extends React.Component {
                 line2 = {this.state.modalLine2}
                 buttonLabel = {this.state.buttonLabel}
                 closeModal={() => this.setState({isErrorModalVisible: !this.state.isErrorModalVisible})}
+            />
+            <Loading 
+            activity_loading={this.state.activity_loading} 
+            activity_text={this.state.activity_text} 
             />
         </View>
       );
