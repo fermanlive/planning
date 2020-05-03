@@ -42,10 +42,13 @@ class Period_model extends CI_Model {
             $this->db->where('idperiod',$idperiod);
         } 
 
-        $this->db->where('Iduser',$Iduser);
+        $this->db->where('users_idusers',$idusers);
         $query = $this->db->get();
         $result = $query->result_array();
         $result = count($result)> 0 ? $result: [];
+        if(count($result)==1){
+            $result = $result[0] ;
+        }
         return $result;
     }
 

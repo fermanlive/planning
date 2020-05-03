@@ -15,11 +15,8 @@ export async function clearCredentials() {
   export async function getSession() {
     try {
       const value = await AsyncStorage.getItem('session');
-      if(value != null){
-        const session = JSON.parse(value);
-        return session;
-      }
-      return false;
+      const session = JSON.parse(value);
+      return session;
     } catch (error) {
       //console.log("getSession-error= "+error);
     }
@@ -39,7 +36,7 @@ export async function clearCredentials() {
       var parameters= `email/`+ user + `/password/`+pass;
       var data = await fetchRequest("users/Login",parameters);
       if(data.status){
-        var session = {id:data.idusers, name:data.name, surname:data.surname, email:data.email};
+        var session = {id:data.Userinfo.idusers, name:data.Userinfo.name, surname:data.Userinfo.surname, email:data.Userinfo.email};
         var save = await setSession(session);
         return data;
       }else{

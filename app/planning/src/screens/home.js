@@ -10,6 +10,9 @@ import Loading from '../components/Loading';
 // import { Card, SimpleCard } from "@paraboly/react-native-card";
 // import {Shapes} from "react-native-background-shapes";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import {getSession} from '../helpers/users_services';
+import {ReadPeriod} from '../helpers/period_services';
+
 
 var {height, width} = Dimensions.get('window');
 
@@ -32,6 +35,7 @@ class Home extends React.Component {
       chosenDateShow: 'Seleccionar fecha',
       displayTab:true,
       ModalIncome:false,
+      namePeriod:'',
       filterTab:2,
       elements:[],
       balance:[
@@ -110,6 +114,23 @@ class Home extends React.Component {
       ],
     };
 }
+async componentDidMount(){
+  const onSession = await getSession();
+  let number = 7;
+  this.setPeriod(onSession.id,number);
+  
+  console.warn(period);
+}
+async setPeriod(idUser,number){
+  let period = await ReadPeriod(idUser,number);
+  period = period.status ? period.message: null;
+  this.setState({namePeriod: period.name});
+  this.setState({periodStart: period.date_start})
+  this.setState({periodEnd: period.date_end})   
+}
+async setBalance(idUser,number){
+  let period = await ReadPeriod(idUser,number);
+}
 
 _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
@@ -159,7 +180,7 @@ this.setState({
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:'#66E49B' }}>
           <View style={{backgroundColor:'white' ,width:width, height:height*3/7,alignItems: 'center',borderBottomWidth:5,borderColor:colors.AccentPurple}}>
           <Text style={[text.TravelInfoTitle, text.Regular, text.TAccentPurple]}>
-          Relacion de gastos para Agosto
+          Relacion de gastos para {this.state.namePeriod}
           </Text>
           <View style={layout.MainTabsCont}>
             <TouchableHighlight
@@ -191,7 +212,7 @@ this.setState({
             <View 
               style = {layout.TravelCardCont}>
               <Text style={[text.TravelInfoSubtitle, text.Regular, text.TLight,]}>
-                2020/10/11 a  2020/10/12
+                {this.state.periodStart} a {this.state.periodEnd}
               </Text>
 
               <View style={layout.TravelCardInfoCont}>
@@ -392,6 +413,17 @@ this.setState({
                   onPress={() => {this.setState({modalVisible : true})}}
                   />
                   <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Agregar {"\n"} Egreso</Text>
+                </View>
+                <View style={[layout.ButtonsSpends3]}>
+                  <Icon
+                  raised
+                  name='calendar'
+                  type='material-community'
+                  color={colors.main}
+                  backgroundColor='#000000'
+                  onPress={() => this.props.navigation.navigate('DictionaryScreen')}
+                  />
+                  <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Agregar {"\n"} Periodo</Text>
                 </View>
                 <View style={[layout.ButtonsSpends3]}>
                   <Icon

@@ -16,6 +16,8 @@ module.exports = {
   ///////Requests origin
   BASE_URL:   _BASE_URL,
   URL_REQUEST: _BASE_URL + 'planning/www/Users/index.php/',
+  URL_REQUEST_PERIOD: _BASE_URL + 'planning/www/Periods/index.php/',
+  URL_REQUEST_INCOME: _BASE_URL + 'planning/www/Income/index.php/',
   FAQ_URL:    _BASE_URL + 'faq',
   TYC_URL:    _BASE_URL + 'tyc',
 
