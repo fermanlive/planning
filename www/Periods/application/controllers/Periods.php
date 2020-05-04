@@ -22,7 +22,7 @@ class Periods extends RestController {
         $name = $this->get('name');
 
         $CreatePeriod = $this->period_model->CreatePeriod($date_start,$date_end,$idusers,$name);
-        if($CreatePeriod){
+        if($CreatePeriod['status']){
             $this->response( [
                 'status' => true,
                 'message' => 'Periodo creado'
@@ -103,10 +103,35 @@ class Periods extends RestController {
         $name = "primer periodo";
 
         $createDefault = $this->period_model->CreatePeriod($date_start,$date_end,$name,$idusers);
-        $this->response( [
-            'status' => true,
-            'message' => 'creado'
-        ], 200 );
+        if($createDefault['status']){
+            $this->response( [
+                'status' => true,
+                'message' => 'creado'
+            ], 200 );
+        }else{
+            $this->response( [
+                'status' => false,
+                'message' => 'no creado'
+            ], 404 );
+        }
+    }
+
+    public function getDefaultPeriod_get(){   
+
+        $idusers = $this->get('idusers');
+
+        $getDefaultPeriod = $this->period_model->getDefaultPeriod($idusers);
+        if($getDefaultPeriod>0){
+            $this->response( [
+                'status' => true,
+                'message' => $getDefaultPeriod
+            ], 200 );
+        }else{
+            $this->response( [
+                'status' => false,
+                'message' => $getDefaultPeriod
+            ], 404 );
+        }    
     }
     
 }

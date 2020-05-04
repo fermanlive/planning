@@ -31,7 +31,18 @@ class Period_model extends CI_Model {
         $this->db->set($data);
         $this->db->insert('period');
         $insert_id = $this->db->insert_id();
-        return $insert_id > 0 ? true : false ;
+        if($insert_id > 0){
+           $result=[
+                'status' => true,
+                'message' => $insert_id
+            ] ;
+        }else{
+            $result=[
+                'status' => false,
+                'message' => ''
+            ] ;
+        }
+        return $result ;
     }
 
     public function ReadPeriod($idusers,$idperiod){
@@ -50,6 +61,36 @@ class Period_model extends CI_Model {
             $result = $result[0] ;
         }
         return $result;
+    }
+    public function getDefaultPeriod($idusers){
+
+        $this->db->select('
+        DATE_FORMAT(current_timestamp,"%Y-%m-%d") as Todayformat,
+        DATE_FORMAT(date_start,"%Y-%m-%d") as date_start,
+        DATE_FORMAT(date_end,"%Y-%m-%d") as date_end,
+        idperiod');
+        $this->db->from('period');
+        $this->db->where('users_idusers',$idusers);
+        $query = $this->db->get();
+        $periods = $query->result();
+        $idperiod=0;
+        foreach ($periods as $period ) {
+            $today = strtotime($period -> Todayformat);
+            $date_start = strtotime($period -> date_start);
+            $date_end = strtotime($period -> date_end);
+
+            if(($today >= $date_start) && ($today <= $date_end)){
+               $idperiod = $period -> idperiod;
+            }
+        }
+        if($idperiod==0){
+            $date_start= date('Y-m-01');
+            $date_end = date('Y-m-t');
+            $name = "Periodo Nuevo"; 
+            $result=$this->CreatePeriod($date_start,$date_end,$name,$idusers);
+            $idperiod=$result['message'];
+        } 
+        return $idperiod;
     }
 
     public function UpdatePeriod($date_start,$date_end,$name,$idusers,$idperiod){
