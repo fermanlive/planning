@@ -66,8 +66,8 @@ async componentDidMount(){
 }
 async setPeriod(idUser,IdPeriod){
   let period = await ReadPeriod(idUser,IdPeriod);
-  period = period.status ? period.message: null;
-  let namePeriod = period.status ? period.name: null;
+  period = period.status != undefined ? period.message: null;
+  let namePeriod = eriod.status != undefined  ? period.name: null;
   this.setState({IdPeriod});
   this.setState({namePeriod});
   this.setState({periodStart: period.date_start});
