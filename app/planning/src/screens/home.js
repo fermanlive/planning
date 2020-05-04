@@ -1,4 +1,5 @@
 import React from 'react';
+import numeral from 'numeral';
 import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,ScrollView} from 'react-native';
 // import {Modal,TextInput,Picker} from 'react-native';
 import {
@@ -61,26 +62,34 @@ async setPeriod(idUser,IdPeriod){
 }
 async setBalance(idUser,IdPeriod){
   let incomes = await ReadIncome(idUser,0,IdPeriod);
-  incomes = incomes.status ? incomes.message: null;
+  incomes = incomes.status ? incomes.message: [];
   let TotalIncomes=0;
   let balance = [];
-  incomes.forEach(income => {
-    TotalIncomes = parseFloat(income.value) + parseFloat(TotalIncomes);
-    income.title = income.name;
-    income.categoria=0;
-    balance.push(income);
-  });
-  let Expenses = await ReadExpense(idUser,0,IdPeriod);
-  Expenses = Expenses.status ? Expenses.message: null;
-  let TotalExpenses=0;
-  let balance = [];
-  Expenses.forEach(income => {
-    TotalExpenses = parseFloat(income.value) + parseFloat(TotalExpenses);
-    income.title = income.name;
-    income.categoria=0;
-    balance.push(income);
-  });
+  if(incomes.length > 0){
+    incomes.forEach(income => {
+      TotalIncomes = parseFloat(income.value) + parseFloat(TotalIncomes);
+      income.title = income.name;
+      income.categoria=0;
+      balance.push(income);
+    });
+  } 
   this.setState({TotalIncomes});
+
+  let Expenses = await ReadExpense(idUser,0,IdPeriod);
+  console.warn(Expenses);
+  Expenses = Expenses.status ? Expenses.message: [];
+  let TotalExpenses=0;
+  if(Expenses.length > 0){
+    Expenses.forEach(Expense => {
+      TotalExpenses = parseFloat(Expense.value) + parseFloat(TotalExpenses);
+      Expense.title = Expense.name;
+      Expense.categoria=0;
+      balance.push(Expense);
+    });
+  }
+
+
+  this.setState({TotalExpenses});
   this.setState({balance});
   this._filterTab(2);
 }
@@ -190,7 +199,7 @@ this.setState({
 
                   <View style={{flexDirection: 'row',}}>
                     <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
-                    $ 2.000.000,00
+                    $ {this.state.TotalExpenses}
                     </Text>
                   </View>
 
@@ -326,7 +335,7 @@ this.setState({
                       {item.title}
                     </Text>
                     <Text style={[layout.BillItemText, text.Strong, text.TextOpacityMain,]}>
-                      $ {item.value}
+                      {numeral(item.value).format('$0,0.00')}
                     </Text>
                     </View>
                 </View>
