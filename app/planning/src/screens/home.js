@@ -47,7 +47,10 @@ class Home extends React.Component {
       TotalIncomes:0,
       elements:[],
       balance:[],
-      Expenses:[]
+      Expenses:[],
+      nameError:'',
+      amountError:'',
+
     };
 }
 async componentDidMount(){
@@ -58,12 +61,15 @@ async componentDidMount(){
   IdPeriod=IdPeriod.message;
   this.setPeriod(idUser,IdPeriod);
   this.setBalance(idUser,IdPeriod);
+  this.setCategories();
   this.setBusyIndicator(false, '');
 }
 async setPeriod(idUser,IdPeriod){
   let period = await ReadPeriod(idUser,IdPeriod);
   period = period.status ? period.message: null;
-  this.setState({namePeriod: period.name});
+  let namePeriod = period.status ? period.name: null;
+  this.setState({IdPeriod});
+  this.setState({namePeriod});
   this.setState({periodStart: period.date_start});
   this.setState({periodEnd: period.date_end}); 
 }
@@ -169,14 +175,14 @@ this.setState({
   }
 
   async validateSendIncome(){
-    var allGood = [0,0,0];//[0,0,0,0]; //legth equal to zero to remove ignore password fields
-
+    var allGood = [0,0];//[0,0,0,0]; //legth equal to zero to remove ignore password fields
     if(this.state.nameError === '' || this.state.nameError === true) {this.setState({nameError : true}); allGood[0]=0}else{allGood[0]=1};
     if(this.state.amountError === '' || this.state.amountError === true) {this.setState({amountError : true}); allGood[1]=0}else{allGood[1]=1};  
-    if(this.state.dateError === '' || this.state.dateError === true) {this.setState({dateError : true}); allGood[2]=0}else{allGood[2]=1};
+   
 
     if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
-        
+      let CreateIncomeResponse = await CreateIncome(this.state.name,this.state.idcategoryIncome,this.state.dateincome,this.state.period,this.state.amount);
+
     }
 
 }
@@ -496,8 +502,7 @@ this.setState({
                         <Text style={text.InputLabel}>
                             Fecha
                         </Text>
-                        <View style={[forms.InputCont, forms.LeftAlingment, 
-                        this.state.chosenDateError ? forms.AlertInput:null]}>
+                        <View style={[forms.InputCont, forms.LeftAlingment]}>
                             <View style={forms.InputInteraction}>
                             <Icon
                               name='calendar'

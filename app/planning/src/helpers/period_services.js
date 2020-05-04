@@ -8,7 +8,7 @@ const CONST = require('../constants/constants');
       var parameters= `idusers/`+ idusers + `/idperiod/`+ idperiod +`/`;
       var data = await fetchRequest("Periods/ReadPeriod",parameters);
       return data;
-    } catch (error) {validateExistedUser
+    } catch (error) {
       //console.log("doLogin-error= "+error);
     }
   }
@@ -17,7 +17,7 @@ const CONST = require('../constants/constants');
       var parameters= `idusers/`+ idusers +`/`;
       var data = await fetchRequest("Periods/getDefaultPeriod",parameters);
       return data;
-    } catch (error) {validateExistedUser
+    } catch (error) {
       //console.log("doLogin-error= "+error);
     }
   }

@@ -13,6 +13,16 @@ const CONST = require('../constants/constants');
     }
   }
 
+  export async function CreateIncome(name,idcategory,dateincome,idperiod,value){
+    try{
+      var parameters= `name/`+ name + `/idcategory/`+ idcategory + `/dateincome/`+ dateincome +`/`+ `/idperiod/`+ idperiod +`/value/`+ value ;
+      var data = await fetchRequest("Incomes/CreateIncome",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
+
 
   // ____________________________Comunication Services____________________________________________
 
