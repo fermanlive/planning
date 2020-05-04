@@ -34,6 +34,7 @@ class Login extends React.Component {
     }else{
         this.setState({modalLine1: loginResponse.message});
         this.setState({isErrorModalVisible: true});
+        this.setBusyIndicator(false, '');
     }
    }
 

@@ -1,18 +1,21 @@
 import React from 'react';
 import numeral from 'numeral';
-import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,ScrollView} from 'react-native';
+import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,ScrollView,TextInput} from 'react-native';
 // import {Modal,TextInput,Picker} from 'react-native';
 import {
   PieChart
 } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
-// import AddExpense from '../components/AddExpense';
+import AddExpense from '../components/AddExpense';
+import Modal from "react-native-modal";
 // import { Card, SimpleCard } from "@paraboly/react-native-card";
 // import {Shapes} from "react-native-background-shapes";
 import DateTimePicker from "react-native-modal-datetime-picker";
+
 import {getSession} from '../helpers/users_services';
 import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
+import {masterValidator} from '../helpers/validations';
 import {ReadIncome} from '../helpers/income_services';
 import {ReadExpense} from '../helpers/expense_services';
 
@@ -157,6 +160,26 @@ this.setState({
     }
   }
 
+
+  //////////////////////Validations////////////////////////
+  validate(kind,state,type,input){
+    this.setState({[state] : input});
+    var verdict = masterValidator(kind,input);
+    this.setState({[type] : verdict});
+  }
+
+  async validateSendIncome(){
+    var allGood = [0,0,0];//[0,0,0,0]; //legth equal to zero to remove ignore password fields
+
+    if(this.state.nameError === '' || this.state.nameError === true) {this.setState({nameError : true}); allGood[0]=0}else{allGood[0]=1};
+    if(this.state.amountError === '' || this.state.amountError === true) {this.setState({amountError : true}); allGood[1]=0}else{allGood[1]=1};  
+    if(this.state.dateError === '' || this.state.dateError === true) {this.setState({dateError : true}); allGood[2]=0}else{allGood[2]=1};
+
+    if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
+        
+    }
+
+}
 
   static navigationOptions = ({ navigation }) => ({
     headerShown:false
@@ -413,10 +436,111 @@ this.setState({
               />
               </View>
             }
-            {/* <AddExpense 
-               activity_loading={this.state.ModalIncome} 
-            />
-       */}
+              <Modal
+                backdropColor = {colors.opacityMain}
+                backdropOpacity = {0.9}
+                style = { {padding: 0, margin: 0,} }
+                isVisible={this.state.ModalIncome}
+                transparent={false}
+                >  
+                    <View style={[layout.GralTextCont, {marginBottom: 30,marginTop:30}]}>
+                        <Text style={[text.GralText, text.Regular]}>
+                        Agregar un ingreso 
+                        </Text>
+                    </View>
+                    <ScrollView
+                      style = { layout.MainContainerSV }
+                      showsVerticalScrollIndicator = {false}
+                      >
+                    <View style={layout.InputGroup}>
+                        <Text style={text.InputLabel}>
+                        Nombre del ingreso
+                        </Text>
+                        <View style={[forms.InputCont, forms.LeftAlingment, this.state.nameError?forms.AlertInput:null]}>
+                            <TextInput
+                                style={forms.Input}
+                                onChangeText={(name) => this.validate('text','name','nameError',name)}
+                                placeholder="Ingresar Nombre ingreso"
+                                keyboardType = "default"
+                            />
+                        </View>
+                        {this.state.nameError? 
+                          <View style={layout.textAlertCont}>
+                                  <Text style={[layout.textAlertError, text.Regular]}>
+                                      Nombre no valido
+                                  </Text>
+                          </View>
+                        :null}
+                    </View>
+                    <View style={layout.InputGroup}>
+                        <Text style={text.InputLabel}>
+                        Monto
+                        </Text>
+                        <View style={[forms.InputCont, forms.LeftAlingment, this.state.amountError?forms.AlertInput:null]}>
+                            <TextInput
+                                style={forms.Input}
+                                onChangeText={(amount) => this.validate('num','amount','amountError',amount)}
+                                placeholder="Ingresar Monto"
+                                keyboardType = "numeric"
+                            />
+                        </View>
+                        {this.state.amountError? 
+                          <View style={layout.textAlertCont}>
+                                  <Text style={[layout.textAlertError, text.Regular]}>
+                                      Monto no valido
+                                  </Text>
+                          </View>
+                        :null}
+                    </View>
+                    <View style={layout.InputGroup}>
+                        <Text style={text.InputLabel}>
+                            Fecha
+                        </Text>
+                        <View style={[forms.InputCont, forms.LeftAlingment, 
+                        this.state.chosenDateError ? forms.AlertInput:null]}>
+                            <View style={forms.InputInteraction}>
+                            <Icon
+                              name='calendar'
+                              type='material-community'
+                              color={text.TDarkGray}
+                              backgroundColor='#000000'
+                              size={22}
+                              />
+                            </View>
+                            <TouchableOpacity
+                                style={forms.DatePickerCont}
+                                onPress={this._showDateTimePicker}
+                            >
+                                <Text
+                                style={forms.DatePickerText}>
+                                    {this.state.chosenDateShow}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        
+                        <DateTimePicker
+                            isVisible={this.state.isDateTimePickerVisible}
+                            onConfirm={this._handleDatePicked}
+                            onCancel={this._hideDateTimePicker}
+                            // minimumDate = {new Date(this.state.sTrip.tripStartDateformat)}
+                        />
+                    </View>
+                    <TouchableOpacity 
+                        onPress={() => this.validateSendIncome()}
+                        style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
+                        <Text style={[text.BText, text.TLight]}>
+                          Enviar
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                        onPress={() => this.setState({ModalIncome: false})}
+                        style={[buttons.GralButton, buttons.ButtonRegisterLoginAccentBlue]}>
+                        <Text style={[text.BText, text.TFacebookColor]}>
+                          Cancelar
+                        </Text>
+                    </TouchableOpacity>
+                    </ScrollView>
+              </Modal>
         <Loading 
         activity_loading={this.state.activity_loading} 
         activity_text={this.state.activity_text} 
