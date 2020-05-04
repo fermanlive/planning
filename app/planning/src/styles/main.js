@@ -466,7 +466,6 @@ export const layout = StyleSheet.create({
 		borderRadius: 15,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor:'red'
 		
 	},
 	CardContSaves: {

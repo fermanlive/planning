@@ -38,20 +38,24 @@ class Home extends React.Component {
       chosenDateShow: 'Seleccionar fecha',
       displayTab:true,
       ModalIncome:false,
+      numericBalance:2,
       namePeriod:'',
       filterTab:2,
       TotalIncomes:0,
       elements:[],
       balance:[],
+      Expenses:[]
     };
 }
 async componentDidMount(){
+  this.setBusyIndicator(true, '');
   const onSession = await getSession();
   let idUser = onSession.id;
   let IdPeriod = await getDefaultPeriod(idUser);
   IdPeriod=IdPeriod.message;
   this.setPeriod(idUser,IdPeriod);
   this.setBalance(idUser,IdPeriod);
+  this.setBusyIndicator(false, '');
 }
 async setPeriod(idUser,IdPeriod){
   let period = await ReadPeriod(idUser,IdPeriod);
@@ -65,6 +69,7 @@ async setBalance(idUser,IdPeriod){
   incomes = incomes.status ? incomes.message: [];
   let TotalIncomes=0;
   let balance = [];
+  let id = 0;
   if(incomes.length > 0){
     incomes.forEach(income => {
       TotalIncomes = parseFloat(income.value) + parseFloat(TotalIncomes);
@@ -73,27 +78,47 @@ async setBalance(idUser,IdPeriod){
       balance.push(income);
     });
   } 
+  
   this.setState({TotalIncomes});
 
   let Expenses = await ReadExpense(idUser,0,IdPeriod);
-  console.warn(Expenses);
   Expenses = Expenses.status ? Expenses.message: [];
   let TotalExpenses=0;
   if(Expenses.length > 0){
     Expenses.forEach(Expense => {
       TotalExpenses = parseFloat(Expense.value) + parseFloat(TotalExpenses);
       Expense.title = Expense.name;
-      Expense.categoria=0;
+      Expense.categoria=1;
       balance.push(Expense);
     });
+    Expenses.forEach(Expense => {
+      Expense.porcentaje= (parseFloat(Expense.value)/TotalExpenses)*100;
+      Expense.color = this.random_rgba();
+      Expense.legendFontColor = '#7F7F7F';
+      Expense.legendFontSize = 15;
+    });
   }
-
-
+  this.setState({Expenses})
   this.setState({TotalExpenses});
   this.setState({balance});
+  let numericBalance = this.state.TotalIncomes - this.state.TotalExpenses;
+  if( numericBalance > 0){
+    this.setState({numericBalance : 2});
+  }
+  if(this.state.TotalIncomes*0.7 < this.state.TotalExpenses){
+    this.setState({numericBalance : 1});
+  }
+  if(this.state.TotalIncomes < this.state.TotalExpenses){
+    this.setState({numericBalance : 0});
+  }
   this._filterTab(2);
+
 }
 
+ random_rgba() {
+  var o = Math.round, r = Math.random, s = 255;
+  return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+}
 _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
 _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
@@ -108,7 +133,7 @@ this.setState({
   this._hideDateTimePicker();
 };
 
-  _setBusyIndicator = (activity_loading, activity_text) => {
+  setBusyIndicator = (activity_loading, activity_text) => {
     this.setState({activity_loading: activity_loading})
     this.setState({activity_text: activity_text})
   }
@@ -119,7 +144,6 @@ this.setState({
     this.setState({filterTab: filter});
     this.setState({elements: []});
     if(filter==2){
-      console.warn(this.state.balance);
       this.setState({elements: this.state.balance});
     }else{
       // this.setState({elements: []});
@@ -172,7 +196,15 @@ this.setState({
           
             { this.state.displayTab  ?
             <View 
-              style = {layout.TravelCardCont}>
+              style = {[layout.TravelCardCont,
+                this.state.numericBalance==0 ?
+                {backgroundColor: colors.AccentRed} :
+                this.state.numericBalance==1 ?
+                {backgroundColor:colors.AccentBlue} :
+                this.state.numericBalance==2 ?
+                {backgroundColor: colors.main} : 
+                null
+              ]}>
               <Text style={[text.TravelInfoSubtitle, text.Regular, text.TLight,]}>
                 {this.state.periodStart} a {this.state.periodEnd}
               </Text>
@@ -186,7 +218,7 @@ this.setState({
                   </Text>
                   <View style={{flexDirection: 'row',}}>
                     <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
-                    $ {this.state.TotalIncomes}
+                    {numeral(this.state.TotalIncomes).format('$0,0')}
                     </Text>
                   </View>
                 </View>
@@ -199,7 +231,7 @@ this.setState({
 
                   <View style={{flexDirection: 'row',}}>
                     <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
-                    $ {this.state.TotalExpenses}
+                    {numeral(this.state.TotalExpenses).format('$0,0')}
                     </Text>
                   </View>
 
@@ -210,37 +242,7 @@ this.setState({
             </View>
           : 
               <PieChart
-                data={[
-                  {
-                    name: 'Arriendo',
-                    population: 30,
-                    color: 'rgba(131, 167, 234, 0.7)',
-                    legendFontColor: '#7F7F7F',
-                    legendFontSize: 15,
-                  },
-                  
-                  {
-                    name: 'Servicios',
-                    population: 20,
-                    color: 'rgba(255,255,255,0.7)',
-                    legendFontColor: '#7F7F7F',
-                    legendFontSize: 15,
-                  },
-                  {
-                    name: 'Tarjetas',
-                    population: 10,
-                    color: 'rgba(0,255,0,0.7)',
-                    legendFontColor: '#7F7F7F',
-                    legendFontSize: 15,
-                  },
-                  {
-                    name: 'Ahorros',
-                    population: 50,
-                    color: 'rgba(0, 0, 255,0.7)',
-                    legendFontColor: '#7F7F7F',
-                    legendFontSize: 15,
-                  },
-                ]}
+                data={this.state.Expenses}
                 width={width}
                 height={220}
                 chartConfig={{
@@ -253,7 +255,7 @@ this.setState({
                     borderRadius: 16,
                   },
                 }}
-                accessor="population"
+                accessor="porcentaje"
                 backgroundColor="transparent"
                 paddingLeft="20"
                 //absolute //for the absolute number remove if you want percentage
@@ -335,7 +337,7 @@ this.setState({
                       {item.title}
                     </Text>
                     <Text style={[layout.BillItemText, text.Strong, text.TextOpacityMain,]}>
-                      {numeral(item.value).format('$0,0.00')}
+                      {numeral(item.value).format('$0,0')}
                     </Text>
                     </View>
                 </View>
@@ -415,10 +417,10 @@ this.setState({
                activity_loading={this.state.ModalIncome} 
             />
        */}
-            <Loading 
-            activity_loading={this.state.activity_loading} 
-            activity_text={this.state.activity_text} 
-            />
+        <Loading 
+        activity_loading={this.state.activity_loading} 
+        activity_text={this.state.activity_text} 
+        />
         </View> 
       );
     }

@@ -4,8 +4,10 @@ const {layout, text, login, forms, buttons} = require ('../styles/main');
 
 import { Icon, colors } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
+
 import {RequestLogin,getSession} from '../helpers/users_services';
 import {SimpleAlert} from '../components/modalAlert';
+import Loading from '../components/Loading';
 
 class Login extends React.Component {
   constructor(props) {
@@ -23,9 +25,11 @@ class Login extends React.Component {
   }
 
   async login(){
+    this.setBusyIndicator(true, '');
     var loginResponse = await RequestLogin(this.state.user,this.state.password);
     
     if(loginResponse.status){
+        this.setBusyIndicator(false, '');
         this.props.navigation.navigate('Home');
     }else{
         this.setState({modalLine1: loginResponse.message});
@@ -33,8 +37,9 @@ class Login extends React.Component {
     }
    }
 
-     async componentDidMount(){
-       var lectura = await getSession();
+   setBusyIndicator = (activity_loading, activity_text) => {
+    this.setState({activity_loading: activity_loading})
+    this.setState({activity_text: activity_text})
     }
 
     render() {
@@ -140,6 +145,10 @@ class Login extends React.Component {
                         line2 = ""
                         buttonLabel = {this.state.buttonLabel}
                         closeModal={() => this.setState({isErrorModalVisible: false})}
+                    />
+                    <Loading 
+                    activity_loading={this.state.activity_loading} 
+                    activity_text={this.state.activity_text} 
                     />
            </View>
       );
