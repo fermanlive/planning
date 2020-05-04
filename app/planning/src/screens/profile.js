@@ -17,8 +17,12 @@ class Profile extends React.Component {
           modalVisible:false
         };
     }
-  _toggleEdit = () => this.setState({ Editable: !this.state.Editable });
-  _closeSession = async () => {await clearCredentials , this.props.navigation.navigate('Login')};
+    _toggleEdit = () => this.setState({ Editable: !this.state.Editable });
+    
+    _closeSession = async () => {
+        await clearCredentials , 
+        this.props.navigation.navigate('Login')
+    };
     render() { 
       return (
         <View style={ [layout.MainContainerProfile, layout.AlignCenter] }>
