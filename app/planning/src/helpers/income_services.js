@@ -3,14 +3,12 @@ const CONST = require('../constants/constants');
 
 // ____________________________Async Storage Services________________________________________
 
-  export async function ReadPeriod(idusers,idperiod){
+  export async function ReadIncome(iduser,idincome,IdPeriod){
     try{
-      var parameters= `idusers/`+ idusers + `/idperiod/`+ idperiod +`/`;
-      console.warn(parameters);
-      var data = await fetchRequest("Periods/ReadPeriod",parameters);
-        
+      var parameters= `iduser/`+ iduser + `/idincome/`+ idincome + `/IdPeriod/`+ IdPeriod +`/`;
+      var data = await fetchRequest("Incomes/ReadIncome",parameters);
       return data;
-    } catch (error) {validateExistedUser
+    } catch (error) {
       //console.log("doLogin-error= "+error);
     }
   }
@@ -20,7 +18,7 @@ const CONST = require('../constants/constants');
 
 export async function fetchRequest(service,parameters){
     try {
-      var data= await fetch(CONST.URL_REQUEST_PERIOD + service + '/' + parameters,{
+      var data= await fetch(CONST.URL_REQUEST_INCOME + service + '/' + parameters,{
         method: 'GET', 
         headers: { 'Accept': 'application/json', 
         'Content-Type': 'application/json', 

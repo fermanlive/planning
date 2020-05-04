@@ -11,7 +11,9 @@ import Loading from '../components/Loading';
 // import {Shapes} from "react-native-background-shapes";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import {getSession} from '../helpers/users_services';
-import {ReadPeriod} from '../helpers/period_services';
+import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
+import {ReadIncome} from '../helpers/income_services';
+import {ReadExpense} from '../helpers/expense_services';
 
 
 var {height, width} = Dimensions.get('window');
@@ -37,99 +39,50 @@ class Home extends React.Component {
       ModalIncome:false,
       namePeriod:'',
       filterTab:2,
+      TotalIncomes:0,
       elements:[],
-      balance:[
-        {
-          id: '1',
-          title: 'Salario',
-          categoria:'0', ///ingreso
-          value:'100.000,00'
-        },
-        {
-          id: '2',
-          title: 'Tarjeta de credito',
-          categoria:'1', ///egreso
-          value:'100.000,00'
-        },
-        {
-          id: '3',
-          title: 'Tarjeta de credito',
-          categoria:'1', ///egreso
-          value:'100.000,00'
-        },
-        {
-          id: '4',
-          title: 'Retención',
-          categoria:'1', ///egreso
-          value:'100.000,00'
-        },
-        {
-          id: '5',
-          title: 'Prestamo UAN 2',
-          categoria:'1', ///egreso
-          value:'400.000,00'
-        },
-        {
-          id: '6',
-          title: 'Prestamo UAN 4',
-          categoria:'1', ///egreso
-          value:'400.000,00'
-        },
-        {
-          id: '7',
-          title: 'Prestamo UAN5',
-          categoria:'1', ///ingreso
-          value:'400.000,00'
-        },
-        {
-          id: '8',
-          title: 'Prestamo UAN6',
-          categoria:'1', ///ingreso
-          value:'400.000,00'
-        },
-        {
-          id: '9',
-          title: 'Prestamo UAN7',
-          categoria:'1', ///egreso
-          value:'400.000,00'
-        },
-        {
-          id: '10',
-          title: 'Venta TV',
-          categoria:'0', ///ingreso
-          value:'400.000,00'
-        },
-        {
-          id: '11',
-          title: 'Cesantias',
-          categoria:'0', ///ingreso
-          value:'400.000,00'
-        },
-        {
-          id: '12',
-          title: 'Prima',
-          categoria:'0', ///ingreso
-          value:'400.000,00'
-        }
-      ],
+      balance:[],
     };
 }
 async componentDidMount(){
   const onSession = await getSession();
-  let number = 7;
-  this.setPeriod(onSession.id,number);
-  
-  console.warn(period);
+  let idUser = onSession.id;
+  let IdPeriod = await getDefaultPeriod(idUser);
+  IdPeriod=IdPeriod.message;
+  this.setPeriod(idUser,IdPeriod);
+  this.setBalance(idUser,IdPeriod);
 }
-async setPeriod(idUser,number){
-  let period = await ReadPeriod(idUser,number);
+async setPeriod(idUser,IdPeriod){
+  let period = await ReadPeriod(idUser,IdPeriod);
   period = period.status ? period.message: null;
   this.setState({namePeriod: period.name});
-  this.setState({periodStart: period.date_start})
-  this.setState({periodEnd: period.date_end})   
+  this.setState({periodStart: period.date_start});
+  this.setState({periodEnd: period.date_end}); 
 }
-async setBalance(idUser,number){
-  let period = await ReadPeriod(idUser,number);
+async setBalance(idUser,IdPeriod){
+  let incomes = await ReadIncome(idUser,0,IdPeriod);
+  incomes = incomes.status ? incomes.message: null;
+  let TotalIncomes=0;
+  let balance = [];
+  incomes.forEach(income => {
+    TotalIncomes = parseFloat(income.value) + parseFloat(TotalIncomes);
+    income.title = income.name;
+    income.categoria=0;
+    balance.push(income);
+  });
+  let Expenses = await ReadExpense(idUser,0,IdPeriod);
+  Expenses = Expenses.status ? Expenses.message: null;
+  let TotalExpenses=0;
+  let balance = [];
+  Expenses.forEach(income => {
+    TotalExpenses = parseFloat(income.value) + parseFloat(TotalExpenses);
+    income.title = income.name;
+    income.categoria=0;
+    balance.push(income);
+  });
+  this.setState({TotalIncomes});
+  this.setState({balance});
+  this._filterTab(2);
 }
 
 _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -157,7 +110,7 @@ this.setState({
     this.setState({filterTab: filter});
     this.setState({elements: []});
     if(filter==2){
-      // this.setState({elements: []});
+      console.warn(this.state.balance);
       this.setState({elements: this.state.balance});
     }else{
       // this.setState({elements: []});
@@ -224,7 +177,7 @@ this.setState({
                   </Text>
                   <View style={{flexDirection: 'row',}}>
                     <Text style={[layout.TravelCardInfoValue, text.Medium, text.TLight]}>
-                    $ 2.350.000,00
+                    $ {this.state.TotalIncomes}
                     </Text>
                   </View>
                 </View>
@@ -373,7 +326,7 @@ this.setState({
                       {item.title}
                     </Text>
                     <Text style={[layout.BillItemText, text.Strong, text.TextOpacityMain,]}>
-                      {item.value}
+                      $ {item.value}
                     </Text>
                     </View>
                 </View>

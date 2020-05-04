@@ -6,9 +6,16 @@ const CONST = require('../constants/constants');
   export async function ReadPeriod(idusers,idperiod){
     try{
       var parameters= `idusers/`+ idusers + `/idperiod/`+ idperiod +`/`;
-      console.warn(parameters);
       var data = await fetchRequest("Periods/ReadPeriod",parameters);
-        
+      return data;
+    } catch (error) {validateExistedUser
+      //console.log("doLogin-error= "+error);
+    }
+  }
+  export async function getDefaultPeriod(idusers){
+    try{
+      var parameters= `idusers/`+ idusers +`/`;
+      var data = await fetchRequest("Periods/getDefaultPeriod",parameters);
       return data;
     } catch (error) {validateExistedUser
       //console.log("doLogin-error= "+error);

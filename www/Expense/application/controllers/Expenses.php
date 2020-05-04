@@ -41,10 +41,11 @@ class Expenses extends RestController {
 
         $IdUser = $this->get('iduser');
         $IdExpense = $this->get('idexpense');
+        $IdPeriod = $this->get('IdPeriod');
 
         $IdExpense = $IdExpense == null ? 0: $IdExpense;
 
-        $ReadExpense = $this->expense_model->ReadExpense($IdUser,$IdExpense);
+        $ReadExpense = $this->expense_model->ReadExpense($IdUser,$IdPeriod,$IdExpense);
         if($ReadExpense){
             $this->response([
                 'status' => true,

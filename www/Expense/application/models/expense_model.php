@@ -50,32 +50,21 @@ class Expense_model extends CI_Model {
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
-    public function getExpense($IdExpense,$Iduser){
+
+    public function ReadExpense($IdUser,$IdPeriod,$id_expense){
 
         $this->db->select('*');
-        $this->db->from('Expense');
-        $this->db->where('IdExpense',$IdExpense);
-        $this->db->where('Iduser',$Iduser);
+        $this->db->from('expense');
+        if($id_expense>0){
+            $this->db->where('id_expense',$id_expense);
+        }
+        $this->db->where('period_idperiod',$IdPeriod);
+        // $this->db->where('$IdUser',$Iduser);
         $query = $this->db->get();
         $result = $query->result_array();
-        
-        if(count($query->result_array()) == 1){
-            return $result[0];
-        }else {
-            return false;
-        } 
-    }
-
-    public function getExpenses($Iduser,$period){
-
-        $this->db->select('*');
-        $this->db->from('Expense');
-        $this->db->where('Iduser',$Iduser);
-        $query = $this->db->get();
-        $result = $query->result_array();
-    
         return $result;
     }
+
 
 
 }

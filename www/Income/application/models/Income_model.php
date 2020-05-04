@@ -50,32 +50,17 @@ class Income_model extends CI_Model {
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
-    public function getIncome($IdIncome,$Iduser){
+    public function ReadIncome($IdUser,$IdPeriod,$IdIncome){
 
         $this->db->select('*');
         $this->db->from('Income');
-        $this->db->where('IdIncome',$IdIncome);
-        $this->db->where('Iduser',$Iduser);
+        if($IdIncome>0){
+            $this->db->where('IdIncome',$IdIncome);
+        }
+        $this->db->where('period_idperiod',$IdPeriod);
+        // $this->db->where('$IdUser',$Iduser);
         $query = $this->db->get();
         $result = $query->result_array();
-        
-        if(count($query->result_array()) == 1){
-            return $result[0];
-        }else {
-            return false;
-        } 
-    }
-
-    public function getIncomes($Iduser,$period){
-
-        $this->db->select('*');
-        $this->db->from('Income');
-        $this->db->where('Iduser',$Iduser);
-        $query = $this->db->get();
-        $result = $query->result_array();
-    
         return $result;
     }
-
-
 }
