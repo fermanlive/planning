@@ -37,25 +37,18 @@ class Incomes extends RestController {
 
     }
 
-    public function ReadIncome_get(){  
+    public function getCategoryIncomes_get(){  
 
-
-        $IdUser = $this->get('iduser');
-        $IdIncome = $this->get('idincome');
-        $IdPeriod = $this->get('IdPeriod');
-
-        $IdIncome = $IdIncome == null ? 0: $IdIncome;
-
-        $ReadIncome = $this->income_model->ReadIncome($IdUser,$IdPeriod,$IdIncome);
-        if(count($ReadIncome)>0){
+        $Categories = $this->income_model->getCategoryIncomes();
+        if(count($Categories)>0){
             $this->response([
                 'status' => true,
-                'message' => $ReadIncome
+                'message' => $Categories
             ],200);
         }else{
             $this->response([
                 'status' => false,
-                'message' => $ReadIncome
+                'message' => $Categories
             ],404);
         }
 

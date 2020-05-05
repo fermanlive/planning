@@ -15,7 +15,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import {getSession} from '../helpers/users_services';
 import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
 import {masterValidator} from '../helpers/validations';
-import {ReadIncome} from '../helpers/income_services';
+import {ReadIncome,getCategoryIncomes} from '../helpers/income_services';
 import {ReadExpense} from '../helpers/expense_services';
 
 
@@ -59,7 +59,7 @@ async componentDidMount(){
   IdPeriod=IdPeriod.message;
   this.setPeriod(idUser,IdPeriod);
   this.setBalance(idUser,IdPeriod);
-  // this.setCategories();
+  this.setCategories();
   this.setBusyIndicator(false, '');
 }
 async setPeriod(idUser,IdPeriod){
@@ -120,6 +120,11 @@ async setBalance(idUser,IdPeriod){
   }
   this._filterTab(2);
 
+}
+
+async  setCategories() {
+  let categoriesIncomes = await getCategoryIncomes();
+  
 }
 
  random_rgba() {

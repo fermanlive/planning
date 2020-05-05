@@ -63,4 +63,13 @@ class Income_model extends CI_Model {
         $result = $query->result_array();
         return $result;
     }
+
+    public function getCategoryIncomes(){
+
+        $this->db->select('*');
+        $this->db->from('category_income');
+        $query = $this->db->get();
+        $result = $query->result_array();
+        return $result;
+    }
 }
