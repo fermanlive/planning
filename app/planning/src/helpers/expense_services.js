@@ -12,7 +12,15 @@ const CONST = require('../constants/constants');
       //console.log("doLogin-error= "+error);
     }
   }
-
+  export async function getCategoryExpense(){
+    try{
+      var parameters=  `/` ;
+      var data = await fetchRequest("Expenses/getCategoryExpense",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
 
   // ____________________________Comunication Services____________________________________________
 

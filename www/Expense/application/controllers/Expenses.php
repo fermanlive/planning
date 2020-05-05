@@ -59,6 +59,23 @@ class Expenses extends RestController {
         }
 
     }
+    public function getCategoryExpense_get(){  
+
+        $CategoriesExpense = $this->expense_model->getCategoryExpense();
+        if($CategoriesExpense){
+            $this->response([
+                'status' => true,
+                'message' => $CategoriesExpense
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => $CategoriesExpense
+            ],404);
+        }
+
+    }
+
 
     public function UpdateExpense_get(){   
 

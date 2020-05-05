@@ -65,6 +65,16 @@ class Expense_model extends CI_Model {
         return $result;
     }
 
+    public function getCategoryExpense(){
+
+        $this->db->select('*');
+        $this->db->from('category_expense');
+        $this->db->order_by('name', 'ASC');
+        $query = $this->db->get();
+        $result = $query->result_array();
+        return $result;
+    }
+
 
 
 }

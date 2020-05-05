@@ -68,6 +68,7 @@ class Income_model extends CI_Model {
 
         $this->db->select('*');
         $this->db->from('category_income');
+        $this->db->order_by('name', 'ASC');
         $query = $this->db->get();
         $result = $query->result_array();
         return $result;

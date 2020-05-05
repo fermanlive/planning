@@ -16,7 +16,7 @@ import {getSession} from '../helpers/users_services';
 import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
 import {masterValidator} from '../helpers/validations';
 import {ReadIncome,getCategoryIncomes} from '../helpers/income_services';
-import {ReadExpense} from '../helpers/expense_services';
+import {ReadExpense,getCategoryExpense} from '../helpers/expense_services';
 
 
 var {height, width} = Dimensions.get('window');
@@ -124,6 +124,7 @@ async setBalance(idUser,IdPeriod){
 
 async  setCategories() {
   let categoriesIncomes = await getCategoryIncomes();
+  let categoriesExpenses = await getCategoryExpense();
   
 }
 
