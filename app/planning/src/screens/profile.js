@@ -122,7 +122,7 @@ class Profile extends React.Component {
 
             }      
             <TouchableOpacity 
-                onPress={() => this._closeSession()}
+                onPress={() => this.closeSession()}
                 style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
                 <Text style={[text.BText, text.TLight]}>
                     Cerrar Sesión

@@ -7,15 +7,17 @@ import {
 } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
+import {SimpleAlert} from '../components/modalAlert';
 import Modal from "react-native-modal";
 // import { Card, SimpleCard } from "@paraboly/react-native-card";
 // import {Shapes} from "react-native-background-shapes";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import ModalSelector from 'react-native-modal-selector';
 
 import {getSession} from '../helpers/users_services';
 import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
 import {masterValidator} from '../helpers/validations';
-import {ReadIncome,getCategoryIncomes} from '../helpers/income_services';
+import {ReadIncome,getCategoryIncomes,CreateIncome} from '../helpers/income_services';
 import {ReadExpense,getCategoryExpense} from '../helpers/expense_services';
 
 
@@ -35,7 +37,7 @@ class Home extends React.Component {
     this.state = { 
       modalVisible:false,
       showIcons:false,
-      chosenDate: 'Seleccionar fecha' ,
+      chosenDate: 0 ,
       chosenDateShow: 'Seleccionar fecha',
       displayTab:true,
       ModalIncome:false,
@@ -48,10 +50,12 @@ class Home extends React.Component {
       Expenses:[],
       nameError:'',
       amountError:'',
+      SuccessModal:false,
 
     };
 }
 async componentDidMount(){
+  moment.locale('es');
   this.setBusyIndicator(true, '');
   const onSession = await getSession();
   let idUser = onSession.id;
@@ -74,6 +78,7 @@ async setPeriod(idUser,IdPeriod){
 async setBalance(idUser,IdPeriod){
   let incomes = await ReadIncome(idUser,0,IdPeriod);
   incomes = incomes.status ? incomes.message: [];
+  console.warn('incomes',incomes);
   let TotalIncomes=0;
   let balance = [];
   let id = 0;
@@ -124,8 +129,28 @@ async setBalance(idUser,IdPeriod){
 
 async  setCategories() {
   let categoriesIncomes = await getCategoryIncomes();
+  categoriesIncomes = categoriesIncomes.status ? categoriesIncomes.message: null;
+
+
+  if(categoriesIncomes.length > 0){
+    categoriesIncomes.forEach(categoriesIncome => {
+      categoriesIncome.label = categoriesIncome.name;
+      categoriesIncome.key=categoriesIncome.id_category_income;
+    });
+  } 
+  this.setState({categoriesIncomes});
+
   let categoriesExpenses = await getCategoryExpense();
+  categoriesExpenses = categoriesExpenses.status  ? categoriesExpenses.message: null;
+
+  if(categoriesExpenses.length > 0){
+    categoriesExpenses.forEach(categoriesExpense => {
+      categoriesExpense.label = categoriesExpense.name;
+      categoriesExpense.key=categoriesExpense.id_category_expense;
+    });
+  } 
   
+  this.setState({categoriesExpenses});
 }
 
  random_rgba() {
@@ -138,7 +163,7 @@ _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
 _handleDatePicked = (date) => {
   this.setState({
-      chosenDate : moment(date).format('DD-MM-YYYY')
+      chosenDate : moment(date).format('YYYY-MM-DD')
   });
 this.setState({
       chosenDateShow : moment(date).format('DD/MM/YYYY')
@@ -159,7 +184,6 @@ this.setState({
     if(filter==2){
       this.setState({elements: this.state.balance});
     }else{
-      // this.setState({elements: []});
       var arreglo = [];
       for (let i = 0; i < this.state.balance.length; i++) {
         if(filter==this.state.balance[i].categoria){
@@ -179,14 +203,19 @@ this.setState({
   }
 
   async validateSendIncome(){
-    var allGood = [0,0];//[0,0,0,0]; //legth equal to zero to remove ignore password fields
+    var allGood = [0,0];//[0,0]; //legth equal to zero to remove ignore password fields
     if(this.state.nameError === '' || this.state.nameError === true) {this.setState({nameError : true}); allGood[0]=0}else{allGood[0]=1};
     if(this.state.amountError === '' || this.state.amountError === true) {this.setState({amountError : true}); allGood[1]=0}else{allGood[1]=1};  
-   
 
+    let id_categoryincome= typeof this.state.categoriesIncome !== 'undefined' ? this.state.categoriesIncome.id_category_income: 4 ;
+    let chosenDate= this.state.chosenDate ? this.state.chosenDate : 0 ;
     if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
-      let CreateIncomeResponse = await CreateIncome(this.state.name,this.state.idcategoryIncome,this.state.dateincome,this.state.period,this.state.amount);
-
+      let CreateIncomeResponse = await CreateIncome(this.state.name,id_categoryincome,chosenDate,this.state.IdPeriod,this.state.amount);
+      if(CreateIncomeResponse.status){
+        this.setState({SuccessModalLine1: CreateIncomeResponse.message});
+        this.setState({SuccesbuttonLabel: "ok, entendido"});
+        this.setState({SuccessModal : true});
+      }
     }
 
 }
@@ -239,7 +268,7 @@ this.setState({
                 null
               ]}>
               <Text style={[text.TravelInfoSubtitle, text.Regular, text.TLight,]}>
-                {this.state.periodStart} a {this.state.periodEnd}
+               {moment(this.state.periodStart).format('DD/MM/YYYY')} a {moment(this.state.periodEnd).format('DD/MM/YYYY')}
               </Text>
 
               <View style={layout.TravelCardInfoCont}>
@@ -534,6 +563,33 @@ this.setState({
                             // minimumDate = {new Date(this.state.sTrip.tripStartDateformat)}
                         />
                     </View>
+                    <View style={{marginBottom: 10,}}>
+                        <Text style={[text.InputLabel, {marginLeft: 15,}]}>
+                           Tipo de ingreso 
+                        </Text>
+                        <ModalSelector
+                            data={this.state.categoriesIncomes}
+                            initValue="Algo"
+                            onChange={categoriesIncome => this.validate('','categoriesIncome','categoriesIncomeError',categoriesIncome)}
+                            cancelText = "Cancelar"
+                            overlayStyle = {forms.PickerOverlay}
+                            optionContainerStyle = {[forms.PickerOptionCont, {margin: 0, padding: 0,}]}
+                            optionStyle ={forms.PickerOptionCont}
+                            optionTextStyle = {forms.PickerOptionText}
+                            selectedItemTextStyle = {[text.Regular, text.TLightBlue]}
+                            cancelStyle = {[buttons.GralButton, buttons.BLight, {marginTop: 15,}]}
+                            cancelTextStyle = {[text.BText, text.TLightBlue]}
+                            >                            
+
+                            <View style={[forms.InputCont, forms.LeftAlingment]}>
+                                <TextInput
+                                style={forms.Picker}
+                                editable={false}
+                                placeholder= "seleccionar tipo de ingreso"
+                                value={this.state.categoriesIncome?this.state.categoriesIncome.label:''} />
+                            </View>
+                        </ModalSelector>
+                    </View>
                     <TouchableOpacity 
                         onPress={() => this.validateSendIncome()}
                         style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
@@ -553,6 +609,14 @@ this.setState({
         <Loading 
         activity_loading={this.state.activity_loading} 
         activity_text={this.state.activity_text} 
+        />
+        <SimpleAlert 
+        isModalVisible = {this.state.SuccessModal} 
+        imageType = {2}
+        line1 = {this.state.SuccessModalLine1}
+        line2 = {this.state.SuccessModalLine2}
+        buttonLabel = {this.state.SuccesbuttonLabel}
+        closeModal={() => this.setState({SuccessModal: false})}
         />
         </View> 
       );

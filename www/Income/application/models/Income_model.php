@@ -18,14 +18,15 @@ class Income_model extends CI_Model {
     
     }
 
-    public function CreateIncome($value,$name,$typeCategory,$Iduser){
+    public function CreateIncome($name,$IdCategory,$dateIncome,$idperiod,$value){
 
         //Array con los datos del usuario
         $data = array(
             'value' => $value,
             'name' => $name,
-            'typeCategory' => $typeCategory,
-            'Iduser' => $Iduser,
+            'category_income_id_category_income' => $IdCategory,
+            'period_idperiod' => $idperiod,
+            'date_income'=>$dateIncome
         );
 
         $this->db->set($data);

@@ -22,7 +22,7 @@ class Incomes extends RestController {
         $IdPeriod = $this->get('idperiod');
         $value= $this->get('value');
 
-        $CreateIncome = $this->income_model->CreateIncome($name,$IdCategory,$dateIncome,$value);
+        $CreateIncome = $this->income_model->CreateIncome($name,$IdCategory,$dateIncome,$IdPeriod,$value);
         if($CreateIncome){
             $this->response([
                 'status' => true,
@@ -37,6 +37,29 @@ class Incomes extends RestController {
 
     }
 
+    public function ReadIncome_get(){  
+
+
+        $IdUser = $this->get('iduser');
+        $IdIncome = $this->get('idincome');
+        $IdPeriod = $this->get('IdPeriod');
+
+        $IdIncome = $IdIncome == null ? 0: $IdIncome;
+
+        $ReadIncome = $this->income_model->ReadIncome($IdUser,$IdPeriod,$IdIncome);
+        if(count($ReadIncome)>0){
+            $this->response([
+                'status' => true,
+                'message' => $ReadIncome
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => $ReadIncome
+            ],404);
+        }
+
+    }
     public function getCategoryIncomes_get(){  
 
         $Categories = $this->income_model->getCategoryIncomes();
@@ -51,7 +74,6 @@ class Incomes extends RestController {
                 'message' => $Categories
             ],404);
         }
-
     }
 
     public function UpdateIncome_get(){   
