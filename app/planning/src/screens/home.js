@@ -7,7 +7,6 @@ import {
 } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
-import AddExpense from '../components/AddExpense';
 import Modal from "react-native-modal";
 // import { Card, SimpleCard } from "@paraboly/react-native-card";
 // import {Shapes} from "react-native-background-shapes";
@@ -25,7 +24,6 @@ var {height, width} = Dimensions.get('window');
 //////Estilos
 const {layout, text, login, forms, buttons,colors} = require ('../styles/main');
 
-import LinearGradient from 'react-native-linear-gradient';
 import { Icon } from 'react-native-elements';
 import moment from 'moment';
 
@@ -61,13 +59,13 @@ async componentDidMount(){
   IdPeriod=IdPeriod.message;
   this.setPeriod(idUser,IdPeriod);
   this.setBalance(idUser,IdPeriod);
-  this.setCategories();
+  // this.setCategories();
   this.setBusyIndicator(false, '');
 }
 async setPeriod(idUser,IdPeriod){
   let period = await ReadPeriod(idUser,IdPeriod);
   period = period.status != undefined ? period.message: null;
-  let namePeriod = eriod.status != undefined  ? period.name: null;
+  let namePeriod = period.status != undefined  ? period.name: null;
   this.setState({IdPeriod});
   this.setState({namePeriod});
   this.setState({periodStart: period.date_start});

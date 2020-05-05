@@ -23,6 +23,16 @@ const CONST = require('../constants/constants');
     }
   }
 
+  export async function getCategoryIncomes(){
+    try{
+      var parameters=  `/` ;
+      var data = await fetchRequest("Incomes/getCategoryIncomes",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
+
 
   // ____________________________Comunication Services____________________________________________
 
