@@ -18,10 +18,10 @@ class Profile extends React.Component {
         };
     }
     _toggleEdit = () => this.setState({ Editable: !this.state.Editable });
-    
-    _closeSession = async () => {
-        await clearCredentials , 
-        this.props.navigation.navigate('Login')
+
+    async closeSession() {
+        await clearCredentials;
+        this.props.navigation.navigate('Login');
     };
     render() { 
       return (
