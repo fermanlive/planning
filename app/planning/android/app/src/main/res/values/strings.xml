@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Planning</string>
+    <string name="facebook_app_id">3101725919892983</string> 
+    <string name="fb_login_protocol_scheme">fb3101725919892983</string>
 </resources>

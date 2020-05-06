@@ -153,10 +153,12 @@ async  setCategories() {
   this.setState({categoriesExpenses});
 }
 
- random_rgba() {
+random_rgba() {
   var o = Math.round, r = Math.random, s = 255;
   return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
 }
+
+
 _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
 _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
@@ -217,8 +219,19 @@ this.setState({
         this.setState({SuccessModal : true});
       }
     }
-
-}
+  }
+  OpenIncome(){
+    this.setEmptyIncome();
+    this.setState({ModalIncome: true});
+  }
+  setEmptyIncome(){
+    this.setState({name: ''});
+    this.setState({nameError: ''});
+    this.setState({amountError: ''});
+    this.setState({categoriesIncome: ''});
+    this.setState({chosenDate: ''});
+    this.setState({amount: ''});
+  }
 
   static navigationOptions = ({ navigation }) => ({
     headerShown:false
@@ -372,7 +385,7 @@ this.setState({
             keyExtractor={item => item.id}
             renderItem={({item}) =>
               <TouchableOpacity
-                onPress={() => item.categoria ==0 ? null : this.props.navigation.navigate('CreditCard')}
+                onPress={() => item.categoria ==0 ? this.OpenIncome(item.categoria,item.value,item.name) : this.props.navigation.navigate('CreditCard')}
               >
                 <View  style={layout.AdminItemCont}>
                   <View style={layout.AdminItemIconCont}>

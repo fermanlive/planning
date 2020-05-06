@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "moment": "^2.25.3",
-    "react-native-modal-selector": "^2.0.1"
-  }
-}

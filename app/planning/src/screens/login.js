@@ -8,6 +8,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {RequestLogin,getSession} from '../helpers/users_services';
 import {SimpleAlert} from '../components/modalAlert';
 import Loading from '../components/Loading';
+import { LoginButton,AccessToken  } from 'react-native-fbsdk';
+
 
 class Login extends React.Component {
   constructor(props) {
@@ -42,8 +44,11 @@ class Login extends React.Component {
     this.setState({activity_loading: activity_loading})
     this.setState({activity_text: activity_text})
     }
+    
+
 
     render() {
+        
       return (
               <View style = {{ flex: 1, }}>
                     <LinearGradient 
@@ -98,6 +103,24 @@ class Login extends React.Component {
                                 Iniciar Sesión
                             </Text>
                         </TouchableOpacity>
+                        <LoginButton
+                                onLoginFinished={
+                                    (error, result) => {
+                                    if (error) {
+                                        console.log("login has error: " + result.error);
+                                    } else if (result.isCancelled) {
+                                        console.log("login is cancelled.");
+                                    } else {
+                                        AccessToken.getCurrentAccessToken().then(
+                                        (data) => {
+                                            this.setState({accessToken: data.accessToken.toString()})
+                                            console.warn(this.state.accessToken);
+                                        }
+                                        )
+                                    }
+                                    }
+                                }
+                                onLogoutFinished={() => console.log("logout.")}/>
                         <TouchableOpacity 
                             onPress={() => this.loginNav()}
                             disabled
