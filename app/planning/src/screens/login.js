@@ -1,14 +1,20 @@
 import React from 'react';
 import { View, Text, TextInput, Image,TouchableOpacity  } from 'react-native';
 const {layout, text, login, forms, buttons} = require ('../styles/main');
+const CONST = require('../constants/constants');
 
 import { Icon, colors } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {RequestLogin,getSession} from '../helpers/users_services';
+import {RequestLogin,getSession,CreateUser} from '../helpers/users_services';
+import AsyncStorage from '@react-native-community/async-storage';
 import {SimpleAlert} from '../components/modalAlert';
 import Loading from '../components/Loading';
-import { LoginButton,AccessToken  } from 'react-native-fbsdk';
+import { AccessToken,GraphRequest, GraphRequestManager  } from 'react-native-fbsdk';
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginManager,
+} = FBSDK;
 
 
 class Login extends React.Component {
@@ -44,10 +50,111 @@ class Login extends React.Component {
     this.setState({activity_loading: activity_loading})
     this.setState({activity_text: activity_text})
     }
+
+
+    handleFacebookLogin = async () => {
+        this.setBusyIndicator(true, '')
+        LoginManager.logInWithPermissions(['public_profile', 'email']).then( (result, error) => {
+          if (error) {
+            alert('Login fail with error: ' + error);
+          }
+          else if (result) {
+            if (result.isCancelled) {
+            }
+            else {
+              AccessToken.getCurrentAccessToken().then( async (data) => {
+                let accessToken = data.accessToken
+                const responseInfoCallback = async (error, result) => {
+                  if (error) {
+                      alert('Error fetching data: ' + error.toString());
+                  } else {
+                    const parameters = [result.id,result.first_name,result.last_name,result.picture.data.url,result.email,accessToken];
+                    if (!result.email || result.email == null || result.email == "") {
+                      Alert.alert('Error de inicio de sesión con Facebook', 'Tu cuenta de Facebook no tiene asociada un correo electrónico público. Regístrate usando tu correo electrónico y contraseña.',
+                      [
+                        {text: 'Cancelar', onPress: () => {}},
+                        {text: 'Registrar con correo', onPress: () => this.navigator.navigate('Register', {})},
+                      ])
+                    }
+                    else {
+                        var ValidateEmailparametros= `email/`+ result.email;
+                        var validateExistedUser=  fetch(CONST.URL_REQUEST + "users/validateExistedUser/"+ ValidateEmailparametros,{
+                            method: 'GET', 
+                            headers: { 'Accept': 'application/json', 
+                            'Content-Type': 'application/json', 
+                            }
+                        })
+                        .then((response) => response.json()) 
+                        .then((validateExistedUserResponse)=> {
+                            if(validateExistedUserResponse.status){
+                                var parametros= `email/`+ result.email + `/password/`+"default"+ `/name/`+result.first_name+ `/surname/`+result.last_name;
+                                var data=  fetch(CONST.URL_REQUEST + "users/CreateUser/"+ parametros,{
+                                    method: 'GET', 
+                                    headers: { 'Accept': 'application/json', 
+                                    'Content-Type': 'application/json', 
+                                    }
+                                })
+                                .then((response) => response.json()) 
+                                .then((CreateUser)=> {
+                                let parametrosLogin= `email/`+ result.email + `/password/`+"default";
+                                var data=  fetch(CONST.URL_REQUEST + "users/Login/"+ parametrosLogin,{
+                                    method: 'GET', 
+                                    headers: { 'Accept': 'application/json', 
+                                    'Content-Type': 'application/json', 
+                                    }
+                                })
+                                .then((response) => response.json()) 
+                                .then((loginResponse)=> {
+                                    if(loginResponse.status){
+                                        var session = {id:loginResponse.Userinfo.idusers, name:loginResponse.Userinfo.name, surname:loginResponse.Userinfo.surname, email:loginResponse.Userinfo.email};
+                                        AsyncStorage.setItem('session', JSON.stringify(session));
+                                        this.props.navigation.navigate('Home');
+                                    }
+                                })
+                            })
+
+                            }else{
+                                let parametrosLogin= `email/`+ result.email + `/password/`+"default";
+                                var data=  fetch(CONST.URL_REQUEST + "users/Login/"+ parametrosLogin,{
+                                    method: 'GET', 
+                                    headers: { 'Accept': 'application/json', 
+                                    'Content-Type': 'application/json', 
+                                    }
+                                })
+                                .then((response) => response.json()) 
+                                .then((loginResponse)=> {
+                                    if(loginResponse.status){
+                                        var session = {id:loginResponse.Userinfo.idusers, name:loginResponse.Userinfo.name, surname:loginResponse.Userinfo.surname, email:loginResponse.Userinfo.email};
+                                        AsyncStorage.setItem('session', JSON.stringify(session));
+                                        this.setBusyIndicator(false, '');
+                                        this.props.navigation.navigate('Home');
+                                    }
+                                })
+                            }
+                        })
+                    }
+                  }
+                }
+                const infoRequest = new GraphRequest( '/me', {
+                    accessToken: accessToken,
+                    parameters: {
+                      fields: {
+                        string: 'first_name,middle_name,last_name,picture,email'
+                      }
+                    }
+                  },
+                  responseInfoCallback
+                );
+                // Start the graph request.
+                new GraphRequestManager().addRequest(infoRequest).start()
+              })
+            }
+          }
+        })
+      }
     
-
-
     render() {
+
         
       return (
               <View style = {{ flex: 1, }}>
@@ -103,27 +210,8 @@ class Login extends React.Component {
                                 Iniciar Sesión
                             </Text>
                         </TouchableOpacity>
-                        <LoginButton
-                                onLoginFinished={
-                                    (error, result) => {
-                                    if (error) {
-                                        console.log("login has error: " + result.error);
-                                    } else if (result.isCancelled) {
-                                        console.log("login is cancelled.");
-                                    } else {
-                                        AccessToken.getCurrentAccessToken().then(
-                                        (data) => {
-                                            this.setState({accessToken: data.accessToken.toString()})
-                                            console.warn(this.state.accessToken);
-                                        }
-                                        )
-                                    }
-                                    }
-                                }
-                                onLogoutFinished={() => console.log("logout.")}/>
                         <TouchableOpacity 
-                            onPress={() => this.loginNav()}
-                            disabled
+                            onPress={() => this.handleFacebookLogin()}
                             style={[buttons.LoginButtons, buttons.ButtonFacebook]}>
                             <Text style={[text.BText, text.TLight,{paddingRight:20}]}>
                                 Iniciar Facebook 

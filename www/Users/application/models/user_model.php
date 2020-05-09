@@ -103,9 +103,9 @@ class User_model extends CI_Model {
         $query = $this->db->get();
     
         if(count($query->result_array()) >= 1 ){
-            return true;
-        }else {
             return false;
+        }else {
+            return true;
         } 
     }
 }
