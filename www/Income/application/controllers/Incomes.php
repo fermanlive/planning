@@ -105,7 +105,7 @@ class Incomes extends RestController {
         $IdUser = $this->get('iduser');
         $IdIncome = $this->get('idincome');
 
-        $DeleteIncome = $this->income_model->DeleteIncome($IdUser,$IdIncome);
+        $DeleteIncome = $this->income_model->DeleteIncome($IdIncome);
         if($DeleteIncome){
             $this->response([
                 'status' => true,

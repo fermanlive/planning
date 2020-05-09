@@ -51,6 +51,13 @@ class Income_model extends CI_Model {
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
+    public function DeleteIncome($IdIncome){
+        // $this->db->where('users_idusers',$users_idusers);
+        $this->db->where('id_income',$IdIncome);
+        $this->db->delete('income');
+        return $this->db->affected_rows() > 0 ? true : false ;
+    }
+
     public function ReadIncome($IdUser,$IdPeriod,$IdIncome){
 
         $this->db->select('*');

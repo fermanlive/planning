@@ -32,7 +32,15 @@ const CONST = require('../constants/constants');
       //console.log("doLogin-error= "+error);
     }
   }
-
+  export async function DeleteIncome(idincome,iduser){
+    try{
+      var parameters= `idincome/`+ idincome + `/iduser/`+ iduser + `/` ;
+      var data = await fetchRequest("Incomes/DeleteIncome",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
 
   // ____________________________Comunication Services____________________________________________
 

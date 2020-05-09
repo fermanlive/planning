@@ -17,7 +17,7 @@ import ModalSelector from 'react-native-modal-selector';
 import {getSession} from '../helpers/users_services';
 import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
 import {masterValidator} from '../helpers/validations';
-import {ReadIncome,getCategoryIncomes,CreateIncome} from '../helpers/income_services';
+import {ReadIncome,getCategoryIncomes,CreateIncome,DeleteIncome} from '../helpers/income_services';
 import {ReadExpense,getCategoryExpense} from '../helpers/expense_services';
 
 
@@ -51,14 +51,16 @@ class Home extends React.Component {
       nameError:'',
       amountError:'',
       SuccessModal:false,
+      idUser:0,
+      IncomeAction:0,
 
     };
 }
 async componentDidMount(){
-  moment.locale('es');
   this.setBusyIndicator(true, '');
   const onSession = await getSession();
   let idUser = onSession.id;
+  this.setState({idUser});
   let IdPeriod = await getDefaultPeriod(idUser);
   IdPeriod=IdPeriod.message;
   this.setPeriod(idUser,IdPeriod);
@@ -195,6 +197,34 @@ this.setState({
       this.setState({elements: arreglo});
     }
   }
+  
+  setCategorieIncome (id_category_income){
+
+    let categoriesIncomes = this.state.categoriesIncomes;
+    var CategoryInfo ;
+    categoriesIncomes.forEach(element => {
+      
+        if(id_category_income == element.id_category_income ){
+          CategoryInfo = element;
+        }
+    });    
+    this.setState({categoriesIncome : CategoryInfo});
+  }
+  async DeleteIncome(){
+    this.setBusyIndicator(true, '');
+    if(this.state.id_income !== undefined){
+     let DeleteIncomeResponse = await DeleteIncome(this.state.id_income,this.state.idUser);
+     this.setBusyIndicator(false, '');
+     if(DeleteIncomeResponse.status){
+        this.setState({SuccessModalLine1: DeleteIncomeResponse.message});
+        this.setState({SuccesbuttonLabel: "ok, entendido"});
+        this.setState({SuccessModal : true});
+        this.setState({ModalIncome : false});
+        this.setBalance(this.state.idUser,this.state.IdPeriod);
+     }
+    }
+    
+  }
 
 
   //////////////////////Validations////////////////////////
@@ -217,12 +247,21 @@ this.setState({
         this.setState({SuccessModalLine1: CreateIncomeResponse.message});
         this.setState({SuccesbuttonLabel: "ok, entendido"});
         this.setState({SuccessModal : true});
+        this.setState({ModalIncome : false});
+        this.setBalance(this.state.idUser,this.state.IdPeriod);
       }
     }
   }
-  OpenIncome(){
-    this.setEmptyIncome();
+  OpenIncome(categoria,value,name,date_income,id_category_income,id_income){
+    this.setState({IncomeAction: 0});
+    this._handleDatePicked(date_income);
+    this.setCategorieIncome(id_category_income);
+    this.setState({name});
+    this.setState({categoria});
+    this.setState({amount: value});
+    this.setState({id_income});
     this.setState({ModalIncome: true});
+    // this.setEmptyIncome();
   }
   setEmptyIncome(){
     this.setState({name: ''});
@@ -385,7 +424,7 @@ this.setState({
             keyExtractor={item => item.id}
             renderItem={({item}) =>
               <TouchableOpacity
-                onPress={() => item.categoria ==0 ? this.OpenIncome(item.categoria,item.value,item.name) : this.props.navigation.navigate('CreditCard')}
+                onPress={() => item.categoria ==0 ? this.OpenIncome(item.categoria,item.value,item.name,item.date_income,item.category_income_id_category_income,item.id_income) : this.props.navigation.navigate('CreditCard')}
               >
                 <View  style={layout.AdminItemCont}>
                   <View style={layout.AdminItemIconCont}>
@@ -439,7 +478,7 @@ this.setState({
                   name='plus'
                   type='material-community'
                   color={colors.main}
-                  onPress={() => {this.setState({ModalIncome : true})}}
+                  onPress={() => {this.setState({ModalIncome : true}), this.setState({IncomeAction: 1})}}
                   />
                   <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Agregar {"\n"} Ingreso</Text>
                 </View>
@@ -514,6 +553,7 @@ this.setState({
                                 onChangeText={(name) => this.validate('text','name','nameError',name)}
                                 placeholder="Ingresar Nombre ingreso"
                                 keyboardType = "default"
+                                value={this.state.name}
                             />
                         </View>
                         {this.state.nameError? 
@@ -534,6 +574,7 @@ this.setState({
                                 onChangeText={(amount) => this.validate('num','amount','amountError',amount)}
                                 placeholder="Ingresar Monto"
                                 keyboardType = "numeric"
+                                value={this.state.amount}
                             />
                         </View>
                         {this.state.amountError? 
@@ -573,6 +614,7 @@ this.setState({
                             isVisible={this.state.isDateTimePickerVisible}
                             onConfirm={this._handleDatePicked}
                             onCancel={this._hideDateTimePicker}
+                            initValue={this.state.chosenDate}
                             // minimumDate = {new Date(this.state.sTrip.tripStartDateformat)}
                         />
                     </View>
@@ -603,6 +645,8 @@ this.setState({
                             </View>
                         </ModalSelector>
                     </View>
+                    {this.state.IncomeAction == 1 ///Agregar igreso
+                     ? 
                     <TouchableOpacity 
                         onPress={() => this.validateSendIncome()}
                         style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
@@ -610,6 +654,25 @@ this.setState({
                           Enviar
                         </Text>
                     </TouchableOpacity>
+                      :        
+                      <TouchableOpacity 
+                          onPress={() => this.validateSendIncome()}
+                          style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
+                          <Text style={[text.BText, text.TLight]}>
+                            Actualizar
+                          </Text>
+                      </TouchableOpacity>
+                      }
+                    {this.state.IncomeAction == 1 ///Agregar ingreso
+                     ? null:
+                      <TouchableOpacity 
+                        onPress={() => this.DeleteIncome()}
+                        style={[buttons.GralButton, buttons.ButtonAccentRed]}>
+                        <Text style={[text.BText, text.TLight]}>
+                          Eliminar
+                        </Text>
+                     </TouchableOpacity>
+                      }                 
                     <TouchableOpacity 
                         onPress={() => this.setState({ModalIncome: false})}
                         style={[buttons.GralButton, buttons.ButtonRegisterLoginAccentBlue]}>
