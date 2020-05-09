@@ -23,6 +23,16 @@ const CONST = require('../constants/constants');
     }
   }
 
+  export async function UpdateIncome(name,idcategory,dateincome,idperiod,value,IdUser,IdIncome){
+    try{
+      var parameters= `name/`+ name + `/IdCategory/`+ idcategory + `/dateincome/`+ dateincome + `/value/`+ value +`/iduser/`+ IdUser + `/idincome/`+ IdIncome ;
+      var data = await fetchRequest("Incomes/UpdateIncome",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
+
   export async function getCategoryIncomes(){
     try{
       var parameters=  `/` ;

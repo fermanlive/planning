@@ -79,7 +79,7 @@ class Incomes extends RestController {
     public function UpdateIncome_get(){   
 
         $name = $this->get('name');
-        $IdCategory = $this->get('idcategory');
+        $IdCategory = $this->get('IdCategory');
         $dateIncome = $this->get('dateincome');
         $value= $this->get('value');
         $IdUser = $this->get('iduser');

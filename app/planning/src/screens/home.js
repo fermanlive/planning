@@ -17,7 +17,7 @@ import ModalSelector from 'react-native-modal-selector';
 import {getSession} from '../helpers/users_services';
 import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
 import {masterValidator} from '../helpers/validations';
-import {ReadIncome,getCategoryIncomes,CreateIncome,DeleteIncome} from '../helpers/income_services';
+import {ReadIncome,getCategoryIncomes,CreateIncome,DeleteIncome,UpdateIncome} from '../helpers/income_services';
 import {ReadExpense,getCategoryExpense} from '../helpers/expense_services';
 
 
@@ -234,7 +234,7 @@ this.setState({
     this.setState({[type] : verdict});
   }
 
-  async validateSendIncome(){
+  async validateSendIncome(IncomeAction){
     var allGood = [0,0];//[0,0]; //legth equal to zero to remove ignore password fields
     if(this.state.nameError === '' || this.state.nameError === true) {this.setState({nameError : true}); allGood[0]=0}else{allGood[0]=1};
     if(this.state.amountError === '' || this.state.amountError === true) {this.setState({amountError : true}); allGood[1]=0}else{allGood[1]=1};  
@@ -242,9 +242,16 @@ this.setState({
     let id_categoryincome= typeof this.state.categoriesIncome !== 'undefined' ? this.state.categoriesIncome.id_category_income: 4 ;
     let chosenDate= this.state.chosenDate ? this.state.chosenDate : 0 ;
     if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
-      let CreateIncomeResponse = await CreateIncome(this.state.name,id_categoryincome,chosenDate,this.state.IdPeriod,this.state.amount);
-      if(CreateIncomeResponse.status){
-        this.setState({SuccessModalLine1: CreateIncomeResponse.message});
+      let IncomeResponse;
+      if (IncomeAction == 0) {
+         IncomeResponse = await UpdateIncome(this.state.name,id_categoryincome,chosenDate,this.state.IdPeriod,this.state.amount,this.state.idUser,this.state.id_income);
+      }else{
+         IncomeResponse = await CreateIncome(this.state.name,id_categoryincome,chosenDate,this.state.IdPeriod,this.state.amount);
+      }
+      console.warn("IncomeAction",IncomeAction);
+      console.warn("IncomeResponse",IncomeResponse);
+      if(IncomeResponse.status){
+        this.setState({SuccessModalLine1: IncomeResponse.message});
         this.setState({SuccesbuttonLabel: "ok, entendido"});
         this.setState({SuccessModal : true});
         this.setState({ModalIncome : false});
@@ -253,6 +260,8 @@ this.setState({
     }
   }
   OpenIncome(categoria,value,name,date_income,id_category_income,id_income){
+    this.setState({nameError: false});
+    this.setState({amountError: false});
     this.setState({IncomeAction: 0});
     this._handleDatePicked(date_income);
     this.setCategorieIncome(id_category_income);
@@ -648,7 +657,7 @@ this.setState({
                     {this.state.IncomeAction == 1 ///Agregar igreso
                      ? 
                     <TouchableOpacity 
-                        onPress={() => this.validateSendIncome()}
+                        onPress={() => this.validateSendIncome(this.state.IncomeAction)}
                         style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
                         <Text style={[text.BText, text.TLight]}>
                           Enviar
@@ -656,7 +665,7 @@ this.setState({
                     </TouchableOpacity>
                       :        
                       <TouchableOpacity 
-                          onPress={() => this.validateSendIncome()}
+                          onPress={() => this.validateSendIncome(this.state.IncomeAction)}
                           style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
                           <Text style={[text.BText, text.TLight]}>
                             Actualizar

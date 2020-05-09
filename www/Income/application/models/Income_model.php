@@ -34,20 +34,20 @@ class Income_model extends CI_Model {
         $insert_id = $this->db->insert_id();
         return $insert_id > 0 ? true : false ;
     }
-
-    public function EditIncome($value,$name,$typeCategory,$Iduser){
+    
+    public function UpdateIncome($name,$IdCategory,$dateIncome,$value,$IdUser,$IdIncome){
 
         //Array con los datos del usuario
         $data = array(
             'value' => $value,
             'name' => $name,
-            'typeCategory' => $typeCategory,
-            'Iduser' => $Iduser,
+            'category_income_id_category_income' => $IdCategory,
+            'date_income' => $dateIncome
         );
 
         $this->db->set($data);
+        $this->db->where('id_income',$IdIncome);
         $this->db->update('Income');
-        $this->db->where('Iduser',$Iduser);
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
