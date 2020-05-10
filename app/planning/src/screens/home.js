@@ -41,6 +41,7 @@ class Home extends React.Component {
       chosenDateShow: 'Seleccionar fecha',
       displayTab:true,
       ModalIncome:false,
+      ModalExpense:false,
       numericBalance:2,
       namePeriod:'',
       filterTab:2,
@@ -50,9 +51,12 @@ class Home extends React.Component {
       Expenses:[],
       nameError:'',
       amountError:'',
+      nameExpenseError:'',
+      amountExpenseError:'',
       SuccessModal:false,
       idUser:0,
       IncomeAction:0,
+      
 
     };
 }
@@ -150,8 +154,7 @@ async  setCategories() {
       categoriesExpense.label = categoriesExpense.name;
       categoriesExpense.key=categoriesExpense.id_category_expense;
     });
-  } 
-  
+  }  
   this.setState({categoriesExpenses});
 }
 
@@ -223,7 +226,21 @@ this.setState({
         this.setBalance(this.state.idUser,this.state.IdPeriod);
      }
     }
-    
+  }
+
+  async DeleteExpense(){
+    this.setBusyIndicator(true, '');
+    if(this.state.id_expense !== undefined){
+     let DeleteExpenseResponse = await DeleteExpense(this.state.id_income,this.state.idUser);
+     this.setBusyIndicator(false, '');
+     if(DeleteExpenseResponse.status){
+        this.setState({SuccessModalLine1: DeleteExpenseResponse.message});
+        this.setState({SuccesbuttonLabel: "ok, entendido"});
+        this.setState({SuccessModal : true});
+        this.setState({ModalIncome : false});
+        this.setBalance(this.state.idUser,this.state.IdPeriod);
+     }
+    }
   }
 
 
@@ -260,6 +277,45 @@ this.setState({
     }
   }
   OpenIncome(categoria,value,name,date_income,id_category_income,id_income){
+    this.setState({nameError: false});
+    this.setState({amountError: false});
+    this.setState({IncomeAction: 0});
+    this._handleDatePicked(date_income);
+    this.setCategorieIncome(id_category_income);
+    this.setState({name});
+    this.setState({categoria});
+    this.setState({amount: value});
+    this.setState({id_income});
+    this.setState({ModalIncome: true});
+    // this.setEmptyIncome();
+  }
+
+  async validateSendExpense(ExpenseAction){
+    var allGood = [0,0];//[0,0]; //legth equal to zero to remove ignore password fields
+    if(this.state.nameExpenseError === '' || this.state.nameExpenseError === true) {this.setState({nameExpenseError : true}); allGood[0]=0}else{allGood[0]=1};
+    if(this.state.amountExpenseError === '' || this.state.amountExpenseError === true) {this.setState({amountExpenseError : true}); allGood[1]=0}else{allGood[1]=1};  
+
+    let id_categoryexpense= typeof this.state.categoriesExpenses !== 'undefined' ? this.state.categoriesExpense.id_category_expense: 5;
+    let chosenDate= this.state.chosenDate ? this.state.chosenDate : 0 ;
+    if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
+      let ExpenseResponse;
+      if (ExpenseAction == 0) {
+         ExpenseResponse = await UpdateExpense(this.state.name,id_categoryexpense,chosenDate,this.state.IdPeriod,this.state.amount,this.state.idUser,this.state.id_income);
+      }else{
+         ExpenseResponse = await CreateExpense(this.state.name,id_categoryexpense,chosenDate,this.state.IdPeriod,this.state.amount);
+      }
+      console.warn("ExpenseAction",ExpenseAction);
+      console.warn("ExpenseResponse",ExpenseResponse);
+      if(ExpenseResponse.status){
+        this.setState({SuccessModalLine1: ExpenseResponse.message});
+        this.setState({SuccesbuttonLabel: "ok, entendido"});
+        this.setState({SuccessModal : true});
+        this.setState({ModalIncome : false});
+        this.setBalance(this.state.idUser,this.state.IdPeriod);
+      }
+    }
+  }
+  OpenExpense(categoria,value,name,date_income,id_category_income,id_income){
     this.setState({nameError: false});
     this.setState({amountError: false});
     this.setState({IncomeAction: 0});
@@ -497,20 +553,9 @@ this.setState({
                   name='minus'
                   type='material-community'
                   color={colors.main}
-                  onPress={() => {this.setState({modalVisible : true})}}
+                  onPress={() => {this.setState({ModalExpense : true})}}
                   />
                   <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Agregar {"\n"} Egreso</Text>
-                </View>
-                <View style={[layout.ButtonsSpends3]}>
-                  <Icon
-                  raised
-                  name='calendar'
-                  type='material-community'
-                  color={colors.main}
-                  backgroundColor='#000000'
-                  onPress={() => this.props.navigation.navigate('DictionaryScreen')}
-                  />
-                  <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Agregar {"\n"} Periodo</Text>
                 </View>
                 <View style={[layout.ButtonsSpends3]}>
                   <Icon
@@ -536,6 +581,160 @@ this.setState({
               />
               </View>
             }
+              <Modal
+                backdropColor = {colors.AccentRedOpacity}
+                backdropOpacity = {0.9}
+                style = { {padding: 0, margin: 0,} }
+                isVisible={this.state.ModalExpense}
+                transparent={false}
+                >  
+                    <View style={[layout.GralTextCont, {marginBottom: 30,marginTop:30}]}>
+                        <Text style={[text.GralText, text.Regular]}>
+                        Agregar un Egreso 
+                        </Text>
+                    </View>
+                    <ScrollView
+                      style = { layout.MainContainerSV }
+                      showsVerticalScrollIndicator = {false}
+                      >
+                    <View style={layout.InputGroup}>
+                        <Text style={text.InputLabel}>
+                        Nombre del Egreso
+                        </Text>
+                        <View style={[forms.InputCont, forms.LeftAlingment, this.state.nameExpenseError?forms.AlertInput:null]}>
+                          <TextInput
+                              style={forms.Input}
+                              onChangeText={(nameExpense) => this.validate('text','nameExpense','nameExpenseError',nameExpense)}
+                              placeholder="Ingresar Nombre Egreso"
+                              keyboardType = "default"
+                              value={this.state.name}
+                          />
+                        </View>
+                        {this.state.nameError? 
+                          <View style={layout.textAlertCont}>
+                                  <Text style={[layout.textAlertError, text.Regular]}>
+                                      Nombre no valido
+                                  </Text>
+                          </View>
+                        :null}
+                    </View>
+                    <View style={layout.InputGroup}>
+                        <Text style={text.InputLabel}>
+                        Monto del Egreso
+                        </Text>
+                        <View style={[forms.InputCont, forms.LeftAlingment, this.state.amountExpenseError?forms.AlertInput:null]}>
+                            <TextInput
+                                style={forms.Input}
+                                onChangeText={(amountExpense) => this.validate('num','amountExpense','amountExpenseError',amountExpense)}
+                                placeholder="Ingresar Monto"
+                                keyboardType = "numeric"
+                                value={this.state.amount}
+                            />
+                        </View>
+                        {this.state.amountError? 
+                          <View style={layout.textAlertCont}>
+                              <Text style={[layout.textAlertError, text.Regular]}>
+                                  Monto no valido
+                              </Text>
+                          </View>
+                        :null}
+                    </View>
+                    <View style={layout.InputGroup}>
+                        <Text style={text.InputLabel}>
+                            Fecha del egreso
+                        </Text>
+                        <View style={[forms.InputCont, forms.LeftAlingment]}>
+                            <View style={forms.InputInteraction}>
+                            <Icon
+                              name='calendar'
+                              type='material-community'
+                              color={text.TDarkGray}
+                              backgroundColor='#000000'
+                              size={22}
+                              />
+                            </View>
+                            <TouchableOpacity
+                                style={forms.DatePickerCont}
+                                onPress={this._showDateTimePicker}
+                            >
+                                <Text
+                                style={forms.DatePickerText}>
+                                    {this.state.chosenDateShow}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        
+                        <DateTimePicker
+                            isVisible={this.state.isDateTimePickerVisible}
+                            onConfirm={this._handleDatePicked}
+                            onCancel={this._hideDateTimePicker}
+                            initValue={this.state.chosenDate}
+                        />
+                    </View>
+                    <View style={{marginBottom: 10,}}>
+                        <Text style={[text.InputLabel, {marginLeft: 15,}]}>
+                           Tipo de ingreso 
+                        </Text>
+                        <ModalSelector
+                            data={this.state.categoriesExpenses}
+                            initValue="Algo"
+                            onChange={categoriesExpense => this.validate('','categoriesExpense','categoriesExpenseError',categoriesExpense)}
+                            cancelText = "Cancelar"
+                            overlayStyle = {forms.PickerOverlay}
+                            optionContainerStyle = {[forms.PickerOptionCont, {margin: 0, padding: 0,}]}
+                            optionStyle ={forms.PickerOptionCont}
+                            optionTextStyle = {forms.PickerOptionText}
+                            selectedItemTextStyle = {[text.Regular, text.TLightBlue]}
+                            cancelStyle = {[buttons.GralButton, buttons.BLight, {marginTop: 15,}]}
+                            cancelTextStyle = {[text.BText, text.TLightBlue]}
+                            >                            
+
+                            <View style={[forms.InputCont, forms.LeftAlingment]}>
+                                <TextInput
+                                style={forms.Picker}
+                                editable={false}
+                                placeholder= "seleccionar tipo de ingreso"
+                                value={this.state.categoriesExpense?this.state.categoriesExpense.label:''} />
+                            </View>
+                        </ModalSelector>
+                    </View>
+                    {this.state.ExpenseAction == 1 ///Agregar igreso
+                     ? 
+                    <TouchableOpacity 
+                        onPress={() => this.validateSendExpense(this.state.ExpenseAction)}
+                        style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
+                        <Text style={[text.BText, text.TLight]}>
+                          Enviar
+                        </Text>
+                    </TouchableOpacity>
+                      :        
+                      <TouchableOpacity 
+                          onPress={() => this.validateSendExpense(this.state.ExpenseAction)}
+                          style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
+                          <Text style={[text.BText, text.TLight]}>
+                            Actualizar
+                          </Text>
+                      </TouchableOpacity>
+                      }
+                    {this.state.ExpenseAction == 1 ///Agregar ingreso
+                     ? null:
+                      <TouchableOpacity 
+                        onPress={() => this.DeleteExpense()}
+                        style={[buttons.GralButton, buttons.ButtonAccentRed]}>
+                        <Text style={[text.BText, text.TLight]}>
+                          Eliminar
+                        </Text>
+                     </TouchableOpacity>
+                      }                 
+                    <TouchableOpacity 
+                        onPress={() => this.setState({ModalExpense: false})}
+                        style={[buttons.GralButton, buttons.ButtonRegisterLoginAccentBlue]}>
+                        <Text style={[text.BText, text.TFacebookColor]}>
+                          Cancelar
+                        </Text>
+                    </TouchableOpacity>
+                    </ScrollView>
+              </Modal>
               <Modal
                 backdropColor = {colors.opacityMain}
                 backdropOpacity = {0.9}

@@ -61,6 +61,7 @@ export const colors = {
 	Base: '#66E49B',
 	AccentPurple: '#7C0E93',
 	AccentRed: '#93110E',
+	AccentRedOpacity:'#E0BBBA',
 	AccentBlue:'#5B8EFF',
 	baseColor:'#89C763',
 	

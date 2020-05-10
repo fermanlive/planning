@@ -51,6 +51,13 @@ class Login extends React.Component {
     this.setState({activity_text: activity_text})
     }
 
+    async componentDidMount(){
+      const onSession = await getSession();
+      console.warn("onSession",onSession);
+      if (typeof onSession.id !== 'undefined') {
+        this.props.navigation.navigate('Home');
+      }
+    }
 
     handleFacebookLogin = async () => {
         this.setBusyIndicator(true, '')
