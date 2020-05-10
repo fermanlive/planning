@@ -21,11 +21,30 @@ const CONST = require('../constants/constants');
       //console.log("doLogin-error= "+error);
     }
   }
+  export async function CreateExpense(name,idcategory,dateexpense,value,idperiod){
+    try{
+      var parameters= `name/`+ name + `/idcategory/`+ idcategory + `/dateexpense/`+ dateexpense + `/value/`+ value + `/idperiod/`+ idperiod + `/`;
+      var data = await fetchRequest("Expenses/CreateExpense",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
+  export async function UpdateExpense(iduser,idexpense,IdPeriod){
+    try{
+      var parameters= `iduser/`+ iduser + `/idexpense/`+ idexpense + `/IdPeriod/`+ IdPeriod +`/`;
+      var data = await fetchRequest("Expenses/ReadExpense",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
 
   // ____________________________Comunication Services____________________________________________
 
 export async function fetchRequest(service,parameters){
     try {
+      console.warn(CONST.URL_REQUEST_EXPENSE + service + '/' + parameters);
       var data= await fetch(CONST.URL_REQUEST_EXPENSE + service + '/' + parameters,{
         method: 'GET', 
         headers: { 'Accept': 'application/json', 

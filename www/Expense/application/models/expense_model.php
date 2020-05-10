@@ -18,14 +18,16 @@ class Expense_model extends CI_Model {
     
     }
 
-    public function CreateExpense($value,$name,$typeCategory,$Iduser){
+    public function CreateExpense($name,$IdCategory,$dateExpense,$value,$IdPeriod){
 
         //Array con los datos del usuario
         $data = array(
             'value' => $value,
             'name' => $name,
-            'typeCategory' => $typeCategory,
-            'Iduser' => $Iduser,
+            'category_expense_id_category_expense' => $IdCategory,
+            'date' => $dateExpense,
+            'value' => $value,
+            'period_idperiod' => $IdPeriod,
         );
 
         $this->db->set($data);

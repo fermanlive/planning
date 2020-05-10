@@ -22,7 +22,7 @@ class Expenses extends RestController {
         $IdPeriod = $this->get('idperiod');
         $value= $this->get('value');
 
-        $CreateExpense = $this->expense_model->CreateExpense($name,$IdCategory,$dateExpense,$value);
+        $CreateExpense = $this->expense_model->CreateExpense($name,$IdCategory,$dateExpense,$value,$IdPeriod);
         if($CreateExpense){
             $this->response([
                 'status' => true,
@@ -107,7 +107,7 @@ class Expenses extends RestController {
         $IdExpense = $this->get('idexpense');
 
         $DeleteExpense = $this->expense_model->DeleteExpense($IdUser,$IdExpense);
-        if($DeleteExpense){
+        if($DeleteExpense){ 
             $this->response([
                 'status' => true,
                 'message' => 'Egreso eliminado'

@@ -1,10 +1,7 @@
 import React from 'react';
 import numeral from 'numeral';
 import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,ScrollView,TextInput} from 'react-native';
-// import {Modal,TextInput,Picker} from 'react-native';
-import {
-  PieChart
-} from 'react-native-chart-kit';
+import {PieChart} from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
 import {SimpleAlert} from '../components/modalAlert';
@@ -18,7 +15,7 @@ import {getSession} from '../helpers/users_services';
 import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
 import {masterValidator} from '../helpers/validations';
 import {ReadIncome,getCategoryIncomes,CreateIncome,DeleteIncome,UpdateIncome} from '../helpers/income_services';
-import {ReadExpense,getCategoryExpense} from '../helpers/expense_services';
+import {ReadExpense,getCategoryExpense,CreateExpense} from '../helpers/expense_services';
 
 
 var {height, width} = Dimensions.get('window');
@@ -56,6 +53,7 @@ class Home extends React.Component {
       SuccessModal:false,
       idUser:0,
       IncomeAction:0,
+      ExpenseAction:0,
       
 
     };
@@ -84,7 +82,6 @@ async setPeriod(idUser,IdPeriod){
 async setBalance(idUser,IdPeriod){
   let incomes = await ReadIncome(idUser,0,IdPeriod);
   incomes = incomes.status ? incomes.message: [];
-  console.warn('incomes',incomes);
   let TotalIncomes=0;
   let balance = [];
   let id = 0;
@@ -295,22 +292,20 @@ this.setState({
     if(this.state.nameExpenseError === '' || this.state.nameExpenseError === true) {this.setState({nameExpenseError : true}); allGood[0]=0}else{allGood[0]=1};
     if(this.state.amountExpenseError === '' || this.state.amountExpenseError === true) {this.setState({amountExpenseError : true}); allGood[1]=0}else{allGood[1]=1};  
 
-    let id_categoryexpense= typeof this.state.categoriesExpenses !== 'undefined' ? this.state.categoriesExpense.id_category_expense: 5;
+    let id_categoryexpense= typeof this.state.categoriesExpense !== 'undefined' ? this.state.categoriesExpense.id_category_expense: 5;
     let chosenDate= this.state.chosenDate ? this.state.chosenDate : 0 ;
     if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
       let ExpenseResponse;
       if (ExpenseAction == 0) {
          ExpenseResponse = await UpdateExpense(this.state.name,id_categoryexpense,chosenDate,this.state.IdPeriod,this.state.amount,this.state.idUser,this.state.id_income);
       }else{
-         ExpenseResponse = await CreateExpense(this.state.name,id_categoryexpense,chosenDate,this.state.IdPeriod,this.state.amount);
+        ExpenseResponse = await CreateExpense(this.state.nameExpense,id_categoryexpense,chosenDate,this.state.amountExpense,this.state.IdPeriod);
       }
-      console.warn("ExpenseAction",ExpenseAction);
-      console.warn("ExpenseResponse",ExpenseResponse);
       if(ExpenseResponse.status){
         this.setState({SuccessModalLine1: ExpenseResponse.message});
         this.setState({SuccesbuttonLabel: "ok, entendido"});
         this.setState({SuccessModal : true});
-        this.setState({ModalIncome : false});
+        this.setState({ModalExpense : false});
         this.setBalance(this.state.idUser,this.state.IdPeriod);
       }
     }
@@ -553,7 +548,7 @@ this.setState({
                   name='minus'
                   type='material-community'
                   color={colors.main}
-                  onPress={() => {this.setState({ModalExpense : true})}}
+                  onPress={() => {this.setState({ModalExpense : true}),this.setState({ExpenseAction: 1}) }}
                   />
                   <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Agregar {"\n"} Egreso</Text>
                 </View>
@@ -698,7 +693,7 @@ this.setState({
                             </View>
                         </ModalSelector>
                     </View>
-                    {this.state.ExpenseAction == 1 ///Agregar igreso
+                    {this.state.ExpenseAction == 1 ///Agregar Egreso
                      ? 
                     <TouchableOpacity 
                         onPress={() => this.validateSendExpense(this.state.ExpenseAction)}
@@ -716,7 +711,7 @@ this.setState({
                           </Text>
                       </TouchableOpacity>
                       }
-                    {this.state.ExpenseAction == 1 ///Agregar ingreso
+                    {this.state.ExpenseAction == 1 ///Agregar Egreso
                      ? null:
                       <TouchableOpacity 
                         onPress={() => this.DeleteExpense()}
