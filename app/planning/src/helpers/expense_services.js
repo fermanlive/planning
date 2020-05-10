@@ -30,10 +30,19 @@ const CONST = require('../constants/constants');
       //console.log("doLogin-error= "+error);
     }
   }
-  export async function UpdateExpense(iduser,idexpense,IdPeriod){
+  export async function UpdateExpense(name,idcategory,dateexpense,idperiod,value,IdUser,idexpense){
     try{
-      var parameters= `iduser/`+ iduser + `/idexpense/`+ idexpense + `/IdPeriod/`+ IdPeriod +`/`;
-      var data = await fetchRequest("Expenses/ReadExpense",parameters);
+      var parameters= `name/`+ name + `/idcategory/`+ idcategory + `/dateexpense/`+ dateexpense + `/value/`+ value +`/iduser/`+ IdUser + `/idexpense/`+ idexpense ;
+      var data = await fetchRequest("Expenses/UpdateExpense",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
+  export async function DeleteExpense(idexpense,iduser){
+    try{
+      var parameters= `idexpense/`+ idexpense + `/iduser/`+ iduser + `/` ;
+      var data = await fetchRequest("Expenses/DeleteExpense",parameters);
       return data;
     } catch (error) {
       //console.log("doLogin-error= "+error);
@@ -44,7 +53,6 @@ const CONST = require('../constants/constants');
 
 export async function fetchRequest(service,parameters){
     try {
-      console.warn(CONST.URL_REQUEST_EXPENSE + service + '/' + parameters);
       var data= await fetch(CONST.URL_REQUEST_EXPENSE + service + '/' + parameters,{
         method: 'GET', 
         headers: { 'Accept': 'application/json', 

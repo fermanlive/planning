@@ -15,7 +15,7 @@ import {getSession} from '../helpers/users_services';
 import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
 import {masterValidator} from '../helpers/validations';
 import {ReadIncome,getCategoryIncomes,CreateIncome,DeleteIncome,UpdateIncome} from '../helpers/income_services';
-import {ReadExpense,getCategoryExpense,CreateExpense} from '../helpers/expense_services';
+import {ReadExpense,getCategoryExpense,CreateExpense,DeleteExpense,UpdateExpense} from '../helpers/expense_services';
 
 
 var {height, width} = Dimensions.get('window');
@@ -195,7 +195,9 @@ this.setState({
         }
       }
       this.setState({elements: arreglo});
+      console.warn(arreglo);
     }
+    
   }
   
   setCategorieIncome (id_category_income){
@@ -209,6 +211,18 @@ this.setState({
         }
     });    
     this.setState({categoriesIncome : CategoryInfo});
+  }
+  setCategorieExpense (id_category_expense){
+
+    let categoriesExpense = this.state.categoriesExpenses;
+    var CategoryInfo ;
+    categoriesExpense.forEach(element => {
+      
+        if(id_category_expense == element.id_category_expense ){
+          CategoryInfo = element;
+        }
+    });    
+    this.setState({categoriesExpense : CategoryInfo});
   }
   async DeleteIncome(){
     this.setBusyIndicator(true, '');
@@ -227,14 +241,16 @@ this.setState({
 
   async DeleteExpense(){
     this.setBusyIndicator(true, '');
+    
     if(this.state.id_expense !== undefined){
-     let DeleteExpenseResponse = await DeleteExpense(this.state.id_income,this.state.idUser);
+      console.warn(this.state.id_expense);
+     let DeleteExpenseResponse = await DeleteExpense(this.state.id_expense,this.state.idUser);
      this.setBusyIndicator(false, '');
      if(DeleteExpenseResponse.status){
         this.setState({SuccessModalLine1: DeleteExpenseResponse.message});
         this.setState({SuccesbuttonLabel: "ok, entendido"});
         this.setState({SuccessModal : true});
-        this.setState({ModalIncome : false});
+        this.setState({ModalExpense : false});
         this.setBalance(this.state.idUser,this.state.IdPeriod);
      }
     }
@@ -297,7 +313,7 @@ this.setState({
     if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
       let ExpenseResponse;
       if (ExpenseAction == 0) {
-         ExpenseResponse = await UpdateExpense(this.state.name,id_categoryexpense,chosenDate,this.state.IdPeriod,this.state.amount,this.state.idUser,this.state.id_income);
+         ExpenseResponse = await UpdateExpense(this.state.nameExpense,id_categoryexpense,chosenDate,this.state.IdPeriod,this.state.amountExpense,this.state.idUser,this.state.id_expense);
       }else{
         ExpenseResponse = await CreateExpense(this.state.nameExpense,id_categoryexpense,chosenDate,this.state.amountExpense,this.state.IdPeriod);
       }
@@ -310,17 +326,17 @@ this.setState({
       }
     }
   }
-  OpenExpense(categoria,value,name,date_income,id_category_income,id_income){
-    this.setState({nameError: false});
-    this.setState({amountError: false});
-    this.setState({IncomeAction: 0});
+  OpenExpense(categoria,value,nameExpense,date_income,id_category_expense,id_expense){
+    this.setState({nameExpenseError: false});
+    this.setState({amountExpenseError: false});
+    this.setState({ExpenseAction: 0});
     this._handleDatePicked(date_income);
-    this.setCategorieIncome(id_category_income);
-    this.setState({name});
+    this.setCategorieExpense(id_category_expense);
+    this.setState({nameExpense});
     this.setState({categoria});
-    this.setState({amount: value});
-    this.setState({id_income});
-    this.setState({ModalIncome: true});
+    this.setState({amountExpense: value});
+    this.setState({id_expense});
+    this.setState({ModalExpense: true});
     // this.setEmptyIncome();
   }
   setEmptyIncome(){
@@ -484,7 +500,9 @@ this.setState({
             keyExtractor={item => item.id}
             renderItem={({item}) =>
               <TouchableOpacity
-                onPress={() => item.categoria ==0 ? this.OpenIncome(item.categoria,item.value,item.name,item.date_income,item.category_income_id_category_income,item.id_income) : this.props.navigation.navigate('CreditCard')}
+                onPress={() => item.categoria ==0 ? 
+                  this.OpenIncome(item.categoria,item.value,item.name,item.date_income,item.category_income_id_category_income,item.id_income) : 
+                  this.OpenExpense(item.categoria,item.value,item.name,item.date_expense,item.category_expense_id_category_expense,item.id_expense)}
               >
                 <View  style={layout.AdminItemCont}>
                   <View style={layout.AdminItemIconCont}>
@@ -602,10 +620,10 @@ this.setState({
                               onChangeText={(nameExpense) => this.validate('text','nameExpense','nameExpenseError',nameExpense)}
                               placeholder="Ingresar Nombre Egreso"
                               keyboardType = "default"
-                              value={this.state.name}
+                              value={this.state.nameExpense}
                           />
                         </View>
-                        {this.state.nameError? 
+                        {this.state.nameExpenseError? 
                           <View style={layout.textAlertCont}>
                                   <Text style={[layout.textAlertError, text.Regular]}>
                                       Nombre no valido
@@ -623,10 +641,10 @@ this.setState({
                                 onChangeText={(amountExpense) => this.validate('num','amountExpense','amountExpenseError',amountExpense)}
                                 placeholder="Ingresar Monto"
                                 keyboardType = "numeric"
-                                value={this.state.amount}
+                                value={this.state.amountExpense}
                             />
                         </View>
-                        {this.state.amountError? 
+                        {this.state.amountExpenseError? 
                           <View style={layout.textAlertCont}>
                               <Text style={[layout.textAlertError, text.Regular]}>
                                   Monto no valido
@@ -668,7 +686,7 @@ this.setState({
                     </View>
                     <View style={{marginBottom: 10,}}>
                         <Text style={[text.InputLabel, {marginLeft: 15,}]}>
-                           Tipo de ingreso 
+                           Tipo de Egreso 
                         </Text>
                         <ModalSelector
                             data={this.state.categoriesExpenses}
@@ -717,10 +735,20 @@ this.setState({
                         onPress={() => this.DeleteExpense()}
                         style={[buttons.GralButton, buttons.ButtonAccentRed]}>
                         <Text style={[text.BText, text.TLight]}>
-                          Eliminar
+                          Eliminar {this.state.categoriesExpense?this.state.categoriesExpense.id_category_expense:''}
                         </Text>
                      </TouchableOpacity>
-                      }                 
+                      }      
+                    {this.state.categoriesExpense? this.state.categoriesExpense?this.state.categoriesExpense.id_category_expense == 2 ///Detalles tarjeta de credito
+                     ? 
+                      <TouchableOpacity 
+                        onPress={() => {this.setState({ModalExpense: false}),this.props.navigation.navigate('CreditCard')}}
+                        style={[buttons.GralButton, buttons.ButtonAccentRed]}>
+                        <Text style={[text.BText, text.TLight]}>
+                        Detalles tarjeta de credito 
+                        </Text>
+                     </TouchableOpacity>
+                      :null:null:null}            
                     <TouchableOpacity 
                         onPress={() => this.setState({ModalExpense: false})}
                         style={[buttons.GralButton, buttons.ButtonRegisterLoginAccentBlue]}>

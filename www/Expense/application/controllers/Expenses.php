@@ -16,7 +16,7 @@ class Expenses extends RestController {
 
     public function CreateExpense_get(){   
 
-        $name = $this->get('name');
+        $name = urldecode($this->get('name'));
         $IdCategory = $this->get('idcategory');
         $dateExpense = $this->get('dateexpense');
         $IdPeriod = $this->get('idperiod');
@@ -79,7 +79,7 @@ class Expenses extends RestController {
 
     public function UpdateExpense_get(){   
 
-        $name = $this->get('name');
+        $name = urldecode($this->get('name')); 
         $IdCategory = $this->get('idcategory');
         $dateExpense = $this->get('dateexpense');
         $value= $this->get('value');

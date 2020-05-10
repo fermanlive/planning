@@ -25,32 +25,48 @@ class Expense_model extends CI_Model {
             'value' => $value,
             'name' => $name,
             'category_expense_id_category_expense' => $IdCategory,
-            'date' => $dateExpense,
+            'date_expense' => $dateExpense,
             'value' => $value,
             'period_idperiod' => $IdPeriod,
         );
 
         $this->db->set($data);
-        $this->db->insert('Expense');
+        $this->db->insert('expense');
         $insert_id = $this->db->insert_id();
         return $insert_id > 0 ? true : false ;
     }
 
-    public function EditExpense($value,$name,$typeCategory,$Iduser){
+    public function UpdateExpense($name,$IdCategory,$dateExpense,$value,$IdUser,$IdExpense){
 
         //Array con los datos del usuario
         $data = array(
             'value' => $value,
             'name' => $name,
-            'typeCategory' => $typeCategory,
-            'Iduser' => $Iduser,
+            'category_expense_id_category_expense' => $IdCategory,
+            'date_expense' => $dateExpense,
         );
 
         $this->db->set($data);
-        $this->db->update('Expense');
-        $this->db->where('Iduser',$Iduser);
+        $this->db->where('id_expense',$IdExpense);
+        $this->db->update('expense');
+        
         return $this->db->affected_rows() > 0 ? true : false ;
     }
+
+    public function DeleteExpense($IdUser,$IdExpense){
+
+        //Array con los datos del usuario
+        $data = array(
+            'status' => 0
+        );
+
+        $this->db->set($data);
+        $this->db->where('id_expense',$IdExpense);
+        $this->db->update('expense');
+        
+        return $this->db->affected_rows() > 0 ? true : false ;
+    }
+
 
 
     public function ReadExpense($IdUser,$IdPeriod,$id_expense){
@@ -60,6 +76,7 @@ class Expense_model extends CI_Model {
         if($id_expense>0){
             $this->db->where('id_expense',$id_expense);
         }
+        $this->db->where('status',1);
         $this->db->where('period_idperiod',$IdPeriod);
         // $this->db->where('$IdUser',$Iduser);
         $query = $this->db->get();
@@ -76,7 +93,7 @@ class Expense_model extends CI_Model {
         $result = $query->result_array();
         return $result;
     }
-
+    
 
 
 }
