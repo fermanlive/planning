@@ -1,9 +1,18 @@
 import React from 'react';
 import { View, Text,TextInput,TouchableOpacity,ScrollView,StyleSheet,Modal } from 'react-native';
+
 const {layout, text, forms, buttons,colors} = require ('../styles/main');
+
 import ModalSelector from 'react-native-modal-selector';
 import { Table, Row, Rows } from 'react-native-table-component';
 import {Shapes} from "react-native-background-shapes";
+import { Card, SimpleCard } from "@paraboly/react-native-card";
+import numeral from 'numeral';
+
+import {masterValidator} from '../helpers/validations';
+
+const {ALERT_ADVANCES} = require ('../facts/facts');
+
 
 class Simulator extends React.Component {
   constructor(props) {
@@ -14,8 +23,8 @@ class Simulator extends React.Component {
       textInputValue: '',
       typeCredit:'',
       modalVisible:false,
-      typeTransaction:'',
-      tableHead: ['Mes','Pago Minimo', 'Interes', 'Pago Total'],
+      typeTransaction:null,
+      tableHead: ['Mes','Pago \nMinimo', 'Interes','Total \nIntereses', 'Deuda \nVigente'],
       tableData: [
         ['1','$30,780.50', '$0.00', '$123,122.00'],
         ['2','$35,348.33', '$4,567.83', '$96,909.33'],
@@ -39,17 +48,69 @@ class Simulator extends React.Component {
       ]
   };
 }
+
+SimulateCredit(typeCredit){
+ let select = typeCredit? typeCredit.value : null;
+ switch (select) {
+   case 0:
+     this.SimulateCreditCard();
+     break;
+
+    case 1:
+
+    break;
+
+    case 2:
+     
+      break;
+ 
+     case 3:
+ 
+     break;
+
+ }
+}
+
+SimulateCreditCard(){
+  let amount = this.state.amount ? this.state.amount : 0;
+  let numberFee = this.state.numberFee ? this.state.numberFee : 0;
+  let interest = this.state.interest ? parseFloat(this.state.interest)/100 : 0;
+  let Totaldebt=parseFloat(amount);
+  let MinimumPay;
+  let dataSimulation=new Array();
+  let Showinterest;
+  let TotalShowinterest = 0;
+  for (let index = 1; index <= numberFee; index++) {
+    Showinterest =  index==1 ? 0: parseFloat(Totaldebt*interest);
+    Totaldebt = Totaldebt+(Showinterest);
+    MinimumPay =  amount/numberFee + Showinterest;
+    TotalShowinterest = Showinterest+TotalShowinterest;
+    Totaldebt = (Totaldebt-MinimumPay)>0 ? Totaldebt-MinimumPay : 0 ;
+    let value = [index,numeral(MinimumPay).format('$0,0'),numeral(Showinterest).format('$0,0'),numeral(TotalShowinterest).format('$0,0'),numeral(Totaldebt).format('$0,0')];
+    dataSimulation.push(value);
+  }
+  this.setState({tableData: dataSimulation});
+  this.setState({modalVisible:true });
+  this.setState({TotalShowinterest});
+
+}
+
+  //////////////////////Validations////////////////////////
+  validate(kind,state,type,input){
+    this.setState({[state] : input});
+    var verdict = masterValidator(kind,input);
+    this.setState({[type] : verdict});
+  }
     render() {
-      let index = 0;
       const data = [
-          { key: index++,  label: 'Tarjeta de credito', value: 0 },
-          { key: index++, label: 'Credito Libre Inversión', value:1 },
-          { key: index++, label: 'Credito Inmobiliario', value:2 },
-          { key: index++, label: 'Credito Educativo', value:3 },
+          { key: 0,  label: 'Tarjeta de credito', value: 0 },
+          { key: 1, label: 'Credito Libre Inversión', value:1 },
+          { key: 2, label: 'Credito Inmobiliario', value:2 },
+          { key: 3, label: 'Credito Educativo', value:3 },
       ];
       const data2 = [
-        { key: index++,  label: 'Avances', value: 0 },
-        { key: index++, label: 'Compras', value:1 },
+        { key: 0,  label: 'Avances', value: 0 },
+        { key: 1, label: 'Compras', value:1 },
     ];
       return(
         <View style={ [layout.MainContainer] }>
@@ -66,18 +127,19 @@ class Simulator extends React.Component {
             {name: 'circle', position: 'flex-end', axis: 'left', size: 100},
             ]}
           />
-          <View style={[layout.GralTextCont, {marginBottom: 60,marginTop:30}]}>
-            <Text style={[text.TitleView, text.Strong, text.TLight]}>
-               Listado de tus ahorrros
-            </Text>
-          </View>
-          <ScrollView
+                    <ScrollView
             style = { layout.MainContainerSV2 }
             showsVerticalScrollIndicator = {false}
             >
+          <View style={[layout.GralTextCont, {marginBottom: 60,marginTop:30}]}>
+            <Text style={[text.TitleView, text.Strong, text.TLight]}>
+               Simulacion de creditos
+            </Text>
+          </View>
+
             <View style={{marginBottom: 10,}}>
                 <Text style={[text.InputLabel, {marginLeft: 15,}]}>
-                Tipo de gasto
+                Tipo de Credito
               </Text>
               <ModalSelector
                   data={data}
@@ -137,13 +199,14 @@ class Simulator extends React.Component {
                       value={this.state.typeTransaction?this.state.typeTransaction.label:''} />
                   </View>
               </ModalSelector>
-              {/* <View style={layout.textAlertCont}>
-                  <Text style={[layout.textAlertError, text.Regular]}>
-                      Error
-                  </Text>
-              </View> */}
               </View>
             :null}
+            {this.state.typeTransaction?this.state.typeTransaction.value==0?
+                <SimpleCard
+                  titleFontSize = {16}
+                  title={ALERT_ADVANCES}
+                />
+            :null:null}    
             {this.state.typeCredit.value == 0 ? 
             <View style={layout.InputGroup}>
                 <Text style={text.InputLabel}>
@@ -152,16 +215,18 @@ class Simulator extends React.Component {
                 <View style={[forms.InputCont, forms.LeftAlingment]}>
                     <TextInput
                         style={forms.Input}
-                        onChangeText={(emailVerification) => this.validate('email','emailVerification','emailVerificationError',emailVerification)}
+                        onChangeText={(numberFee) => this.validate('num','numberFee','numberFeeError',numberFee)}
                         placeholder="Ingresar numero de cuotas"
-                        keyboardType = "email-address"
+                        keyboardType = "numeric"
                     />
                 </View>
-                {/* <View style={layout.textAlertCont}>
-                        <Text style={[layout.textAlertError, text.Regular]}>
-                        Error: valor no Numerico
-                        </Text>
-                </View> */}
+                {this.state.numberFeeError? 
+                <View style={layout.textAlertCont}>
+                    <Text style={[layout.textAlertError, text.Regular]}>
+                    Numero de cuotas no validas
+                    </Text>
+                </View>
+              :null}
             </View>
             :null}
             {this.state.typeCredit.value==0 ?
@@ -172,16 +237,18 @@ class Simulator extends React.Component {
                 <View style={[forms.InputCont, forms.LeftAlingment]}>
                     <TextInput
                         style={forms.Input}
-                        onChangeText={(emailVerification) => this.validate('email','emailVerification','emailVerificationError',emailVerification)}
+                        onChangeText={(amount) => this.validate('num','amount','amountError',amount)}
                         placeholder="Ingresar valor de la compra"
-                        keyboardType = "email-address"
+                        keyboardType = "numeric"
                     />
                 </View>
-                {/* <View style={layout.textAlertCont}>
-                        <Text style={[layout.textAlertError, text.Regular]}>
-                        Error: valor no Numerico
-                        </Text>
-                </View> */}
+                {this.state.amountError? 
+                <View style={layout.textAlertCont}>
+                    <Text style={[layout.textAlertError, text.Regular]}>
+                    Precio no valido
+                    </Text>
+                </View>
+              :null}
             </View>
             :null}
             {this.state.typeCredit.value==0 ?
@@ -192,9 +259,9 @@ class Simulator extends React.Component {
                 <View style={[forms.InputCont, forms.LeftAlingment]}>
                     <TextInput
                         style={forms.Input}
-                        onChangeText={(emailVerification) => this.validate('email','emailVerification','emailVerificationError',emailVerification)}
+                        onChangeText={(interest) => this.validate('num','interest','interestError',interest)}
                         placeholder="Confirmar Intereses"
-                        keyboardType = "email-address"
+                        keyboardType = "numeric"
                     />
                 </View>
                 {/* <View style={layout.textAlertCont}>
@@ -205,7 +272,7 @@ class Simulator extends React.Component {
             </View> 
             :null}
               <TouchableOpacity 
-                  onPress={() => this.setState({modalVisible:true})}
+                  onPress={() => this.SimulateCredit(this.state.typeCredit)}
                   style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
                   <Text style={[text.BText, text.TLight]}>
                     Calcular
@@ -220,14 +287,19 @@ class Simulator extends React.Component {
                 <Text style={[text.TravelInfoTitle, text.Regular, text.TBlack]}>
                   Calculo de intereses
                 </Text>
-                <Table borderStyle={{borderWidth: 5, borderColor: colors.main}}
+                <Table borderStyle={{borderWidth: 3, borderColor: colors.main}}
                 >
                   <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
                   <Rows data={this.state.tableData} textStyle={styles.text}/>
                 </Table>
-                <Text style={{color:'red',textAlign:'justify',paddingTop:'5%'}}>
-                  No ingreso el tipo de intereses, conoce el interes que maneja su cuota de credito? 
+                <Text style={{textAlign:'justify',paddingTop:'5%'}}>
+                El interes total que se pagaria por esta compra seria de   
+                    <Text style={{color:'red',fontSize:18}}>
+                      {numeral(this.state.TotalShowinterest).format('$0,0')}
+                  </Text>
+                  .
                 </Text>
+
                 <Text style={{textAlign:'justify'}}>
                   Este simualdor ofrece un estimativo de como serian las cuotas mas no 
                   una herramienta oficial del banco.
@@ -248,7 +320,7 @@ class Simulator extends React.Component {
   
   const styles = StyleSheet.create({
     container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-    head: { height: 40, backgroundColor: colors.opacityMain },
+    head: { height: 60, backgroundColor: colors.opacityMain },
     text: { margin: 6 }
   });
   export default Simulator;
