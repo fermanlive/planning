@@ -61,6 +61,7 @@ export const colors = {
 	Base: '#66E49B',
 	AccentPurple: '#7C0E93',
 	AccentRed: '#93110E',
+	AccentYellow: '#93110E',
 	AccentRedOpacity:'#E0BBBA',
 	AccentBlue:'#5B8EFF',
 	baseColor:'#89C763',
@@ -1285,6 +1286,9 @@ export const text = StyleSheet.create({
 	TAccentPurple: {
 		color: colors.AccentPurple,
 	},
+	TAccentRed: {
+		color: colors.AccentRed,
+	},
 	TextOpacityMain: {
 		color: colors.opacityMain,
 	},
@@ -1326,6 +1330,13 @@ export const text = StyleSheet.create({
 		width: '90%',
 		fontFamily: fonts.semibold,
 		color: colors.VTDarkGray,
+	},
+	InputLabelQuestion: {
+		fontSize: fzbase * mult_01,
+		paddingBottom: 10,
+		width: '90%',
+		fontFamily: fonts.semibold,
+		color: colors.VTAlertRed,
 	},
 	//--
 });
@@ -1680,7 +1691,12 @@ export const buttons = StyleSheet.create({
 	},
 	BLineLightRed: {
 		backgroundColor: 'transparent',
-		borderColor: 'red',
+		borderColor: colors.AccentRed,
+		borderWidth: 2,
+	},
+	BLinePurple: {
+		backgroundColor: 'transparent',
+		borderColor: colors.AccentPurple,
 		borderWidth: 2,
 	},
 	BLineGray: {

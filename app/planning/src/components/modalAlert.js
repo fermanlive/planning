@@ -95,9 +95,9 @@ export class TwoButtonsAlert extends Component {
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 onPress={this.props.rightFunction}
-                                style={[buttons.GralButton, buttons.ButtonAccentPurpler, {marginBottom: 0, width: '47%',}]}
+                                style={[buttons.GralButton, buttons.BLineLightRed, {marginBottom: 0, width: '47%',}]}
                                 >
-                                <Text style={[text.BText, text.TLight]}>
+                                <Text style={[text.BText, text.TAccentRed]}>
                                     {this.props.rightButton}
                                 </Text>
                             </TouchableOpacity>

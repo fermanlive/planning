@@ -30,7 +30,7 @@ class Income_model extends CI_Model {
         );
 
         $this->db->set($data);
-        $this->db->insert('Income');
+        $this->db->insert('income');
         $insert_id = $this->db->insert_id();
         return $insert_id > 0 ? true : false ;
     }
@@ -47,7 +47,7 @@ class Income_model extends CI_Model {
 
         $this->db->set($data);
         $this->db->where('id_income',$IdIncome);
-        $this->db->update('Income');
+        $this->db->update('income');
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
@@ -61,7 +61,7 @@ class Income_model extends CI_Model {
     public function ReadIncome($IdUser,$IdPeriod,$IdIncome){
 
         $this->db->select('*');
-        $this->db->from('Income');
+        $this->db->from('income');
         if($IdIncome>0){
             $this->db->where('IdIncome',$IdIncome);
         }

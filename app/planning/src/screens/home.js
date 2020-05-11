@@ -4,9 +4,9 @@ import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,ScrollView,Tex
 import {PieChart} from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
-import {SimpleAlert} from '../components/modalAlert';
+import {SimpleAlert,TwoButtonsAlert} from '../components/modalAlert';
 import Modal from "react-native-modal";
-// import { Card, SimpleCard } from "@paraboly/react-native-card";
+import { Card, SimpleCard } from "@paraboly/react-native-card";
 // import {Shapes} from "react-native-background-shapes";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import ModalSelector from 'react-native-modal-selector';
@@ -16,7 +16,7 @@ import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
 import {masterValidator} from '../helpers/validations';
 import {ReadIncome,getCategoryIncomes,CreateIncome,DeleteIncome,UpdateIncome} from '../helpers/income_services';
 import {ReadExpense,getCategoryExpense,CreateExpense,DeleteExpense,UpdateExpense} from '../helpers/expense_services';
-
+const {DETAILS_CREDIT_CARD} = require ('../facts/facts');
 
 var {height, width} = Dimensions.get('window');
 
@@ -39,6 +39,7 @@ class Home extends React.Component {
       displayTab:true,
       ModalIncome:false,
       ModalExpense:false,
+      warningDeleteModal:false,
       numericBalance:2,
       namePeriod:'',
       filterTab:2,
@@ -195,7 +196,6 @@ this.setState({
         }
       }
       this.setState({elements: arreglo});
-      console.warn(arreglo);
     }
     
   }
@@ -243,7 +243,6 @@ this.setState({
     this.setBusyIndicator(true, '');
     
     if(this.state.id_expense !== undefined){
-      console.warn(this.state.id_expense);
      let DeleteExpenseResponse = await DeleteExpense(this.state.id_expense,this.state.idUser);
      this.setBusyIndicator(false, '');
      if(DeleteExpenseResponse.status){
@@ -254,6 +253,11 @@ this.setState({
         this.setBalance(this.state.idUser,this.state.IdPeriod);
      }
     }
+  }
+
+  async selectDelete(selectDelete){
+    this.setState({warningDeleteModal: false});
+    selectDelete==2 ? this.DeleteIncome():this.DeleteExpense() ;
   }
 
 
@@ -278,8 +282,6 @@ this.setState({
       }else{
          IncomeResponse = await CreateIncome(this.state.name,id_categoryincome,chosenDate,this.state.IdPeriod,this.state.amount);
       }
-      console.warn("IncomeAction",IncomeAction);
-      console.warn("IncomeResponse",IncomeResponse);
       if(IncomeResponse.status){
         this.setState({SuccessModalLine1: IncomeResponse.message});
         this.setState({SuccesbuttonLabel: "ok, entendido"});
@@ -338,6 +340,7 @@ this.setState({
     this.setState({id_expense});
     this.setState({ModalExpense: true});
     // this.setEmptyIncome();
+    console.warn("id_expense",this.state.id_expense);
   }
   setEmptyIncome(){
     this.setState({name: ''});
@@ -365,7 +368,7 @@ this.setState({
               >
                 <Text style={[buttons.MainTabText, 
                   !this.state.displayTab ? text.Regular : text.Strong,  
-                  !this.state.displayTab ? text.TLight: text.TAccentPurple
+                  !this.state.displayTab ? text.TextOpacityMain: text.TAccentPurple
                   ]}>
                   Resumen
                 </Text>
@@ -603,7 +606,7 @@ this.setState({
                 >  
                     <View style={[layout.GralTextCont, {marginBottom: 30,marginTop:30}]}>
                         <Text style={[text.GralText, text.Regular]}>
-                        Agregar un Egreso 
+                          {this.state.ExpenseAction == 1 ? "Agregar":"Editar" } un Egreso 
                         </Text>
                     </View>
                     <ScrollView
@@ -732,20 +735,29 @@ this.setState({
                     {this.state.ExpenseAction == 1 ///Agregar Egreso
                      ? null:
                       <TouchableOpacity 
-                        onPress={() => this.DeleteExpense()}
+                        onPress={() => {this.setState({warningDeleteModal: true}),
+                        this.setState({warningDeleteLine1: "Esta seguro de Eliminar este Egreso"}),
+                        this.setState({leftButtonText: "Cancelar"}),
+                        this.setState({rightButtonText: "Eliminar"}),
+                        this.setState({selectDelete: 1})}}
                         style={[buttons.GralButton, buttons.ButtonAccentRed]}>
                         <Text style={[text.BText, text.TLight]}>
-                          Eliminar {this.state.categoriesExpense?this.state.categoriesExpense.id_category_expense:''}
+                          Eliminar Egreso
                         </Text>
                      </TouchableOpacity>
-                      }      
-                    {this.state.categoriesExpense? this.state.categoriesExpense?this.state.categoriesExpense.id_category_expense == 2 ///Detalles tarjeta de credito
+                      }  
+                      <SimpleCard title={DETAILS_CREDIT_CARD} 
+                        styles={{ paddingBottom:10 }}
+                      />
+                      
+                    {this.state.categoriesExpense? this.state.categoriesExpense?this.state.categoriesExpense.id_category_expense == 2 && this.state.ExpenseAction == 0  ///Detalles tarjeta de credito
                      ? 
+                      
                       <TouchableOpacity 
-                        onPress={() => {this.setState({ModalExpense: false}),this.props.navigation.navigate('CreditCard')}}
-                        style={[buttons.GralButton, buttons.ButtonAccentRed]}>
-                        <Text style={[text.BText, text.TLight]}>
-                        Detalles tarjeta de credito 
+                        onPress={() => {this.setState({ModalExpense: false}),this.props.navigation.navigate('CreditCard',{id_expense: this.state.id_expense,id_period: this.state.IdPeriod})}}
+                        style={[buttons.GralButton, buttons.BLinePurple]}>
+                        <Text style={[text.BText, text.TAccentPurple]}>
+                        Detalles Tarjeta de Credito
                         </Text>
                      </TouchableOpacity>
                       :null:null:null}            
@@ -897,7 +909,11 @@ this.setState({
                     {this.state.IncomeAction == 1 ///Agregar ingreso
                      ? null:
                       <TouchableOpacity 
-                        onPress={() => this.DeleteIncome()}
+                        onPress={() => {this.setState({warningDeleteModal: true}),
+                        this.setState({warningDeleteLine1: "Esta seguro de Eliminar este Ingreso"}),
+                        this.setState({leftButtonText: "Cancelar"}),
+                        this.setState({rightButtonText: "Eliminar"}),
+                        this.setState({selectDelete: 2})}}
                         style={[buttons.GralButton, buttons.ButtonAccentRed]}>
                         <Text style={[text.BText, text.TLight]}>
                           Eliminar
@@ -924,6 +940,16 @@ this.setState({
         line2 = {this.state.SuccessModalLine2}
         buttonLabel = {this.state.SuccesbuttonLabel}
         closeModal={() => this.setState({SuccessModal: false})}
+        />
+        <TwoButtonsAlert 
+          isModalVisible = {this.state.warningDeleteModal} 
+          imageType = {1}
+          line1 = {this.state.warningDeleteLine1}
+          line2 = {this.state.warningDeleteLine2}
+          leftButton = {this.state.leftButtonText}
+          rightButton = {this.state.rightButtonText}
+          leftFunction={() => this.setState({warningDeleteModal:false})}
+          rightFunction={() => this.selectDelete(this.state.selectDelete)}
         />
         </View> 
       );
