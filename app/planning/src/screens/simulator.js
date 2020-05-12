@@ -6,8 +6,10 @@ const {layout, text, forms, buttons,colors} = require ('../styles/main');
 import ModalSelector from 'react-native-modal-selector';
 import { Table, Row, Rows } from 'react-native-table-component';
 import {Shapes} from "react-native-background-shapes";
+import NetInfo from "@react-native-community/netinfo";
 import { Card, SimpleCard } from "@paraboly/react-native-card";
 import numeral from 'numeral';
+
 
 import {masterValidator} from '../helpers/validations';
 
@@ -18,8 +20,9 @@ class Simulator extends React.Component {
   constructor(props) {
    
     super(props);
-    // const { navigation } = this.props;
+    const { navigation } = this.props;
     this.state = {
+      online: navigation.getParam('online', true),
       textInputValue: '',
       typeCredit:'',
       modalVisible:false,
@@ -69,6 +72,16 @@ SimulateCredit(typeCredit){
      break;
 
  }
+}
+
+componentDidMount(){
+  if(!this.state.online){
+    NetInfo.fetch().then(state => {
+      if(state.isConnected){
+        this.props.navigation.navigate('Login');
+      }
+    });
+  }
 }
 
 SimulateCreditCard(){

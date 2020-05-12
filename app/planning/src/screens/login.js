@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text, TextInput, Image,TouchableOpacity  } from 'react-native';
+import { View, Text, TextInput, Image,TouchableOpacity, Platform  } from 'react-native';
 const {layout, text, login, forms, buttons} = require ('../styles/main');
 const CONST = require('../constants/constants');
 
 import { Icon, colors } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {RequestLogin,getSession,CreateUser} from '../helpers/users_services';
+import {RequestLogin,getSession,clearCredentials} from '../helpers/users_services';
 import AsyncStorage from '@react-native-community/async-storage';
+import NetInfo from "@react-native-community/netinfo";
 import {SimpleAlert} from '../components/modalAlert';
 import Loading from '../components/Loading';
 import { AccessToken,GraphRequest, GraphRequestManager  } from 'react-native-fbsdk';
@@ -52,8 +53,13 @@ class Login extends React.Component {
     }
 
     async componentDidMount(){
+
+      NetInfo.fetch().then(state => {
+        if(!state.isConnected){
+          this.props.navigation.navigate('Simulator',{online:false});
+        }
+      });
       const onSession = await getSession();
-      console.warn("onSession",onSession);
       if (typeof onSession.id !== 'undefined') {
         this.props.navigation.navigate('Home');
       }

@@ -115,6 +115,16 @@ export default createAppContainer(createStackNavigator(
         headerShown:false,
       }
     },
+    Simulator: {
+      screen: SimulatorScreen,
+      navigationOptions: {
+        headerShown:false,
+        tabBarLabel: 'Simulador',
+        tabBarIcon: ({tintColor, activeTintColor}) => (
+           <Icon name="calculator" type='material-community' size={30} color={colors.main} />
+           )
+      }
+    },
     Register: {
       screen: RegisterScreen,
       navigationOptions: {

@@ -213,7 +213,7 @@ class Register extends React.Component {
                 </View>
               :null}
           </View>
-          {/* <View style={layout.InputGroup}>
+          <View style={layout.InputGroup}>
             <CheckBox isChecked={this.state.optin}
             />
             <TouchableOpacity>
@@ -228,7 +228,7 @@ class Register extends React.Component {
                     </Text>
                 </View>
               :null}
-          </View> */}
+          </View>
           <TouchableOpacity 
               onPress={() => this.validateSend()}
               style={[buttons.GralButton, buttons.ButtonAccentPurple]}>

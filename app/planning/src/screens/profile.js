@@ -122,6 +122,13 @@ class Profile extends React.Component {
 
             }      
             <TouchableOpacity 
+                onPress={() => this.setState({modalVisible: true})}
+                style={[buttons.GralButton, buttons.ButtonRegisterLogin]}>
+                <Text style={[text.BText, text.TAccentPurple]}>
+                    Configuraciones
+                </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
                 onPress={() => this.closeSession()}
                 style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
                 <Text style={[text.BText, text.TLight]}>

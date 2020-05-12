@@ -10,7 +10,7 @@ import {masterValidator} from '../helpers/validations';
 import {ReadExpense} from '../helpers/expense_services';
 import {getSession} from '../helpers/users_services';
 
-const {DEFINITION_INTEREST,DEFINITION_MANAGEMENT} = require ('../facts/facts');
+const {DEFINITION_INTEREST,DEFINITION_MANAGEMENT,DEFINITION_QUOTE} = require ('../facts/facts');
 
 
 class CreditCardView extends React.Component {
@@ -225,7 +225,7 @@ async componentDidMount(){
                 onPress={() => {
                   this.setState({modalInstructor:true}),
                   this.setState({conceptTitle: "Consejo Cuota de manejo"}),
-                  this.setState({concept: DEFINITION_INTEREST})
+                  this.setState({concept: DEFINITION_QUOTE})
                 }}>
                   <Text style={[text.InputLabel,forms.LeftAlingment]}>
                   Cuota de manejo<Text style={text.InputLabelQuestion}>Consejo</Text>
