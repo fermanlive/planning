@@ -31,7 +31,26 @@ class Incomes extends RestController {
         }else{
             $this->response([
                 'status' => false,
-                'message' => 'Ingreso no creado'
+                'message' => 'Ingreso No creado'
+            ],404);
+        }
+
+    }
+    public function CreateIncomeCategory_get(){   
+
+        $name = $this->get('name');
+        $IdUser = $this->get('IdUser');
+
+        $CreateIncomeCategory = $this->income_model->CreateIncomeCategory($name,$IdUser);
+        if($CreateIncomeCategory){
+            $this->response([
+                'status' => true,
+                'message' => 'Categoria de Ingreso Creada'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Categoria de Ingreso No Creada'
             ],404);
         }
 
@@ -61,8 +80,8 @@ class Incomes extends RestController {
 
     }
     public function getCategoryIncomes_get(){  
-
-        $Categories = $this->income_model->getCategoryIncomes();
+        $IdUser = $this->get('iduser');
+        $Categories = $this->income_model->getCategoryIncomes($IdUser);
         if(count($Categories)>0){
             $this->response([
                 'status' => true,
@@ -94,10 +113,28 @@ class Incomes extends RestController {
         }else{
             $this->response([
                 'status' => false,
-                'message' => 'Ingreso no actualizado'
+                'message' => 'Ingreso No actualizado'
             ],404);
         }
 
+    }
+    
+    public function UpdateCategoryIncomes_get(){  
+        $IdUser = $this->get('iduser');
+        $id_category = $this->get('iduser');
+        $name = $this->get('name');
+        $UpdateCategoryIncome = $this->income_model->UpdateCategoryIncome($name,$IdUser,$id_category);
+        if(UpdateCategoryIncome){
+            $this->response([
+                'status' => true,
+                'message' => "Categoria Actualizada"
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => "Categoria No Actualizada"
+            ],404);
+        }
     }
 
     public function DeleteIncome_get(){  
@@ -114,7 +151,26 @@ class Incomes extends RestController {
         }else{
             $this->response([
                 'status' => false,
-                'message' => 'Ingreso no eliminado'
+                'message' => 'Ingreso No eliminado'
+            ],404);
+        }
+
+    }
+    public function DeleteCategoryIncomes_get(){  
+
+        $IdUser = $this->get('iduser');
+        $IdIncome = $this->get('idincome');
+
+        $DeleteCategoryIncomes = $this->income_model->DeleteCategoryIncomes($IdIncome,$IdUser);
+        if($DeleteCategoryIncomes){
+            $this->response([
+                'status' => true,
+                'message' => 'Categoria eliminada'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Categoria No eliminada'
             ],404);
         }
 

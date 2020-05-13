@@ -35,6 +35,20 @@ class Income_model extends CI_Model {
         return $insert_id > 0 ? true : false ;
     }
     
+    public function CreateIncomeCategory($name,$IdUser){
+
+        //Array con los datos del usuario
+        $data = array(
+            'name' => $name,
+            'id_user'=>$IdUser
+        );
+
+        $this->db->set($data);
+        $this->db->insert('category_income');
+        $insert_id = $this->db->insert_id();
+        return $insert_id > 0 ? true : false ;
+    }
+
     public function UpdateIncome($name,$IdCategory,$dateIncome,$value,$IdUser,$IdIncome){
 
         //Array con los datos del usuario
@@ -48,6 +62,34 @@ class Income_model extends CI_Model {
         $this->db->set($data);
         $this->db->where('id_income',$IdIncome);
         $this->db->update('income');
+        return $this->db->affected_rows() > 0 ? true : false ;
+    }
+
+    public function UpdateCategoryIncome($name,$IdUser,$id_category){
+
+        //Array con los datos del usuario
+        $data = array(
+            'name'=> $name
+        );
+
+        $this->db->set($data);
+        $this->db->where('IdUser',$IdUser);
+        $this->db->where('id_category',$id_category);
+        $this->db->update('category_income');
+        return $this->db->affected_rows() > 0 ? true : false ;
+    }
+
+    public function DeleteCategoryIncomes($IdIncome,$IdUser){
+
+        //Array con los datos del usuario
+        $data = array(
+            'status'=> 0
+        );
+
+        $this->db->set($data);
+        $this->db->where('IdUser',$IdUser);
+        $this->db->where('IdIncome',$IdIncome);
+        $this->db->update('category_income');
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
@@ -72,10 +114,13 @@ class Income_model extends CI_Model {
         return $result;
     }
 
-    public function getCategoryIncomes(){
+    public function getCategoryIncomes($IdUser){
 
         $this->db->select('*');
         $this->db->from('category_income');
+        $this->db->where('status',1);
+        $this->db->where('id_user',$IdUser);
+        $this->db->or_where('id_user',0);
         $this->db->order_by('name', 'ASC');
         $query = $this->db->get();
         $result = $query->result_array();
