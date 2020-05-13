@@ -6,11 +6,12 @@ const CONST = require('../constants/constants');
 import { Icon, colors } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {RequestLogin,getSession,clearCredentials} from '../helpers/users_services';
+import {RequestLogin,getSession,validateExistedUser} from '../helpers/users_services';
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 import {SimpleAlert} from '../components/modalAlert';
 import Loading from '../components/Loading';
+import { GoogleSignin, statusCodes  } from '@react-native-community/google-signin';
 import { AccessToken,GraphRequest, GraphRequestManager  } from 'react-native-fbsdk';
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -64,6 +65,25 @@ class Login extends React.Component {
         this.props.navigation.navigate('Home');
       }
     }
+// Somewhere in your code
+signIn = async () => {
+  try {
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+    this.setState({ userInfo });
+    console.log(userInfo);
+  } catch (error) {
+    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      // user cancelled the login flow
+    } else if (error.code === statusCodes.IN_PROGRESS) {
+      // operation (e.g. sign in) is in progress already
+    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      // play services not available or outdated
+    } else {
+      // some other error happened
+    }
+  }
+};
 
     handleFacebookLogin = async () => {
         this.setBusyIndicator(true, '')
@@ -236,8 +256,7 @@ class Login extends React.Component {
                                />
                         </TouchableOpacity>
                         <TouchableOpacity 
-                            onPress={() => this.loginNav()}
-                            disabled
+                            onPress={() => this.signIn()}
                             style={[buttons.LoginButtons, buttons.ButtonGmail]}>
                             <Text style={[text.BText, text.TLight,{paddingRight:20}]}>
                                 Registro Gmail

@@ -559,7 +559,7 @@ this.setState({
                   name='plus'
                   type='material-community'
                   color={colors.main}
-                  onPress={() => {this.setState({ModalIncome : true}), this.setState({IncomeAction: 1})}}
+                  onPress={() => {this.setState({ModalIncome : true}),this.setEmptyIncome(), this.setState({IncomeAction: 1})}}
                   />
                   <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Agregar {"\n"} Ingreso</Text>
                 </View>

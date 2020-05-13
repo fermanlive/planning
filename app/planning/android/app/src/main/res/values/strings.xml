@@ -2,4 +2,5 @@
     <string name="app_name">Planning</string>
     <string name="facebook_app_id">3101725919892983</string> 
     <string name="fb_login_protocol_scheme">fb3101725919892983</string>
+    <string name="server_client_id"> 424055661400-f3fmkr95bi3gtd84obrsoj26njj39qgt.apps.googleusercontent.com</string>
 </resources>
