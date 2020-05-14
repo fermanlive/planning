@@ -9,6 +9,7 @@ import {Shapes} from "react-native-background-shapes";
 import NetInfo from "@react-native-community/netinfo";
 import { Card, SimpleCard } from "@paraboly/react-native-card";
 import numeral from 'numeral';
+import ModalInstructor from "react-native-modal";
 
 
 import {masterValidator} from '../helpers/validations';
@@ -400,45 +401,46 @@ SimulateCreditCard(){
                 </Text>
             </TouchableOpacity>
             </Modal>
-            <Modal
-              backdropColor = {colors.opacityMain}
-              backdropOpacity = {0.9}
-              style = { { margin: 0} }
-              isVisible={this.state.modalInstructor}
-              useNativeDriver={true}
-            >  
-                  <View 
-                    style={layout.ModalTrialInfoCont}
-                  >
-                    <Text style={[text.TravelInfoTitle, text.Regular, text.TAccentPurple]}>
-                    {this.state.conceptTitle}
-                    </Text>
-                    <View style={[layout.GralTextCont, {marginBottom: 30,marginTop:30}]}>
-                    <SimpleCard
-                        titleFontSize = {16}
-                        title={this.state.concept}
-                      />
-                    </View>
-                    <View style={[layout.GralTextCont]}>
-                        <TouchableOpacity 
-                            onPress={() =>{this.setState({modalInstructor: false}),this.props.navigation.navigate('DictionaryScreen') }}
-                            style={[buttons.GralButton, buttons.BLinePurple]}>
-                            <Text style={[text.BText, text.TAccentPurple]}>
-                                Mas información 
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={[layout.GralTextCont]}>
-                        <TouchableOpacity 
-                            onPress={() => this.setState({modalInstructor: false})}
-                            style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
-                            <Text style={[text.BText, text.TLight]}>
-                                Cerrar 
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                  </View>
-              </Modal>
+            <ModalInstructor
+          backdropColor = {colors.opacityMain}
+          backdropOpacity = {0.9}
+          style = { { margin: 0} }
+          isVisible={this.state.modalInstructor}
+          useNativeDriver={true}
+        >  
+            <View 
+              style={layout.ModalTrialInfoCont}
+            >
+              <Text style={[text.TravelInfoTitle, text.Regular, text.TAccentPurple]}>
+              {this.state.conceptTitle}
+              </Text>
+              <View style={[layout.GralTextCont, {marginBottom: 30,marginTop:30}]}>
+              <SimpleCard
+                  titleFontSize = {16}
+                  title={this.state.concept}
+                />
+              </View>
+              <View style={[layout.GralTextCont]}>
+                  <TouchableOpacity 
+                      onPress={() =>{this.setState({modalInstructor: false}),this.props.navigation.navigate('DictionaryScreen') }}
+                      style={[buttons.GralButton, buttons.BLinePurple]}>
+                      <Text style={[text.BText, text.TAccentPurple]}>
+                          Mas información 
+                      </Text>
+                  </TouchableOpacity>
+              </View>
+              <View style={[layout.GralTextCont]}>
+                  <TouchableOpacity 
+                      onPress={() => this.setState({modalInstructor: false})}
+                      style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
+                      <Text style={[text.BText, text.TLight]}>
+                          Cerrar 
+                      </Text>
+                  </TouchableOpacity>
+              </View>
+            </View>
+        </ModalInstructor>
+
             </View>
     );
   }

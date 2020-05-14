@@ -17,9 +17,9 @@ class Users extends RestController {
     public function CreateUser_get(){   
 
         $email = $this->get('email');
-        $password = $this->get('password');
-        $name = $this->get('name');
-        $surname = $this->get('surname');
+        $password = urldecode($this->get('password'));
+        $name = urldecode($this->get('name'));
+        $surname = urldecode($this->get('surname'));
 
         if ( $email === null || $password === null)
         {
@@ -106,9 +106,9 @@ class Users extends RestController {
 
     public function EditUser_get(){   
 
-        $idusers = $this->get('idusers');
-        $surname = $this->get('surname');
-        $name = $this->get('name');
+        $idusers =$this->get('idusers');
+        $surname = urldecode($this->get('surname'));
+        $name = urldecode($this->get('name'));
         if ( $name != null || $surname != null)
         {
             $EditUserAnswer = $this->User_model->EditUser($name,$surname,$idusers);
@@ -127,6 +127,25 @@ class Users extends RestController {
             $this->response([
                 'status' => false,
                 'message' => 'Información incompleta'
+            ],404);
+        }
+    }
+    public function UpdateUser_get(){   
+
+        $iduser = $this->get('iduser');
+        $name = urldecode($this->get('name'));
+        $surname = urldecode($this->get('surname'));
+        $UpdateUser = $this->User_model->UpdateUser($iduser,$name,$surname);
+
+        if($UpdateUser){
+            $this->response([
+                'status' => true,
+                'message' => 'Perfil Actualizado'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' =>'Perfil No Actualizado'
             ],404);
         }
     }

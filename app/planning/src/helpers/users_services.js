@@ -80,6 +80,15 @@ export async function clearCredentials() {
       //console.log("doLogin-error= "+error);
     }
   }
+  export async function UpdateUser(iduser,name,surname){
+    try{
+      var parameters= `iduser/`+ iduser +`/name/`+ name +`/surname/`+ surname + `/`;
+      var data = await fetchRequest("users/UpdateUser",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
 
 
   // ____________________________Comunication Services____________________________________________

@@ -1,20 +1,26 @@
 import React from 'react';
-import { View, Text ,Image,TextInput,TouchableOpacity,StyleSheet,Modal} from 'react-native';
+import { View, Text ,Image,TextInput,TouchableOpacity,StyleSheet,Modal,ScrollView} from 'react-native';
 const {layout, text, forms, buttons,colors} = require ('../styles/main');
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Stars from 'react-native-stars';
 import {Shapes} from "react-native-background-shapes";
-import {clearCredentials} from '../helpers/users_services';
+import {masterValidator} from '../helpers/validations';
+import {clearCredentials,UpdateUser,getSession,setSession} from '../helpers/users_services';
+
+import {SimpleAlert} from '../components/modalAlert';
 
 
-class Profile extends React.Component {
+class Profile extends React.Component { 
     constructor(props) {
    
         super(props);
         // const { navigation } = this.props;
         this.state = { 
           Editable:false,
-          modalVisible:false
+          modalVisible:false,
+          iduser:0,
+          name:"",
+          surname:"",
         };
     }
     _toggleEdit = () => this.setState({ Editable: !this.state.Editable });
@@ -23,9 +29,40 @@ class Profile extends React.Component {
         await clearCredentials;
         this.props.navigation.navigate('Login');
     };
+
+    async componentDidMount(){
+        const onSession = await getSession();
+        
+        this.setState({iduser : onSession?onSession.id:0});
+        this.setState({name: onSession?onSession.name:""});
+        this.setState({surname: onSession?onSession.surname:""});
+        this.setState({email: onSession?onSession.email:""});
+    }
+    async sendInfoUpdate(){
+        let UpdateUserResponse= await UpdateUser(this.state.iduser,this.state.name,this.state.surname);
+        this.setState({isModalVisible: true});
+        this.setState({imageResponse: UpdateUserResponse.status?2:1});
+        this.setState({modalLine1: UpdateUserResponse.message});
+        this.setState({buttonLabel: "ok, Entendido"});
+        this._toggleEdit();
+        if(UpdateUserResponse.status){
+            const onSession = await getSession();
+        
+            var session = {id:onSession.id, name:this.state.name, surname:this.state.surname, email:onSession.email};
+            var save = await setSession(session);
+        }
+    }
+
+    validate(kind,state,type,input){
+        this.setState({[state] : input});
+        var verdict = masterValidator(kind,input);
+        this.setState({[type] : verdict});
+    }
+
     render() { 
       return (
         <View style={ [layout.MainContainerProfile, layout.AlignCenter] }>
+            <ScrollView>
             <Text style={[text.TitleView, text.Strong, text.TTurquoise]}>
                Perfil
             </Text>
@@ -54,37 +91,41 @@ class Profile extends React.Component {
                         <Text style={text.InputLabel}>
                         Nombres
                         </Text>
-                        <View style={[forms.InputCont, forms.LeftAlingment, forms.AlertInput]}>
+                        <View style={[forms.InputCont, forms.LeftAlingment, this.state.nameError?forms.AlertInput:null]}>
                             <TextInput
                                 style={forms.Input}
-                                onChangeText={(emailVerification) => this.validate('email','emailVerification','emailVerificationError',emailVerification)}
+                                onChangeText={(name) => this.validate('text','name','nameError',name)}
                                 placeholder="Ingresar Nombres"
                                 keyboardType = "email-address"
                             />
                         </View>
-                        <View style={layout.textAlertCont}>
-                                <Text style={[layout.textAlertError, text.Regular]}>
-                                    Nombres no validos
-                                </Text>
-                        </View>
+                        {this.state.nameError?
+                          <View style={layout.textAlertCont}>
+                                    <Text style={[layout.textAlertError, text.Regular]}>
+                                        Nombres no validos
+                                    </Text>
+                            </View>
+                        :null}
                     </View>
                     <View style={layout.InputGroup}>
                         <Text style={text.InputLabel}>
                         Apellidos
                         </Text>
-                        <View style={[forms.InputCont, forms.LeftAlingment, forms.AlertInput]}>
+                        <View style={[forms.InputCont, forms.LeftAlingment, this.state.surnameError?forms.AlertInput:null]}>
                             <TextInput
                                 style={forms.Input}
-                                onChangeText={(emailVerification) => this.validate('email','emailVerification','emailVerificationError',emailVerification)}
-                                placeholder="Apellido"
+                                onChangeText={(surname) => this.validate('text','surname','surnameError',surname)}
+                                placeholder="Apellidos"
                                 keyboardType = "email-address"
                             />
                         </View>
-                        <View style={layout.textAlertCont}>
-                                <Text style={[layout.textAlertError, text.Regular]}>
-                                    Apellido no valido
-                                </Text>
-                        </View>
+                        {this.state.surnameError?
+                            <View style={layout.textAlertCont}>
+                                    <Text style={[layout.textAlertError, text.Regular]}>
+                                        Apellidos no validos
+                                    </Text>
+                            </View>
+                        :null}
                     </View>
                 </View>
             : 
@@ -97,15 +138,20 @@ class Profile extends React.Component {
                 </View>
                 <View style={layout.InputGroup}>
                     <Text style={text.InputLabel,{alignContent:"center"}}>
-                    Brandon Cooper 
+                    {this.state.name+" "+this.state.surname}
                     </Text>
                 </View>
+                <View style={layout.InputGroup}>
+                    <Text style={text.InputLabel,{alignContent:"center"}}>
+                    {this.state.email}
+                    </Text>
+                </View> 
             </View>
             }
 
             { this.state.Editable ? 
                 <TouchableOpacity 
-                    onPress={() => {this._toggleEdit();} }
+                    onPress={() => {this.sendInfoUpdate();} }
                     style={[buttons.GralButton, buttons.BDarkBlue]}>
                     <Text style={[text.BText, text.TLight]}>
                         Guardar
@@ -113,7 +159,7 @@ class Profile extends React.Component {
                 </TouchableOpacity>
             :
                 <TouchableOpacity 
-                    onPress={() => {this._toggleEdit();} }
+                    onPress={() => {this._toggleEdit()} }
                     style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
                     <Text style={[text.BText, text.TLight]}>
                         Actualizar
@@ -142,7 +188,15 @@ class Profile extends React.Component {
                     ¿Deseas ayudarnos con una encuesta?
                 </Text>
             </TouchableOpacity>
-
+            <SimpleAlert 
+                isModalVisible = {this.state.isModalVisible} 
+                imageType = {this.state.imageResponse}
+                line1 = {this.state.modalLine1}
+                line2 = {this.state.modalLine2}
+                buttonLabel = {this.state.buttonLabel}
+                closeModal={() => this.setState({isModalVisible: false})}
+            />
+             </ScrollView>   
             <Modal
             animationType="slide"
             transparent={false}
