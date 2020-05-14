@@ -73,13 +73,13 @@ class Income_model extends CI_Model {
         );
 
         $this->db->set($data);
-        $this->db->where('IdUser',$IdUser);
-        $this->db->where('id_category',$id_category);
+        $this->db->where('id_user',$IdUser);
+        $this->db->where('id_category_income',$id_category);
         $this->db->update('category_income');
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
-    public function DeleteCategoryIncomes($IdIncome,$IdUser){
+    public function DeleteCategoryIncome($IdIncome,$IdUser){
 
         //Array con los datos del usuario
         $data = array(
@@ -87,8 +87,8 @@ class Income_model extends CI_Model {
         );
 
         $this->db->set($data);
-        $this->db->where('IdUser',$IdUser);
-        $this->db->where('IdIncome',$IdIncome);
+        $this->db->where('id_user',$IdUser);
+        $this->db->where('id_category_income',$IdIncome);
         $this->db->update('category_income');
         return $this->db->affected_rows() > 0 ? true : false ;
     }
