@@ -971,11 +971,6 @@
     eslint-plugin-react-native "3.8.1"
     prettier "1.17.0"
 
-"@react-native-community/google-signin@^4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/google-signin/-/google-signin-4.0.1.tgz#37e8b3cdcc1fc6af5c96cca547e78e15e1a6589a"
-  integrity sha512-tdODrxrZdPbp4wuVsRP7359pbctKxKp4WClEPyD+eY1CHE22Jhz5rgmxRvWbK/tHLXuvLIB9rgbUjJgtbHptQg==
-
 "@react-native-community/masked-view@^0.1.5":
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.5.tgz#25421be6cd943a4b1660b62cfbcd45be8891462c"
