@@ -14,7 +14,9 @@ import SaveScreen from './src/screens/saves';
 
 import HomeScreen from './src/screens/home';
 import CreditCardScreen from './src/screens/creditCard';
-import DictionaryScreen from './src/screens/dictionary'
+import DictionaryScreen from './src/screens/dictionary';
+import ConfigurationsScreen from './src/screens/Configurations';
+
 
 
 ///Login Stack
@@ -29,9 +31,26 @@ const FeedStack = createStackNavigator({
   Home: HomeScreen,
   CreditCard: CreditCardScreen,
   DictionaryScreen,
+  Configurations: ConfigurationsScreen
 });
 
 FeedStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
+const ProfileStack = createStackNavigator({
+  ProfileScreen,
+  ConfigurationsScreen
+});
+
+ProfileStack.navigationOptions = ({ navigation }) => {
   let tabBarVisible = true;
   if (navigation.state.index > 0) {
     tabBarVisible = false;
