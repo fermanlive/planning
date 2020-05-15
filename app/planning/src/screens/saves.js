@@ -6,6 +6,10 @@ import ProgressCircle from 'react-native-progress-circle';
 import Modal from "react-native-modal";
 import { Icon } from 'react-native-elements';
 
+import {getSession} from '../helpers/users_services';
+import {ShowSaves} from '../helpers/save_services';
+import {masterValidator} from '../helpers/validations';
+
 class Saves extends React.Component {
     constructor(props) {
    
@@ -36,7 +40,12 @@ class Saves extends React.Component {
         };
     }
   _toggleEdit = () => this.setState({ Editable: !this.state.Editable });
-
+    async componentDidMount(){
+      const onSession = await getSession();
+      let idUser = onSession.id;
+      let saves = await ShowSaves(null,idUser);
+      console.warn(saves);
+    }
     render() {
       return (
         <View style={ [layout.MainContainer, layout.AlignCenter,{backgroundColor:'#66E49B'}] }>
