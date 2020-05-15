@@ -34,13 +34,12 @@ class Save_model extends CI_Model {
         return $insert_id > 0 ? true : false ;
     }
 
-    public function getSave($IdSave,$users_idusers){
+    public function getSave($IdSave){
         $this->db->select('*');
         $this->db->from('Save');
         if($IdSave > 0){
             $this->db->where('id_saves',$IdSave);
         } 
-        $this->db->where('users_idusers',$users_idusers);
         $query = $this->db->get();
         $result = $query->result_array();
         $result = count($result)> 0 ? $result: [];

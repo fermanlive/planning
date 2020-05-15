@@ -41,9 +41,8 @@ class Saves extends RestController {
     public function ShowSaves_get(){   
 
         $IdSave = $this->get('IdSave');
-        $Iduser = $this->get('Iduser');
         $IdSave = $IdSave == null ?  0: $IdSave ;
-        $GetSave = $this->Save_model->getSave($IdSave,$Iduser);
+        $GetSave = $this->Save_model->getSave($IdSave);
 
         if(count($GetSave)> 0){
             $data=[
