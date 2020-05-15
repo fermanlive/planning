@@ -33,9 +33,9 @@ const CONST = require('../constants/constants');
     }
   }
 
-  export async function getCategoryIncomes(){
+  export async function getCategoryIncomes(iduser){
     try{
-      var parameters=  `/` ;
+      var parameters=  `/iduser/`+ iduser+`/`;
       var data = await fetchRequest("Incomes/getCategoryIncomes",parameters);
       return data;
     } catch (error) {

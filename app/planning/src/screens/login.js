@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 import {SimpleAlert} from '../components/modalAlert';
 import Loading from '../components/Loading';
-import { GoogleSignin, statusCodes  } from '@react-native-community/google-signin';
+// import { GoogleSignin, statusCodes  } from '@react-native-community/google-signin';
 import { AccessToken,GraphRequest, GraphRequestManager  } from 'react-native-fbsdk';
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -66,24 +66,24 @@ class Login extends React.Component {
       }
     }
 // Somewhere in your code
-signIn = async () => {
-  try {
-    await GoogleSignin.hasPlayServices();
-    const userInfo = await GoogleSignin.signIn();
-    this.setState({ userInfo });
-    console.log(userInfo);
-  } catch (error) {
-    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      // user cancelled the login flow
-    } else if (error.code === statusCodes.IN_PROGRESS) {
-      // operation (e.g. sign in) is in progress already
-    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      // play services not available or outdated
-    } else {
-      // some other error happened
-    }
-  }
-};
+// signIn = async () => {
+//   try {
+//     await GoogleSignin.hasPlayServices();
+//     const userInfo = await GoogleSignin.signIn();
+//     this.setState({ userInfo });
+//     console.log(userInfo);
+//   } catch (error) {
+//     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+//       // user cancelled the login flow
+//     } else if (error.code === statusCodes.IN_PROGRESS) {
+//       // operation (e.g. sign in) is in progress already
+//     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+//       // play services not available or outdated
+//     } else {
+//       // some other error happened
+//     }
+//   }
+// };
 
     handleFacebookLogin = async () => {
         this.setBusyIndicator(true, '')
@@ -257,6 +257,7 @@ signIn = async () => {
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => this.signIn()}
+                            disabled
                             style={[buttons.LoginButtons, buttons.ButtonGmail]}>
                             <Text style={[text.BText, text.TLight,{paddingRight:20}]}>
                                 Registro Gmail

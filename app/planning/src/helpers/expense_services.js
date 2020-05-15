@@ -12,9 +12,9 @@ const CONST = require('../constants/constants');
       //console.log("doLogin-error= "+error);
     }
   }
-  export async function getCategoryExpense(){
+  export async function getCategoryExpense(iduser){
     try{
-      var parameters=  `/` ;
+      var parameters=  `iduser/`+ iduser+`/`;
       var data = await fetchRequest("Expenses/getCategoryExpense",parameters);
       return data;
     } catch (error) {

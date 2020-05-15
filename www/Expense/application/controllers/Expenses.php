@@ -60,8 +60,8 @@ class Expenses extends RestController {
 
     }
     public function getCategoryExpense_get(){  
-
-        $CategoriesExpense = $this->expense_model->getCategoryExpense();
+        $IdUser = $this->get('iduser');
+        $CategoriesExpense = $this->expense_model->getCategoryExpense($IdUser);
         if($CategoriesExpense){
             $this->response([
                 'status' => true,
@@ -100,6 +100,27 @@ class Expenses extends RestController {
         }
 
     }
+    public function UpdateCategoryExpense_get(){   
+
+        $name = urldecode($this->get('name')); 
+        $IdCategory = $this->get('idcategory');
+        $IdUser = $this->get('iduser');
+
+
+        $UpdateCategoryExpense = $this->expense_model->UpdateCategoryExpense($name,$IdCategory,$IdUser);
+        if($UpdateCategoryExpense){
+            $this->response([
+                'status' => true,
+                'message' => 'Categoria de Egreso actualizado'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Categoria de Egreso no actualizado'
+            ],404);
+        }
+
+    }
 
     public function DeleteExpense_get(){  
 
@@ -116,6 +137,26 @@ class Expenses extends RestController {
             $this->response([
                 'status' => false,
                 'message' => 'Egreso no eliminado'
+            ],404);
+        }
+
+    }
+
+    public function DeleteCategoryExpense_get(){  
+
+        $IdUser = $this->get('iduser');
+        $IdCategory = $this->get('Idcategory');
+
+        $DeleteCategoryExpense = $this->expense_model->DeleteCategoryExpense($IdUser,$IdCategory);
+        if($DeleteCategoryExpense){ 
+            $this->response([
+                'status' => true,
+                'message' => 'Categoria de Egreso eliminado'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Categoria de Egreso no eliminado'
             ],404);
         }
 

@@ -94,6 +94,19 @@ class User_model extends CI_Model {
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
+    public function UpdateUser($iduser,$name,$surname){
+
+        //Array con los datos del usuario
+        $data = array(
+            'name' => $name,
+            'surname' => $surname
+        ); 
+        
+        $this->db->where('idusers',$iduser);
+        $this->db->update('users',$data);
+        return $this->db->affected_rows() > 0 ? true : false ;
+    }
+
     public function validateExistedUser($email){
         $email =strtolower($email);
 

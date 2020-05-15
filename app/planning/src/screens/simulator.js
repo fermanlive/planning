@@ -9,6 +9,7 @@ import {Shapes} from "react-native-background-shapes";
 import NetInfo from "@react-native-community/netinfo";
 import { Card, SimpleCard } from "@paraboly/react-native-card";
 import numeral from 'numeral';
+import ModalInstructor from "react-native-modal";
 
 
 import {masterValidator} from '../helpers/validations';
@@ -27,6 +28,7 @@ class Simulator extends React.Component {
       typeCredit:'',
       modalVisible:false,
       typeTransaction:null,
+      modalInstructor:false,
       tableHead: ['Mes','Pago \nMinimo', 'Interes','Total \nIntereses', 'Deuda \nVigente'],
       tableData: [
         ['1','$30,780.50', '$0.00', '$123,122.00'],
@@ -54,24 +56,25 @@ class Simulator extends React.Component {
 
 SimulateCredit(typeCredit){
  let select = typeCredit? typeCredit.value : null;
- switch (select) {
-   case 0:
-     this.SimulateCreditCard();
-     break;
+ this.SimulateCreditCard();
+//  switch (select) {
+//    case 0:
+//      this.SimulateCreditCard();
+//      break;
 
-    case 1:
+//     case 1:
 
-    break;
+//     break;
 
-    case 2:
+//     case 2:
      
-      break;
+//       break;
  
-     case 3:
+//      case 3:
  
-     break;
+//      break;
 
- }
+//  }
 }
 
 componentDidMount(){
@@ -93,12 +96,20 @@ SimulateCreditCard(){
   let dataSimulation=new Array();
   let Showinterest;
   let TotalShowinterest = 0;
+  
   for (let index = 1; index <= numberFee; index++) {
-    Showinterest =  index==1 ? 0: parseFloat(Totaldebt*interest);
-    Totaldebt = Totaldebt+(Showinterest);
-    MinimumPay =  amount/numberFee + Showinterest;
-    TotalShowinterest = Showinterest+TotalShowinterest;
-    Totaldebt = (Totaldebt-MinimumPay)>0 ? Totaldebt-MinimumPay : 0 ;
+    if(numberFee == 1){
+      MinimumPay = Totaldebt;
+      Showinterest = 0;
+      TotalShowinterest=0;
+      Totaldebt = 0;
+    }else{
+      Showinterest =  parseFloat(Totaldebt*interest);
+      Totaldebt = Totaldebt+(Showinterest);
+      MinimumPay =  amount/numberFee + Showinterest;
+      TotalShowinterest = Showinterest+TotalShowinterest;
+      Totaldebt = (Totaldebt-MinimumPay)>0 ? Totaldebt-MinimumPay : 0 ;
+    }
     let value = [index,numeral(MinimumPay).format('$0,0'),numeral(Showinterest).format('$0,0'),numeral(TotalShowinterest).format('$0,0'),numeral(Totaldebt).format('$0,0')];
     dataSimulation.push(value);
   }
@@ -186,9 +197,16 @@ SimulateCreditCard(){
 
             {this.state.typeCredit.value == 0 ? 
             <View style={{marginBottom: 10,}}>
-                <Text style={[text.InputLabel, {marginLeft: 15,}]}>
-                Tipo de Transacción
-              </Text>
+              <TouchableOpacity style={[layout.InputGroup]} 
+              onPress={() => {
+                this.setState({modalInstructor:true}),
+                this.setState({conceptTitle: "Interes Anual"}),
+                this.setState({concept: DEFINITION_INTEREST})
+              }}>
+                <Text style={[text.InputLabel,forms.LeftAlingment]}>
+                Intereses Anual(%)<Text style={text.InputLabelQuestion}>¿Que es esto?</Text>
+                </Text>
+              </TouchableOpacity>
               <ModalSelector
                   data={data2}
                   initValue="Algo"
@@ -213,14 +231,8 @@ SimulateCreditCard(){
                   </View>
               </ModalSelector>
               </View>
-            :null}
-            {this.state.typeTransaction?this.state.typeTransaction.value==0?
-                <SimpleCard
-                  titleFontSize = {16}
-                  title={ALERT_ADVANCES}
-                />
-            :null:null}    
-            {this.state.typeCredit.value == 0 ? 
+            :null}   
+            {this.state.typeCredit ? 
             <View style={layout.InputGroup}>
                 <Text style={text.InputLabel}>
                 Numero de cuotas
@@ -242,7 +254,7 @@ SimulateCreditCard(){
               :null}
             </View>
             :null}
-            {this.state.typeCredit.value==0 ?
+            {this.state.typeCredit ?
             <View style={layout.InputGroup}>
                 <Text style={text.InputLabel}>
                 Precio
@@ -264,7 +276,7 @@ SimulateCreditCard(){
               :null}
             </View>
             :null}
-            {this.state.typeCredit.value==0 ?
+            {this.state.typeCredit ?
             <View style={layout.InputGroup}>
                 <Text style={text.InputLabel}>
                 Intereses % Efectivo Mensual
@@ -277,13 +289,76 @@ SimulateCreditCard(){
                         keyboardType = "numeric"
                     />
                 </View>
-                {/* <View style={layout.textAlertCont}>
-                        <Text style={[layout.textAlertError, text.Regular]}>
-                            Error: valor no Numerico
-                        </Text>
-                </View> */}
+                {this.state.interestError?
+                  <View style={layout.textAlertCont}>
+                    <Text style={[layout.textAlertError, text.Regular]}>
+                        Error: valor no Numerico
+                    </Text>
+                  </View>
+                :null} 
             </View> 
             :null}
+            {/* {this.state.typeCredit?
+              <View style={layout.InputGroup}>
+              <TouchableOpacity style={[layout.InputGroup]} 
+                  onPress={() => {
+                  this.setState({modalInstructor:true}),
+                  this.setState({conceptTitle: "Seguro de vida"}),
+                  this.setState({concept: DEFINITION_MANAGEMENT})
+                }}>
+                    <Text style={[text.InputLabel,forms.LeftAlingment]}>
+                    ¿Seguro de vida? <Text style={text.InputLabelQuestion}> ¿Que es esto?</Text>
+                    </Text>
+                </TouchableOpacity>
+              <ModalSelector
+                  data={[
+                    { key: 0, label:"Si" },
+                    { key: 1,label: "No" },
+                ]}
+                  initValue="Algo"
+                  onChange={insurance => this.validate('','insurance','insuranceError',insurance)}
+                  cancelText = "Cancelar"
+                  overlayStyle = {forms.PickerOverlay}
+                  optionContainerStyle = {[forms.PickerOptionCont, {margin: 0, padding: 0,}]}
+                  optionStyle ={forms.PickerOptionCont}
+                  optionTextStyle = {forms.PickerOptionText}
+                  selectedItemTextStyle = {[text.Regular, text.TLightBlue]}
+                  cancelStyle = {[buttons.GralButton, buttons.BLight, {marginTop: 15,}]}
+                  cancelTextStyle = {[text.BText, text.TLightBlue]}
+                  >                            
+                  <View style={[forms.InputCont, forms.LeftAlingment]}>
+                      <TextInput
+                      style={forms.Picker}
+                      editable={false}
+                      placeholder= "Seleccionar si tiene cuota de manejo"
+                      value={this.state.insurance?this.state.insurance.label:''} />
+                  </View>
+              </ModalSelector>
+              </View>
+            :null}
+            {this.state.insurance?  
+              <View style={[layout.InputGroup]}>
+                  <Text style={[text.InputLabel,forms.LeftAlingment]}>
+                      Valor seguro de vida
+                      </Text>
+                    <View style={[forms.InputCont, forms.LeftAlingment, this.state.amountInsuranceError ?forms.AlertInput:null]}>
+                        <TextInput
+                            style={forms.Input}
+                            onChangeText={(amountInsurance) => this.validate('numNull','amountInsurance','amountInsuranceError',amountInsurance)}
+                            placeholder="Ingresar Intereses"
+                            keyboardType = "numeric"
+                            value={this.state.amountInsurance}
+                        />
+                    </View>
+                    {this.state.InterestError? 
+                      <View style={layout.textAlertCont}>
+                          <Text style={[layout.textAlertError, text.Regular]}>
+                          Valor no valido
+                          </Text>
+                      </View>
+                    :null}
+                </View>
+              :null} */}
               <TouchableOpacity 
                   onPress={() => this.SimulateCredit(this.state.typeCredit)}
                   style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
@@ -314,7 +389,7 @@ SimulateCreditCard(){
                 </Text>
 
                 <Text style={{textAlign:'justify'}}>
-                  Este simualdor ofrece un estimativo de como serian las cuotas mas no 
+                  Este simulador ofrece un estimativo de como serian las cuotas mas no 
                   una herramienta oficial del banco.
                 </Text>
               </ScrollView>
@@ -326,6 +401,46 @@ SimulateCreditCard(){
                 </Text>
             </TouchableOpacity>
             </Modal>
+            <ModalInstructor
+          backdropColor = {colors.opacityMain}
+          backdropOpacity = {0.9}
+          style = { { margin: 0} }
+          isVisible={this.state.modalInstructor}
+          useNativeDriver={true}
+        >  
+            <View 
+              style={layout.ModalTrialInfoCont}
+            >
+              <Text style={[text.TravelInfoTitle, text.Regular, text.TAccentPurple]}>
+              {this.state.conceptTitle}
+              </Text>
+              <View style={[layout.GralTextCont, {marginBottom: 30,marginTop:30}]}>
+              <SimpleCard
+                  titleFontSize = {16}
+                  title={this.state.concept}
+                />
+              </View>
+              <View style={[layout.GralTextCont]}>
+                  <TouchableOpacity 
+                      onPress={() =>{this.setState({modalInstructor: false}),this.props.navigation.navigate('DictionaryScreen') }}
+                      style={[buttons.GralButton, buttons.BLinePurple]}>
+                      <Text style={[text.BText, text.TAccentPurple]}>
+                          Mas información 
+                      </Text>
+                  </TouchableOpacity>
+              </View>
+              <View style={[layout.GralTextCont]}>
+                  <TouchableOpacity 
+                      onPress={() => this.setState({modalInstructor: false})}
+                      style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
+                      <Text style={[text.BText, text.TLight]}>
+                          Cerrar 
+                      </Text>
+                  </TouchableOpacity>
+              </View>
+            </View>
+        </ModalInstructor>
+
             </View>
     );
   }

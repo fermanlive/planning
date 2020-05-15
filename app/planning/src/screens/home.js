@@ -68,7 +68,7 @@ async componentDidMount(){
   IdPeriod=IdPeriod.message;
   this.setPeriod(idUser,IdPeriod);
   this.setBalance(idUser,IdPeriod);
-  this.setCategories();
+  this.setCategories(idUser);
   this.setBusyIndicator(false, '');
 }
 async setPeriod(idUser,IdPeriod){
@@ -131,8 +131,8 @@ async setBalance(idUser,IdPeriod){
 
 }
 
-async  setCategories() {
-  let categoriesIncomes = await getCategoryIncomes();
+async  setCategories(idUser) {
+  let categoriesIncomes = await getCategoryIncomes(idUser);
   categoriesIncomes = categoriesIncomes.status ? categoriesIncomes.message: null;
 
 
@@ -144,7 +144,7 @@ async  setCategories() {
   } 
   this.setState({categoriesIncomes});
 
-  let categoriesExpenses = await getCategoryExpense();
+  let categoriesExpenses = await getCategoryExpense(idUser);
   categoriesExpenses = categoriesExpenses.status  ? categoriesExpenses.message: null;
 
   if(categoriesExpenses.length > 0){

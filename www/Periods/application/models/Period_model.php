@@ -70,6 +70,7 @@ class Period_model extends CI_Model {
         DATE_FORMAT(date_end,"%Y-%m-%d") as date_end,
         idperiod');
         $this->db->from('period');
+        $this->db->where('status',1);
         $this->db->where('users_idusers',$idusers);
         $query = $this->db->get();
         $periods = $query->result();

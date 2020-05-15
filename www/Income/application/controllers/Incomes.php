@@ -119,12 +119,12 @@ class Incomes extends RestController {
 
     }
     
-    public function UpdateCategoryIncomes_get(){  
+    public function UpdateCategoryIncome_get(){  
         $IdUser = $this->get('iduser');
-        $id_category = $this->get('iduser');
+        $id_category = $this->get('id_category');
         $name = $this->get('name');
         $UpdateCategoryIncome = $this->income_model->UpdateCategoryIncome($name,$IdUser,$id_category);
-        if(UpdateCategoryIncome){
+        if($UpdateCategoryIncome){
             $this->response([
                 'status' => true,
                 'message' => "Categoria Actualizada"
@@ -156,13 +156,13 @@ class Incomes extends RestController {
         }
 
     }
-    public function DeleteCategoryIncomes_get(){  
+    public function DeleteCategoryIncome_get(){  
 
         $IdUser = $this->get('iduser');
         $IdIncome = $this->get('idincome');
 
-        $DeleteCategoryIncomes = $this->income_model->DeleteCategoryIncomes($IdIncome,$IdUser);
-        if($DeleteCategoryIncomes){
+        $DeleteCategoryIncome = $this->income_model->DeleteCategoryIncome($IdIncome,$IdUser);
+        if($DeleteCategoryIncome){
             $this->response([
                 'status' => true,
                 'message' => 'Categoria eliminada'

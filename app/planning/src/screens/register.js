@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, Text,TextInput,TouchableOpacity,ScrollView,CheckBox } from 'react-native';
-const {layout, text, forms, buttons} = require ('../styles/main');
+import CheckBox from '@react-native-community/checkbox';
+import { View, Text,TextInput,TouchableOpacity,ScrollView } from 'react-native';
+const {layout, text, forms, buttons,colors} = require ('../styles/main');
 import LinearGradient from 'react-native-linear-gradient';
 import {masterValidator} from '../helpers/validations';
 import {validateExistedUser,CreateUser} from '../helpers/users_services';
+import Modal from "react-native-modal";
+import { Card, SimpleCard } from "@paraboly/react-native-card";
 
 import {SimpleAlert} from '../components/modalAlert';
 import Loading from '../components/Loading';
@@ -26,6 +29,8 @@ class Register extends React.Component {
             confirmEmail:'',
             password:'',
             confirmPassword:'',
+            terms:true,
+            termsModal:false,
             optin:false,
             optinError:false,
             isModalVisible:false,
@@ -214,14 +219,19 @@ class Register extends React.Component {
               :null}
           </View>
           <View style={layout.InputGroup}>
-            <CheckBox isChecked={this.state.optin}
+            <CheckBox
+                disabled={false}
+                value={this.state.terms}
+                onValueChange={()=>{this.setState({terms: !this.state.terms}), console.warn(this.state.terms)}}
             />
-            <TouchableOpacity>
+            <TouchableOpacity
+                onPress={()=>this.setState({termsConditions: true})}
+            >
               <Text style={text.InputLabel}>
                 Aceptar terminos y condiciones.
               </Text>       
             </TouchableOpacity>    
-              {this.state.optinError?
+              {!this.state.terms?
                 <View style={layout.textAlertCont}>
                     <Text style={[layout.textAlertError, text.Regular]}>
                         Se debe aceptar terminos y condiciones para continuar.
@@ -258,6 +268,36 @@ class Register extends React.Component {
             activity_loading={this.state.activity_loading} 
             activity_text={this.state.activity_text} 
             />
+            <Modal
+                backdropColor = {colors.opacityMain}
+                backdropOpacity = {0.9}
+                style = { { margin: 0} }
+                isVisible={this.state.termsModal}
+                useNativeDriver={true}
+                >  
+                    <View 
+                    style={layout.ModalTrialInfoCont}
+                    >
+                    <Text style={[text.TravelInfoTitle, text.Regular, text.TAccentPurple]}>
+                     Terminos y Condiciones
+                    </Text>
+                    <View style={[layout.GralTextCont, {marginBottom: 30,marginTop:30}]}>
+                    <SimpleCard
+                        titleFontSize = {16}
+                        title={"Autorizo a Daniel Fernando Murcia Perdom y Luis Edwin Rodriguez, para que, de manera libre, expresa, voluntaria, y debidamente informada, le puedan dar tratamiento a los datos que he suministrado en este formulario. "}
+                        />
+                    </View>
+                    <View style={[layout.GralTextCont]}>
+                        <TouchableOpacity 
+                            onPress={() => this.setState({termsModal: false})}
+                            style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
+                            <Text style={[text.BText, text.TLight]}>
+                                Cerrar 
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    </View>
+                </Modal>
         </View>
       );
     }

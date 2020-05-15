@@ -53,6 +53,20 @@ class Expense_model extends CI_Model {
         return $this->db->affected_rows() > 0 ? true : false ;
     }
 
+    public function UpdateCategoryExpense($name,$IdCategory,$IdUser){
+
+        //Array con los datos del usuario
+        $data = array(
+            'name' => $name
+        );
+
+        $this->db->set($data);
+        $this->db->where('id_user',$IdUser);
+        $this->db->where('id_category_expense',$IdCategory);
+        $this->db->update('category_expense');
+        
+        return $this->db->affected_rows() > 0 ? true : false ;
+    }
     public function DeleteExpense($IdUser,$IdExpense){
 
         //Array con los datos del usuario
@@ -63,6 +77,21 @@ class Expense_model extends CI_Model {
         $this->db->set($data);
         $this->db->where('id_expense',$IdExpense);
         $this->db->update('expense');
+        
+        return $this->db->affected_rows() > 0 ? true : false ;
+    }
+
+    public function DeleteCategoryExpense($IdUser,$IdCategory){
+
+        //Array con los datos del usuario
+        $data = array(
+            'status' => 0
+        );
+
+        $this->db->set($data);
+        $this->db->where('id_category_expense',$IdCategory);
+        $this->db->where('id_user',$IdUser);
+        $this->db->update('category_expense');
         
         return $this->db->affected_rows() > 0 ? true : false ;
     }
@@ -84,11 +113,14 @@ class Expense_model extends CI_Model {
         return $result;
     }
 
-    public function getCategoryExpense(){
+    public function getCategoryExpense($IdUser){
 
         $this->db->select('*');
         $this->db->from('category_expense');
         $this->db->order_by('name', 'ASC');
+        $this->db->where('id_user',$IdUser);
+        $this->db->where('status',1);
+        $this->db->or_where('id_user',0);
         $query = $this->db->get();
         $result = $query->result_array();
         return $result;
