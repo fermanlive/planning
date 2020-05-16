@@ -17,7 +17,7 @@ class Saves extends RestController {
     public function CreateSave_get(){   
 
         $current_value = $this->get('current_value');
-        $name = $this->get('name');
+        $name = urldecode($this->get('name'));
         $goal = $this->get('goal');
         $Iduser = $this->get('Iduser');
 
@@ -63,7 +63,7 @@ class Saves extends RestController {
     public function EditSave_get(){   
 
         $current_value = $this->get('current_value');
-        $name = $this->get('name');
+        $name = urldecode($this->get('name'));
         $goal = $this->get('goal');
         $Iduser = $this->get('Iduser');
         $IdSave = $this->get('IdSave');
@@ -118,10 +118,10 @@ class Saves extends RestController {
             $this->response($data,200);
         }else{
             $data=[
-                'status' => true,
+                'status' => false,
                 'message' => 'Ahorro no eliminado'
             ];
-            $this->response($data,200);
+            $this->response($data,404);
         }   
     }
 
