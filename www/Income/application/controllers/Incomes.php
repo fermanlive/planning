@@ -16,7 +16,7 @@ class Incomes extends RestController {
 
     public function CreateIncome_get(){   
 
-        $name = $this->get('name');
+        $name = urldecode($this->get('name'));
         $IdCategory = $this->get('idcategory');
         $dateIncome = $this->get('dateincome');
         $IdPeriod = $this->get('idperiod');
@@ -38,7 +38,7 @@ class Incomes extends RestController {
     }
     public function CreateIncomeCategory_get(){   
 
-        $name = $this->get('name');
+        $name = urldecode($this->get('name'));
         $IdUser = $this->get('IdUser');
 
         $CreateIncomeCategory = $this->income_model->CreateIncomeCategory($name,$IdUser);
@@ -97,7 +97,7 @@ class Incomes extends RestController {
 
     public function UpdateIncome_get(){   
 
-        $name = $this->get('name');
+        $name = urldecode($this->get('name'));
         $IdCategory = $this->get('IdCategory');
         $dateIncome = $this->get('dateincome');
         $value= $this->get('value');
@@ -122,7 +122,7 @@ class Incomes extends RestController {
     public function UpdateCategoryIncome_get(){  
         $IdUser = $this->get('iduser');
         $id_category = $this->get('id_category');
-        $name = $this->get('name');
+        $name = urldecode($this->get('name'));
         $UpdateCategoryIncome = $this->income_model->UpdateCategoryIncome($name,$IdUser,$id_category);
         if($UpdateCategoryIncome){
             $this->response([

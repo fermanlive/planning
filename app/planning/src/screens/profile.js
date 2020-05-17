@@ -168,7 +168,7 @@ class Profile extends React.Component {
 
             }      
             <TouchableOpacity 
-                onPress={() => this.setState({modalVisible: true})}
+                onPress={() => this.props.navigation.navigate('Configurations')}
                 style={[buttons.GralButton, buttons.ButtonRegisterLogin]}>
                 <Text style={[text.BText, text.TAccentPurple]}>
                     Configuraciones
