@@ -1,6 +1,6 @@
 import React from 'react';
 import numeral from 'numeral';
-import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,ScrollView,TextInput} from 'react-native';
+import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,ScrollView,SafeAreaView ,TextInput} from 'react-native';
 import {PieChart} from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
@@ -340,7 +340,7 @@ this.setState({
     this.setState({id_expense});
     this.setState({ModalExpense: true});
     // this.setEmptyIncome();
-    console.warn("id_expense",this.state.id_expense);
+
   }
   setEmptyIncome(){
     this.setState({name: ''});
@@ -349,6 +349,15 @@ this.setState({
     this.setState({categoriesIncome: ''});
     this.setState({chosenDate: ''});
     this.setState({amount: ''});
+  }
+
+  setEmptyExpense(){
+    this.setState({nameExpense: ''});
+    this.setState({nameExpenseError: ''});
+    this.setState({amountExpense: ''});
+    this.setState({amountExpenseError: ''});
+    this.setState({categoriesIncome: ''});
+    this.setState({chosenDate: ''});
   }
 
   static navigationOptions = ({ navigation }) => ({
@@ -495,12 +504,11 @@ this.setState({
                 </Text>
             </TouchableHighlight>
           </View>
-          <ScrollView>
+          <SafeAreaView style={{flex: 1}}>
           <FlatList
             data = {this.state.elements}
             style={layout.MainContainerSVFlatlist}
             numColumns={2}
-            keyExtractor={item => item.id}
             renderItem={({item}) =>
               <TouchableOpacity
                 onPress={() => item.categoria ==0 ? 
@@ -539,7 +547,7 @@ this.setState({
               </TouchableOpacity>
             }
           />
-          </ScrollView>
+          </SafeAreaView>
             { this.state.showIcons ? 
               <View style={[layout.ButtonsSpends2]}>
                 <View style={[layout.ButtonsSpends3]}>
@@ -569,7 +577,7 @@ this.setState({
                   name='minus'
                   type='material-community'
                   color={colors.main}
-                  onPress={() => {this.setState({ModalExpense : true}),this.setState({ExpenseAction: 1}) }}
+                  onPress={() => {this.setState({ModalExpense : true}),this.setEmptyExpense(), this.setState({ExpenseAction: 1}) }}
                   />
                   <Text style={[layout.BillItemText2, text.Strong, text.TLight,]}>Agregar {"\n"} Egreso</Text>
                 </View>
@@ -660,15 +668,6 @@ this.setState({
                             Fecha del egreso
                         </Text>
                         <View style={[forms.InputCont, forms.LeftAlingment]}>
-                            <View style={forms.InputInteraction}>
-                            <Icon
-                              name='calendar'
-                              type='material-community'
-                              color={text.TDarkGray}
-                              backgroundColor='#000000'
-                              size={22}
-                              />
-                            </View>
                             <TouchableOpacity
                                 style={forms.DatePickerCont}
                                 onPress={this._showDateTimePicker}
