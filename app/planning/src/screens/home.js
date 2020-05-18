@@ -313,6 +313,7 @@ this.setState({
     let id_categoryexpense= typeof this.state.categoriesExpense !== 'undefined' ? this.state.categoriesExpense.id_category_expense: 5;
     let chosenDate= this.state.chosenDate ? this.state.chosenDate : 0 ;
     if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
+      console.warn('oli');
       let ExpenseResponse;
       if (ExpenseAction == 0) {
          ExpenseResponse = await UpdateExpense(this.state.nameExpense,id_categoryexpense,chosenDate,this.state.IdPeriod,this.state.amountExpense,this.state.idUser,this.state.id_expense);
@@ -745,9 +746,12 @@ this.setState({
                         </Text>
                      </TouchableOpacity>
                       }  
+                      {this.state.categoriesExpense? this.state.categoriesExpense?this.state.categoriesExpense.id_category_expense == 2 && this.state.ExpenseAction == 0  ///Detalles tarjeta de credito
+                     ? 
                       <SimpleCard title={DETAILS_CREDIT_CARD} 
                         styles={{ paddingBottom:10 }}
                       />
+                      :null:null:null}
                       
                     {this.state.categoriesExpense? this.state.categoriesExpense?this.state.categoriesExpense.id_category_expense == 2 && this.state.ExpenseAction == 0  ///Detalles tarjeta de credito
                      ? 
@@ -832,15 +836,6 @@ this.setState({
                             Fecha
                         </Text>
                         <View style={[forms.InputCont, forms.LeftAlingment]}>
-                            <View style={forms.InputInteraction}>
-                            <Icon
-                              name='calendar'
-                              type='material-community'
-                              color={text.TDarkGray}
-                              backgroundColor='#000000'
-                              size={22}
-                              />
-                            </View>
                             <TouchableOpacity
                                 style={forms.DatePickerCont}
                                 onPress={this._showDateTimePicker}

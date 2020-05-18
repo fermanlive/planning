@@ -10,11 +10,12 @@ import NetInfo from "@react-native-community/netinfo";
 import { Card, SimpleCard } from "@paraboly/react-native-card";
 import numeral from 'numeral';
 import ModalInstructor from "react-native-modal";
+const {TOO_MUCH_INTEREST_MONEY,TOO_MUCH_FEE,BETTER_INTEREST,DEFINITION_INTEREST,DEFINITION_TYPES} = require ('../facts/facts');
 
 
 import {masterValidator} from '../helpers/validations';
 
-const {ALERT_ADVANCES} = require ('../facts/facts');
+
 
 
 class Simulator extends React.Component {
@@ -27,6 +28,7 @@ class Simulator extends React.Component {
       textInputValue: '',
       typeCredit:'',
       modalVisible:false,
+      suggest:'',
       typeTransaction:null,
       modalInstructor:false,
       tableHead: ['Mes','Pago \nMinimo', 'Interes','Total \nIntereses', 'Deuda \nVigente'],
@@ -116,6 +118,17 @@ SimulateCreditCard(){
   this.setState({tableData: dataSimulation});
   this.setState({modalVisible:true });
   this.setState({TotalShowinterest});
+  this.setState({suggest: ""});
+  
+  if(interest*100>2.1){
+    this.setState({suggest: BETTER_INTEREST});
+  }
+  if(TotalShowinterest>=100000){
+    this.setState({suggest: TOO_MUCH_INTEREST_MONEY});
+  }
+  if(numberFee>=12){
+    this.setState({suggest: TOO_MUCH_FEE});
+  }
 
 }
 
@@ -200,11 +213,11 @@ SimulateCreditCard(){
               <TouchableOpacity style={[layout.InputGroup]} 
               onPress={() => {
                 this.setState({modalInstructor:true}),
-                this.setState({conceptTitle: "Interes Anual"}),
+                this.setState({conceptTitle: "Tipos de Transaccion"}),
                 this.setState({concept: DEFINITION_INTEREST})
               }}>
                 <Text style={[text.InputLabel,forms.LeftAlingment]}>
-                Intereses Anual(%)<Text style={text.InputLabelQuestion}>¿Que es esto?</Text>
+                Tipo de Transaccion(%){"   "}<Text style={text.InputLabelQuestion}>¿Que es esto?</Text>
                 </Text>
               </TouchableOpacity>
               <ModalSelector
@@ -278,9 +291,16 @@ SimulateCreditCard(){
             :null}
             {this.state.typeCredit ?
             <View style={layout.InputGroup}>
-                <Text style={text.InputLabel}>
-                Intereses % Efectivo Mensual
+              <TouchableOpacity style={[layout.InputGroup]} 
+              onPress={() => {
+                this.setState({modalInstructor:true}),
+                this.setState({conceptTitle: "Interes Anual"}),
+                this.setState({concept: DEFINITION_INTEREST})
+              }}>
+                <Text style={[text.InputLabel,forms.LeftAlingment]}>
+                Intereses Mensual(%){"   "}<Text style={text.InputLabelQuestion}>¿Que es esto?</Text>
                 </Text>
+              </TouchableOpacity>
                 <View style={[forms.InputCont, forms.LeftAlingment]}>
                     <TextInput
                         style={forms.Input}
@@ -387,6 +407,9 @@ SimulateCreditCard(){
                   </Text>
                   .
                 </Text>
+                <SimpleCard title={this.state.suggest} 
+                        styles={{ paddingBottom:10 }}
+                      />
 
                 <Text style={{textAlign:'justify'}}>
                   Este simulador ofrece un estimativo de como serian las cuotas mas no 

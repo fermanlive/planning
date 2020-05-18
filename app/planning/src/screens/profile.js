@@ -203,24 +203,13 @@ class Profile extends React.Component {
             visible={this.state.modalVisible}> 
              <View style={ [layout.MainContainer, layout.AlignCenter],{backgroundColor: 'white'} }>
                 <View style={[layout.GralTextCont, {marginBottom: 60,}]}>
-                    <Text style={[text.GralText, text.Regular]}>
-                    Recuperar Contraseña
+                    <Text style={[text.TravelInfoTitle, text.Regular, text.TAccentPurple]}>
+                    Encuesta desempeño Planing
                     </Text>
                 </View>
-
-                <View style={layout.InputGroup}>
-                    <Text style={text.InputLabel}>
-                    Nombre del gasto
+                <Text style={text.InputLabel}>
+                Queremos crecer contigo, por tanto una encuesta seria muy importante para nosotros, nos ayudas?
                     </Text>
-                    <View style={[forms.InputCont, forms.LeftAlingment,forms.GreenInput]}>
-                        <TextInput
-                            style={forms.Input}
-                            //onChangeText={(email) => this.validate('email','email','emailError',email)}
-                            placeholder='Ingresar Email'
-                            keyboardType = "email-address"
-                        />
-                    </View>
-                </View>
                 <View style={layout.InputGroup}>
                     <Text style={text.InputLabel}>
                         Califica el desempeño de la app
@@ -237,12 +226,34 @@ class Profile extends React.Component {
                         emptyStar={require('./../../images/starEmpty.png')}
                         halfStar={require('./../../images/starHalf.png')}/>
                     </View>
+                    <View style={layout.InputGroup}>
+                    <Text style={text.InputLabel}>
+                    Observaciones
+                    </Text>
+                    <View style={[forms.InputContObservation, forms.LeftAlingment,forms.GreenInput]}>
+                        <TextInput
+                            style={forms.InputObservation}
+                            multiline = {true}
+                            numberOfLines = {4}
+                            //onChangeText={(email) => this.validate('email','email','emailError',email)}
+                            placeholder='Ingresa tus observaciones.'
+                            keyboardType = "default"
+                        />
+                    </View>
+                </View>
                 </View>
                 <TouchableOpacity 
                 onPress={() => this.setState({modalVisible: false})}
                 style={[buttons.GralButton, buttons.BLightBlue]}>
                     <Text style={[text.BText, text.TLight]}>
-                        Cerrar Modal
+                        Enviar Encuesta
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                onPress={() => this.setState({modalVisible: false})}
+                style={[buttons.GralButton, buttons.BLineLightBlue]}>
+                    <Text style={[text.BText, text.TLightBlue]}>
+                        Cancelar
                     </Text>
                 </TouchableOpacity>
              </View>
