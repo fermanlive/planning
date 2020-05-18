@@ -81,6 +81,16 @@ class Incomes extends RestController {
     }
     public function getCategoryIncomes_get(){  
         $IdUser = $this->get('iduser');
+        $token = $this->get('token');
+        $validateToken = $this->validateToken($IdUser,$token);
+
+        if(!$validateToken){
+            $this->response([
+                'status' => false,
+                'message' => "Token invalido"
+            ],404);
+        }
+
         $Categories = $this->income_model->getCategoryIncomes($IdUser);
         if(count($Categories)>0){
             $this->response([
@@ -175,6 +185,28 @@ class Incomes extends RestController {
         }
 
     }
+    
+    public function validateToken($iduser,$token){
+
+        $url="http://localhost/Planning/www/Users/index.php/Users/validateToken/iduser/".$iduser."/token/".$token;
+        $handle = curl_init($url);
+        curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+        /* Get the HTML or whatever is linked in $url. */
+        $response = curl_exec($handle);
+
+        /* Check for 404 (file not found). */
+        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+        // if($httpCode == 404) {
+        //     /* Handle 404 here. */
+        // }
+
+        curl_close($handle);
+
+        /* Handle $response here. */
+        return $httpCode == 200 ? true : false;
+    }
+
+
 
 
     

@@ -5,9 +5,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Stars from 'react-native-stars';
 import {Shapes} from "react-native-background-shapes";
 import {masterValidator} from '../helpers/validations';
-import {clearCredentials,UpdateUser,getSession,setSession} from '../helpers/users_services';
+import {clearCredentials,UpdateUser,getSession,setSession,sendSurvey} from '../helpers/users_services';
 
 import {SimpleAlert} from '../components/modalAlert';
+
 
 
 class Profile extends React.Component { 
@@ -51,6 +52,17 @@ class Profile extends React.Component {
             var session = {id:onSession.id, name:this.state.name, surname:this.state.surname, email:onSession.email};
             var save = await setSession(session);
         }
+    }
+    async sendSurvey(){
+        let observation = this.state.observation? this.state.observation:null;
+        let rating = this.state.rating? this.state.rating:null;
+        let surveyResponse = await sendSurvey(rating,observation);
+        if(surveyResponse.status){
+            this.setState({SuccessModalLine1: surveyResponse.message});
+            this.setState({SuccesbuttonLabel: "ok, entendido"});
+            this.setState({SuccessModal : true});
+            this.setState({modalVisible : false});
+         }
     }
 
     validate(kind,state,type,input){
@@ -218,7 +230,7 @@ class Profile extends React.Component {
                     <Stars
                         half={true}
                         default={4}
-                        update={(val)=>{this.setState({stars: val})}}
+                        update={(val)=>{this.setState({rating: val})}}
                         spacing={4}
                         starSize={30}
                         count={5}
@@ -235,7 +247,7 @@ class Profile extends React.Component {
                             style={forms.InputObservation}
                             multiline = {true}
                             numberOfLines = {4}
-                            //onChangeText={(email) => this.validate('email','email','emailError',email)}
+                            onChangeText={(observation) => this.setState({observation: observation})}
                             placeholder='Ingresa tus observaciones.'
                             keyboardType = "default"
                         />
@@ -243,7 +255,7 @@ class Profile extends React.Component {
                 </View>
                 </View>
                 <TouchableOpacity 
-                onPress={() => this.setState({modalVisible: false})}
+                onPress={() => this.sendSurvey() }
                 style={[buttons.GralButton, buttons.BLightBlue]}>
                     <Text style={[text.BText, text.TLight]}>
                         Enviar Encuesta
@@ -258,6 +270,14 @@ class Profile extends React.Component {
                 </TouchableOpacity>
              </View>
             </Modal>
+            <SimpleAlert 
+            isModalVisible = {this.state.SuccessModal} 
+            imageType = {2}
+            line1 = {this.state.SuccessModalLine1}
+            line2 = {this.state.SuccessModalLine2}
+            buttonLabel = {this.state.SuccesbuttonLabel}
+            closeModal={() => this.setState({SuccessModal: false})}
+            />
         </View>
       );
     }

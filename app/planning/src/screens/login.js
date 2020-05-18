@@ -139,7 +139,7 @@ class Login extends React.Component {
                                 .then((response) => response.json()) 
                                 .then((loginResponse)=> {
                                     if(loginResponse.status){
-                                        var session = {id:loginResponse.Userinfo.idusers, name:loginResponse.Userinfo.name, surname:loginResponse.Userinfo.surname, email:loginResponse.Userinfo.email};
+                                        var session = {id:loginResponse.Userinfo.idusers, name:loginResponse.Userinfo.name, surname:loginResponse.Userinfo.surname, email:loginResponse.Userinfo.email, token:loginResponse.Userinfo.token};
                                         AsyncStorage.setItem('session', JSON.stringify(session));
                                         this.props.navigation.navigate('Home');
                                     }
@@ -157,7 +157,7 @@ class Login extends React.Component {
                                 .then((response) => response.json()) 
                                 .then((loginResponse)=> {
                                     if(loginResponse.status){
-                                        var session = {id:loginResponse.Userinfo.idusers, name:loginResponse.Userinfo.name, surname:loginResponse.Userinfo.surname, email:loginResponse.Userinfo.email};
+                                        var session = {id:loginResponse.Userinfo.idusers, name:loginResponse.Userinfo.name, surname:loginResponse.Userinfo.surname, email:loginResponse.Userinfo.email,token:loginResponse.Userinfo.token};
                                         AsyncStorage.setItem('session', JSON.stringify(session));
                                         this.setBusyIndicator(false, '');
                                         this.props.navigation.navigate('Home');

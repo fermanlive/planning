@@ -48,10 +48,28 @@ class User_model extends CI_Model {
         }
         return  $result;
     }
+    public function sendSurvey($rating,$observation){
 
+
+
+        //Array con los datos del usuario
+        $data = array(
+
+            'rating' => $rating,
+            'observations' => $observation
+
+        );
+
+        $this->db->set($data);
+        $this->db->insert('survey');
+        $insert_id = $this->db->insert_id();
+        return  $insert_id > 0 ? true: false;
+    }
+    
     public function Login($email,$password){
         $email =strtolower($email);
         $md5password = do_hash($password, 'md5');
+        $token = do_hash($email.rand(0,120000), 'md5');
 
         
         $this->db->select('*');
@@ -62,6 +80,15 @@ class User_model extends CI_Model {
         $result = $query->result_array();
         
         if(count($query->result_array()) == 1){
+            $data = array(
+                'token' => $token,
+            );
+    
+            $this->db->set($data);
+            $this->db->where('email',$email);
+            $this->db->where('password',$md5password);
+            $this->db->update('users');
+            $result[0]["token"] = $token;
             return $result[0];
         }else {
             return false;
@@ -120,5 +147,17 @@ class User_model extends CI_Model {
         }else {
             return true;
         } 
+    }
+
+    public function validateToken($iduser,$token){
+
+        $this->db->select('*');
+        $this->db->from('users');
+        $this->db->where('idusers',$iduser);
+        $this->db->where('token',$token);
+        $query = $this->db->get();
+        $result = $query->result_array();
+        
+        return count($query->result_array()) == 1;         
     }
 }

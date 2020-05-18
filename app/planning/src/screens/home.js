@@ -11,7 +11,7 @@ import { Card, SimpleCard } from "@paraboly/react-native-card";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import ModalSelector from 'react-native-modal-selector';
 
-import {getSession} from '../helpers/users_services';
+import {getSession,clearCredentials} from '../helpers/users_services';
 import {getDefaultPeriod,ReadPeriod} from '../helpers/period_services';
 import {masterValidator} from '../helpers/validations';
 import {ReadIncome,getCategoryIncomes,CreateIncome,DeleteIncome,UpdateIncome} from '../helpers/income_services';
@@ -63,12 +63,13 @@ async componentDidMount(){
   this.setBusyIndicator(true, '');
   const onSession = await getSession();
   let idUser = onSession.id;
+  let token = onSession.token;
   this.setState({idUser});
   let IdPeriod = await getDefaultPeriod(idUser);
   IdPeriod=IdPeriod.message;
   this.setPeriod(idUser,IdPeriod);
   this.setBalance(idUser,IdPeriod);
-  this.setCategories(idUser);
+  this.setCategories(idUser,token);
   this.setBusyIndicator(false, '');
 }
 async setPeriod(idUser,IdPeriod){
@@ -131,8 +132,12 @@ async setBalance(idUser,IdPeriod){
 
 }
 
-async  setCategories(idUser) {
-  let categoriesIncomes = await getCategoryIncomes(idUser);
+async setCategories(idUser,token) {
+  let categoriesIncomes = await getCategoryIncomes(idUser,token);
+  if(!categoriesIncomes.status){
+    await clearCredentials;
+    this.props.navigation.navigate('Login');
+  }
   categoriesIncomes = categoriesIncomes.status ? categoriesIncomes.message: null;
 
 

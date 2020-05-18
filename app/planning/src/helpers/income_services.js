@@ -33,9 +33,9 @@ const CONST = require('../constants/constants');
     }
   }
 
-  export async function getCategoryIncomes(iduser){
+  export async function getCategoryIncomes(iduser,token){
     try{
-      var parameters=  `/iduser/`+ iduser+`/`;
+      var parameters=  `/iduser/`+ iduser+`/token/`+ token+`/`;
       var data = await fetchRequest("Incomes/getCategoryIncomes",parameters);
       return data;
     } catch (error) {
@@ -56,7 +56,6 @@ const CONST = require('../constants/constants');
 
 export async function fetchRequest(service,parameters){
     try {
-      console.warn(CONST.URL_REQUEST_INCOME + service + '/' + parameters);
       var data= await fetch(CONST.URL_REQUEST_INCOME + service + '/' + parameters,{
         method: 'GET', 
         headers: { 'Accept': 'application/json', 

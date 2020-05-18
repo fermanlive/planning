@@ -16,6 +16,7 @@ export async function clearCredentials() {
     try {
       const value = await AsyncStorage.getItem('session');
       const session = JSON.parse(value);
+      console.warn("session",session);
       return session;
     } catch (error) {
       //console.log("getSession-error= "+error);
@@ -35,8 +36,9 @@ export async function clearCredentials() {
     try{
       var parameters= `email/`+ user + `/password/`+pass;
       var data = await fetchRequest("users/Login",parameters);
+
       if(data.status){
-        var session = {id:data.Userinfo.idusers, name:data.Userinfo.name, surname:data.Userinfo.surname, email:data.Userinfo.email};
+        var session = {id:data.Userinfo.idusers, name:data.Userinfo.name, surname:data.Userinfo.surname, email:data.Userinfo.email, token:data.Userinfo.token};
         var save = await setSession(session);
         return data;
       }else{
@@ -89,7 +91,15 @@ export async function clearCredentials() {
       //console.log("doLogin-error= "+error);
     }
   }
-
+  export async function sendSurvey(rating,observation){
+    try{
+      var parameters= `rating/`+ rating + `/observation/`+observation;
+      var data = await fetchRequest("users/sendSurvey",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
 
   // ____________________________Comunication Services____________________________________________
 

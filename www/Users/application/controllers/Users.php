@@ -149,6 +149,27 @@ class Users extends RestController {
             ],404);
         }
     }
+
+    public function sendSurvey_get(){   
+
+        $rating = $this->get('rating');
+        $observation = urldecode($this->get('observation'));
+
+        $sendSurvey = $this->User_model->sendSurvey($rating,$observation);
+
+        if($sendSurvey){
+            $this->response([
+                'status' => true,
+                'message' => 'Encuesta Enviada'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' =>'Encuesta No Enviada'
+            ],404);
+        }
+    }
+
     public function validateExistedUser_get(){   
 
         $email = $this->get('email');
@@ -163,6 +184,25 @@ class Users extends RestController {
             $this->response([
                 'status' => false,
                 'message' => 'Correo Existente'
+            ],404);
+        }
+    }
+
+    public function validateToken_get(){   
+
+        $iduser = $this->get('iduser');
+        $token = $this->get('token');
+        $validateToken = $this->User_model->validateToken($iduser,$token);
+
+        if($validateToken){
+            $this->response([
+                'status' => true,
+                'message' => 'Token valido'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Token  no valido'
             ],404);
         }
     }

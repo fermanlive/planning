@@ -53,7 +53,6 @@ const CONST = require('../constants/constants');
 
 export async function fetchRequest(service,parameters){
     try {
-      console.warn(CONST.URL_REQUEST_EXPENSE + service + '/' + parameters);
       var data= await fetch(CONST.URL_REQUEST_EXPENSE + service + '/' + parameters,{
         method: 'GET', 
         headers: { 'Accept': 'application/json', 
