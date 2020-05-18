@@ -214,7 +214,7 @@ SimulateCreditCard(){
               onPress={() => {
                 this.setState({modalInstructor:true}),
                 this.setState({conceptTitle: "Tipos de Transaccion"}),
-                this.setState({concept: DEFINITION_INTEREST})
+                this.setState({concept: DEFINITION_TYPES})
               }}>
                 <Text style={[text.InputLabel,forms.LeftAlingment]}>
                 Tipo de Transaccion(%){"   "}<Text style={text.InputLabelQuestion}>¿Que es esto?</Text>

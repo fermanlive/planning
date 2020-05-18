@@ -664,6 +664,48 @@ export const layout = StyleSheet.create({
 	},
 	//--
 	// Admin list items
+	itemConfigurations: {
+		backgroundColor: colors.White,
+		borderRadius: fzbase * 0.8,
+		paddingHorizontal: fzbase,
+		// minWidth: '40%',
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		marginBottom: fzbase,
+		minWidth:'30%',
+		overflow: 'hidden',
+		width:300,
+		marginLeft:6
+	},
+	itemConfigurationsEdit: {
+		backgroundColor: colors.AccentPurple,
+		borderRadius: fzbase * 0.8,
+		paddingHorizontal: fzbase,
+		// minWidth: '40%',
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		marginBottom: fzbase,
+		minWidth:'30%',
+		overflow: 'hidden',
+		width:150,
+		marginLeft:6
+	},
+	itemConfigurationsDelete: {
+		backgroundColor: colors.AccentRed,
+		borderRadius: fzbase * 0.8,
+		paddingHorizontal: fzbase,
+		// minWidth: '40%',
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		marginBottom: fzbase,
+		minWidth:'30%',
+		overflow: 'hidden',
+		width:150,
+
+	},
 	AdminItemCont: {
 		backgroundColor: colors.White,
 		borderRadius: fzbase * 0.8,

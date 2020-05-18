@@ -36,6 +36,25 @@ class Expenses extends RestController {
         }
 
     }
+    public function CreateCategoryExpense_get(){   
+
+        $name = urldecode($this->get('name'));
+        $IdUser = $this->get('IdUser');
+
+        $CreateExpense = $this->expense_model->CreateCategoryExpense($name,$IdUser);
+        if($CreateExpense){
+            $this->response([
+                'status' => true,
+                'message' => 'Categoria Egreso creado'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Categoria Egreso no creado'
+            ],404);
+        }
+
+    }
 
     public function ReadExpense_get(){  
 

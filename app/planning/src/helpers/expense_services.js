@@ -48,7 +48,24 @@ const CONST = require('../constants/constants');
       //console.log("doLogin-error= "+error);
     }
   }
-
+  export async function UpdateCategoryExpense(name,idcategory,iduser){
+    try{
+      var parameters= `name/`+ name + `/idcategory/`+ idcategory + `/iduser/`+ iduser ;
+      var data = await fetchRequest("Expenses/UpdateCategoryExpense",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
+  export async function CreateCategoryExpense(name,iduser){
+    try{
+      var parameters= `name/`+ name  + `/IdUser/`+ iduser ;
+      var data = await fetchRequest("Expenses/CreateCategoryExpense",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
   // ____________________________Comunication Services____________________________________________
 
 export async function fetchRequest(service,parameters){

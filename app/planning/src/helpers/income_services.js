@@ -51,6 +51,24 @@ const CONST = require('../constants/constants');
       //console.log("doLogin-error= "+error);
     }
   }
+  export async function UpdateCategoryIncome(name,idcategory,iduser){
+    try{
+      var parameters= `name/`+ name + `/id_category/`+ idcategory + `/iduser/`+ iduser ;
+      var data = await fetchRequest("Incomes/UpdateCategoryIncome",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
+  export async function CreateIncomeCategory(name,iduser){
+    try{
+      var parameters= `name/`+ name  + `/IdUser/`+ iduser ;
+      var data = await fetchRequest("Incomes/CreateIncomeCategory",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
 
   // ____________________________Comunication Services____________________________________________
 

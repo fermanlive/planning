@@ -36,6 +36,20 @@ class Expense_model extends CI_Model {
         return $insert_id > 0 ? true : false ;
     }
 
+    public function CreateCategoryExpense($name,$IdUser){
+
+        //Array con los datos del usuario
+        $data = array(
+            'id_user' => $IdUser,
+            'name' => $name,
+        );
+
+        $this->db->set($data);
+        $this->db->insert('category_expense');
+        $insert_id = $this->db->insert_id();
+        return $insert_id > 0 ? true : false ;
+    }
+
     public function UpdateExpense($name,$IdCategory,$dateExpense,$value,$IdUser,$IdExpense){
 
         //Array con los datos del usuario

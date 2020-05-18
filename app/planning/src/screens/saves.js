@@ -95,7 +95,7 @@ class Saves extends React.Component {
 
     async updateSaves(){
       let saves = await ShowSaves(null,this.state.Iduser);
-      saves = saves.status ? saves.message:null;
+      saves = saves.status ? saves.message:[];
       for (let index = 0; index < saves.length; index++) {
           saves[index].id=index;
           saves[index].percent=Math.floor((saves[index].current_value/saves[index].goal)*100);
@@ -320,7 +320,7 @@ class Saves extends React.Component {
               <TwoButtonsAlert 
                 isModalVisible = {this.state.confirmationModal} 
                 imageType = {1}
-                line1 = {"Esta seguro de Eliminar el ahorro :"+ this.state.name}
+                line1 = {"Esta seguro de Eliminar el ahorro : "+ this.state.name}
                 line2 = {""}
                 leftButton = {"No"}
                 rightButton = {"Si"}
