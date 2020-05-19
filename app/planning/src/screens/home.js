@@ -66,6 +66,7 @@ async componentDidMount(){
   let idUser = onSession.id;
   let token = onSession.token;
   this.setState({idUser});
+  this.setState({token});
   let IdPeriod = await getDefaultPeriod(idUser);
   IdPeriod=IdPeriod.message;
   this.setPeriod(idUser,IdPeriod);
@@ -321,6 +322,7 @@ this.setState({
     }
   }
   OpenIncome(categoria,value,name,date_income,id_category_income,id_income){
+    this.setCategories(this.state.idUser,this.state.token);
     this.setState({nameError: false});
     this.setState({amountError: false});
     this.setState({IncomeAction: 0});
@@ -358,6 +360,7 @@ this.setState({
     }
   }
   OpenExpense(categoria,value,nameExpense,date_income,id_category_expense,id_expense){
+    this.setCategories(this.state.idUser,this.state.token);
     this.setState({nameExpenseError: false});
     this.setState({amountExpenseError: false});
     this.setState({ExpenseAction: 0});
@@ -372,6 +375,7 @@ this.setState({
 
   }
   setEmptyIncome(){
+    this.setCategories(this.state.idUser,this.state.token);
     this.setState({name: ''});
     this.setState({nameError: ''});
     this.setState({amountError: ''});
@@ -381,6 +385,7 @@ this.setState({
   }
 
   setEmptyExpense(){
+    this.setCategories(this.state.idUser,this.state.token);
     this.setState({nameExpense: ''});
     this.setState({nameExpenseError: ''});
     this.setState({amountExpense: ''});
@@ -533,8 +538,9 @@ this.setState({
                 </Text>
             </TouchableHighlight>
           </View>
-          <SafeAreaView style={{flex: 1}}>
+          <ScrollView style={{flex: 1}}>
           <FlatList
+             nestedScrollEnabled={true}
             data = {this.state.elements}
             style={layout.MainContainerSVFlatlist}
             numColumns={2}
@@ -576,7 +582,7 @@ this.setState({
               </TouchableOpacity>
             }
           />
-          </SafeAreaView>
+          </ScrollView>
             { this.state.showIcons ? 
               <View style={[layout.ButtonsSpends2]}>
                 <View style={[layout.ButtonsSpends3]}>

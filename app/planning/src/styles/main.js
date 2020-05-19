@@ -133,6 +133,7 @@ export const layout = StyleSheet.create({
 		width: '100%',
 		flexDirection: 'row'
 	},
+	
 	NotificationMainContainerSV :{
 		flex: 1,
 		width: '100%',
