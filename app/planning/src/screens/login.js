@@ -207,7 +207,7 @@ class Login extends React.Component {
                             <TextInput
                                 style={[forms.InputLogin, forms.CenterAlingment]}
                                 onChangeText={(user) => this.setState({user})}
-                                placeholder= "Usuario"
+                                placeholder= "Correo Electrónico"
                                 keyboardType = "email-address"
                                 autoCapitalize = 'none'
                                 onBlur = {()=>{

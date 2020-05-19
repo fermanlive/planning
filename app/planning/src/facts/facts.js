@@ -7,5 +7,5 @@ module.exports = {
   TOO_MUCH_INTEREST_MONEY:"¿Esta seguro de realizar esta compra? Estas gastando mas de $100.000 , piensa que tan urgente y necesaria es esta compra.",
   TOO_MUCH_FEE:"Demasiados cuotas, reconsidera y define si es tan urgente la compra",
   BETTER_INTEREST:"Este interes esta por encima del promedio, pregunta en tu entidad financiera que otros intereses te pueden ofrecer.",
-  DEFINITION_TYPES:"Existen dos tipos de compras, compras usando la tarjeta o el avance. El avance es un tipo de compra que la tarjeta ortoga un determinado porcentaje del cupo a unos interes establecidos y casi siempre son a 24 cuotas asi que es un recurso muy de ultima instancia.",
+  DEFINITION_TYPES:"Existen dos tipos de movimientos, compras usando la tarjeta sea virtualmente o fisicamente y esta el avance. El avance es un tipo de movimiento donde la tarjeta ortoga un determinado porcentaje del cupo a unos intereses establecidos y casi siempre son a 24 cuotas, asi que es un recurso muy de ultima instancia.",
 };

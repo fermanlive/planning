@@ -16,13 +16,13 @@ class Register extends React.Component {
    
         super(props);        
         this.state = { 
-            emailError: false,
-            nameError:false,
-            surnameError:false,
-            passwordError:false,
-            confirmPasswordError:false,
-            confirmEmailError:false,
-            passwordHidden:false,
+            emailError: '',
+            nameError:'',
+            surnameError:'',
+            passwordError:'',
+            confirmPasswordError:'',
+            confirmEmailError:'',
+            passwordHidden:'',
             name:'',
             surname:'',
             email:'',
@@ -83,10 +83,14 @@ class Register extends React.Component {
             }
         }
 
+        if(!this.state.terms){
+            return;
+        }
+
         if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
             this.setBusyIndicator(true, '');
             var userExist = await validateExistedUser(this.state.email);
-            if(userExist.status){
+            if(!userExist.status){
                 this.setBusyIndicator(false, '');
                 this.setState({isErrorModalVisible: true});
                 this.setState({modalLine1: 'El email '+this.state.email+', ya fue registrado anteriormente'});
@@ -187,7 +191,7 @@ class Register extends React.Component {
                       style={forms.Input}
                       onChangeText={(password) => this.validate('nit','password','passwordError',password)}
                       placeholder="Ingresar contraseña"
-                      secureTextEntry={this.state.passwordHidden}
+                      secureTextEntry={true}
                   />
               </View>
                 {this.state.confirmPasswordError?
@@ -207,7 +211,7 @@ class Register extends React.Component {
                       style={forms.Input}
                       onChangeText={(confirmPassword) => this.validate('nit','confirmPassword','confirmPasswordError',confirmPassword)}
                       placeholder="Confirmar contraseña"
-                      secureTextEntry={this.state.passwordHidden}
+                      secureTextEntry={true}
                   />
               </View>
               {this.state.confirmPasswordError?
@@ -222,7 +226,7 @@ class Register extends React.Component {
             <CheckBox
                 disabled={false}
                 value={this.state.terms}
-                onValueChange={()=>{this.setState({terms: !this.state.terms}), console.warn(this.state.terms)}}
+                onValueChange={()=>{this.setState({terms: !this.state.terms})}}
             />
             <TouchableOpacity
                 onPress={()=>this.setState({termsConditions: true})}

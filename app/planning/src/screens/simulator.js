@@ -140,10 +140,10 @@ SimulateCreditCard(){
   }
     render() {
       const data = [
-          { key: 0,  label: 'Tarjeta de credito', value: 0 },
-          { key: 1, label: 'Credito Libre Inversión', value:1 },
-          { key: 2, label: 'Credito Inmobiliario', value:2 },
-          { key: 3, label: 'Credito Educativo', value:3 },
+          { key: 0,  label: 'Tarjeta de Crédito', value: 0 },
+          { key: 1, label: 'Crédito Libre Inversión', value:1 },
+          { key: 2, label: 'Crédito Inmobiliario', value:2 },
+          { key: 3, label: 'Crédito Educativo', value:3 },
       ];
       const data2 = [
         { key: 0,  label: 'Avances', value: 0 },
@@ -170,13 +170,13 @@ SimulateCreditCard(){
             >
           <View style={[layout.GralTextCont, {marginBottom: 60,marginTop:30}]}>
             <Text style={[text.TitleView, text.Strong, text.TLight]}>
-               Simulacion de creditos
+               Simulación de créditos
             </Text>
           </View>
 
             <View style={{marginBottom: 10,}}>
                 <Text style={[text.InputLabel, {marginLeft: 15,}]}>
-                Tipo de Credito
+                Tipo de crédito
               </Text>
               <ModalSelector
                   data={data}
@@ -197,7 +197,7 @@ SimulateCreditCard(){
                       <TextInput
                       style={forms.Picker}
                       editable={false}
-                      placeholder= 'Tipo de Credito'
+                      placeholder= 'Tipo de crédito'
                       value={this.state.typeCredit?this.state.typeCredit.label:''} />
                   </View>
               </ModalSelector>
@@ -213,7 +213,7 @@ SimulateCreditCard(){
               <TouchableOpacity style={[layout.InputGroup]} 
               onPress={() => {
                 this.setState({modalInstructor:true}),
-                this.setState({conceptTitle: "Tipos de Transaccion"}),
+                this.setState({conceptTitle: "Tipos de Movimiento"}),
                 this.setState({concept: DEFINITION_TYPES})
               }}>
                 <Text style={[text.InputLabel,forms.LeftAlingment]}>
@@ -294,7 +294,7 @@ SimulateCreditCard(){
               <TouchableOpacity style={[layout.InputGroup]} 
               onPress={() => {
                 this.setState({modalInstructor:true}),
-                this.setState({conceptTitle: "Interes Anual"}),
+                this.setState({conceptTitle: "Interes Mensual"}),
                 this.setState({concept: DEFINITION_INTEREST})
               }}>
                 <Text style={[text.InputLabel,forms.LeftAlingment]}>

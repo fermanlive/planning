@@ -139,14 +139,14 @@ class Saves extends React.Component {
                 ]}
             />
             <Text style={[text.TitleView, text.Strong, text.TLight]}>
-               Listado de tus ahorrros
+               Listado de tus ahorros
             </Text>
             <TouchableOpacity 
               style={[buttons.GralButton, buttons.ButtonRegisterLoginAccentBlue,{marginTop:10}]}
               onPress={() => this.setEmptySave()}    
             >
                 <Text style={[text.BText, text.TAccentBlue]}>
-                    ¿Deseas agregar un ahorrro?
+                    ¿Deseas agregar un nuevo ahorro?
                 </Text>
             </TouchableOpacity>
             <FlatList
@@ -311,7 +311,7 @@ class Saves extends React.Component {
                             onPress={() => this.setState({modalVisible: false})}
                             style={[buttons.GralButton, buttons.BLineLightBlue]}>
                             <Text style={[text.BText, text.TAccentBlue]}>
-                                Cerrar Sesión
+                                Cerrar
                             </Text>
                         </TouchableOpacity>
                     </View>

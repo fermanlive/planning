@@ -23,7 +23,7 @@ var {height, width} = Dimensions.get('window');
 //////Estilos
 const {layout, text, login, forms, buttons,colors} = require ('../styles/main');
 
-import { Icon } from 'react-native-elements';
+import { Icon, Tile } from 'react-native-elements';
 import moment from 'moment';
 
 class Home extends React.Component {
@@ -44,6 +44,7 @@ class Home extends React.Component {
       namePeriod:'',
       filterTab:2,
       TotalIncomes:0,
+      dataGraphic:[],
       elements:[],
       balance:[],
       Expenses:[],
@@ -101,6 +102,7 @@ async setBalance(idUser,IdPeriod){
   let Expenses = await ReadExpense(idUser,0,IdPeriod);
   Expenses = Expenses.status ? Expenses.message: [];
   let TotalExpenses=0;
+  let dataGraphic = [];
   if(Expenses.length > 0){
     Expenses.forEach(Expense => {
       TotalExpenses = parseFloat(Expense.value) + parseFloat(TotalExpenses);
@@ -108,16 +110,38 @@ async setBalance(idUser,IdPeriod){
       Expense.categoria=1;
       balance.push(Expense);
     });
+    
     Expenses.forEach(Expense => {
-      Expense.porcentaje= (parseFloat(Expense.value)/TotalExpenses)*100;
+      Expense.porcentaje= parseInt(((Expense.value)/TotalIncomes)*100);
       Expense.color = this.random_rgba();
       Expense.legendFontColor = '#7F7F7F';
-      Expense.legendFontSize = 15;
+      Expense.legendFontSize = 12;
+      dataGraphic.push(Expense);
     });
   }
-  this.setState({Expenses})
+
+  if(TotalExpenses>TotalIncomes){
+    dataGraphic = [];
+  }else{
+    let element = [];
+    let id_expense=0;
+    let porcentaje=parseInt(((TotalIncomes-TotalExpenses)/TotalIncomes)*100);
+    let color = this.random_rgba();
+    let legendFontColor = '#7F7F7F';
+    let legendFontSize = 12;
+    let title ='Ingreso restante';
+    let name ='Ingreso restante';
+    element = {"id_expense":id_expense,"name":name, "porcentaje":porcentaje,"color":color,"legendFontColor":legendFontColor,"legendFontSize":legendFontSize,"title":title}
+    dataGraphic.push(element);
+  }
+
+  this.setState({Expenses});
+  this.setState({dataGraphic});
+  console.warn(this.state.dataGraphic);
+ 
   this.setState({TotalExpenses});
   this.setState({balance});
+
   let numericBalance = this.state.TotalIncomes - this.state.TotalExpenses;
   if( numericBalance > 0){
     this.setState({numericBalance : 2});
@@ -163,7 +187,7 @@ async setCategories(idUser,token) {
 
 random_rgba() {
   var o = Math.round, r = Math.random, s = 255;
-  return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+  return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(0.5)+0.5 + ')';
 }
 
 
@@ -318,7 +342,6 @@ this.setState({
     let id_categoryexpense= typeof this.state.categoriesExpense !== 'undefined' ? this.state.categoriesExpense.id_category_expense: 5;
     let chosenDate= this.state.chosenDate ? this.state.chosenDate : 0 ;
     if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
-      console.warn('oli');
       let ExpenseResponse;
       if (ExpenseAction == 0) {
          ExpenseResponse = await UpdateExpense(this.state.nameExpense,id_categoryexpense,chosenDate,this.state.IdPeriod,this.state.amountExpense,this.state.idUser,this.state.id_expense);
@@ -450,9 +473,9 @@ this.setState({
             </View>
           : 
               <PieChart
-                data={this.state.Expenses}
+                data={this.state.dataGraphic}
                 width={width}
-                height={220}
+                height={200}
                 chartConfig={{
                   backgroundColor: '#1cc910',
                   backgroundGradientFrom: '#eff3ff',
@@ -465,7 +488,7 @@ this.setState({
                 }}
                 accessor="porcentaje"
                 backgroundColor="transparent"
-                paddingLeft="20"
+                paddingLeft="-10"
                 //absolute //for the absolute number remove if you want percentage
               />
             }
@@ -629,7 +652,7 @@ this.setState({
                       >
                     <View style={layout.InputGroup}>
                         <Text style={text.InputLabel}>
-                        Nombre del Egreso
+                        Nombre del Egreso *
                         </Text>
                         <View style={[forms.InputCont, forms.LeftAlingment, this.state.nameExpenseError?forms.AlertInput:null]}>
                           <TextInput
@@ -650,7 +673,7 @@ this.setState({
                     </View>
                     <View style={layout.InputGroup}>
                         <Text style={text.InputLabel}>
-                        Monto del Egreso
+                        Monto del Egreso *
                         </Text>
                         <View style={[forms.InputCont, forms.LeftAlingment, this.state.amountExpenseError?forms.AlertInput:null]}>
                             <TextInput
@@ -796,7 +819,7 @@ this.setState({
                       >
                     <View style={layout.InputGroup}>
                         <Text style={text.InputLabel}>
-                        Nombre del ingreso
+                        Nombre del ingreso *
                         </Text>
                         <View style={[forms.InputCont, forms.LeftAlingment, this.state.nameError?forms.AlertInput:null]}>
                             <TextInput
@@ -817,7 +840,7 @@ this.setState({
                     </View>
                     <View style={layout.InputGroup}>
                         <Text style={text.InputLabel}>
-                        Monto
+                        Monto *
                         </Text>
                         <View style={[forms.InputCont, forms.LeftAlingment, this.state.amountError?forms.AlertInput:null]}>
                             <TextInput
