@@ -22,6 +22,7 @@ class Expenses extends RestController {
         $IdPeriod = $this->get('idperiod');
         $value= $this->get('value');
 
+
         $CreateExpense = $this->expense_model->CreateExpense($name,$IdCategory,$dateExpense,$value,$IdPeriod);
         if($CreateExpense){
             $this->response([
@@ -36,6 +37,30 @@ class Expenses extends RestController {
         }
 
     }
+
+    public function CreateCreditCard_get(){   
+
+        $name = urldecode($this->get('name'));
+        $brand = $this->get('brand');
+        $interest = $this->get('interest');
+        $managementFee = $this->get('managementFee');
+        $id_expense= $this->get('id_expense');
+
+        $CreateCreditCard = $this->expense_model->CreateCreditCard($name,$brand,$interest,$managementFee,$id_expense);
+        if($CreateCreditCard){
+            $this->response([
+                'status' => true,
+                'message' => 'Tarjeta creada'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Tarjeta no creada'
+            ],404);
+        }
+
+    }
+
     public function CreateCategoryExpense_get(){   
 
         $name = urldecode($this->get('name'));
@@ -74,6 +99,23 @@ class Expenses extends RestController {
             $this->response([
                 'status' => false,
                 'message' => $ReadExpense
+            ],404);
+        }
+
+    }
+    public function ReadCreditCard_get(){  
+
+        $id_expense = $this->get('id_expense');
+        $ReadCreditCard = $this->expense_model->ReadCreditCard($id_expense);
+        if($ReadCreditCard){
+            $this->response([
+                'status' => true,
+                'message' => $ReadCreditCard
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => $ReadCreditCard
             ],404);
         }
 
@@ -119,6 +161,31 @@ class Expenses extends RestController {
         }
 
     }
+
+    public function UpdateCreditCard_get(){   
+
+        $name = urldecode($this->get('name'));
+        $brand = $this->get('brand');
+        $interest = $this->get('interest');
+        $managementFee = $this->get('managementFee');
+        $idcredit_card= $this->get('idcredit_card');
+
+        $UpdateCreditCard = $this->expense_model->UpdateCreditCard($name,$brand,$interest,$managementFee,$idcredit_card);
+        if($UpdateCreditCard){
+            $this->response([
+                'status' => true,
+                'message' => 'Tarjeta Actualizada'
+            ],200);
+        }else{
+            $this->response([
+                'status' => false,
+                'message' => 'Tarjeta no Actualizada'
+            ],404);
+        }
+
+    }
+
+
     public function UpdateCategoryExpense_get(){   
 
         $name = urldecode($this->get('name')); 

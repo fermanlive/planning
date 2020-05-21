@@ -7,8 +7,9 @@ const images = require('./../components/CC');
 import { Card, SimpleCard } from "@paraboly/react-native-card";
 
 import {masterValidator} from '../helpers/validations';
-import {ReadExpense} from '../helpers/expense_services';
+import {ReadExpense,CreateCreditCard,ReadCreditCard,UpdateCreditCard} from '../helpers/expense_services';
 import {getSession} from '../helpers/users_services';
+import {SimpleAlert,TwoButtonsAlert} from '../components/modalAlert';
 
 const {DEFINITION_INTEREST,DEFINITION_MANAGEMENT,DEFINITION_QUOTE} = require ('../facts/facts');
 
@@ -24,17 +25,98 @@ class CreditCardView extends React.Component {
       onSession:{name: null, surname:null},
       CreditCardName:null,
       modalInstructor:false,
-      management:false
-
+      management: { key: 1, label:"No" },
+      action:1,
+      CreditCardNameError:'',
+      TypeCardError:'',
+      InterestError:'',
+      managementError:'',
+      managementFeeError:'',
+      SuccessModal:false,
+      elements:[
+        { key: 0, name: 'amex', label:"American Express" },
+        { key: 1, name: 'dinners',label: "Dinners Club" },
+        { key: 2, name: 'discover',label: "Discover" },
+        { key: 3, name: 'mastercard',label:"MasterCard"},
+        { key: 4, name: 'visa',label:"Visa" }
+      ]
   };
 }
-async componentDidMount(){
-  const onSession = await getSession();
-  this.setState({onSession});
-  let idUser = onSession.id;
-  let Expense = await ReadExpense(idUser,this.state.id_expense,this.state.id_period);
+  async componentDidMount(){
+    let data = this.state.elements;
+    data.forEach(element => {
+      element.image = images[element.name];        
+    });
+    this.setState({elements : data});
+    this.setState({TypeCard: data[0]})
+    const onSession = await getSession();
+    this.setState({onSession});
+    let idUser = onSession.id;
+    let Expense = await ReadExpense(idUser,this.state.id_expense,this.state.id_period);
+    let creditcard = await ReadCreditCard(this.state.id_expense);
 
-}
+    if(creditcard.status){
+      creditcard = creditcard.message[0];
+      this.setState({action : 2}); //actualizar
+      this.setState({CreditCardNameError : false}); 
+      this.setState({TypeCardError : false}); 
+      this.setState({InterestError : false}); 
+      this.setState({managementError : false}); 
+      this.setState({managementFeeError : false});
+      this.setState({idcredit_card: creditcard.idcredit_card})
+      this.setState({CreditCardName: creditcard.name})
+      this.setState({TypeCard: data[creditcard.brand]})
+      this.setState({Interest: creditcard.interest})
+      let managementFee = parseFloat(creditcard.managementFee);
+      if(managementFee>0){
+        this.setState({management: { key: 0,label: "Si" }});
+      }else{
+        this.setState({management: { key: 1,label: "No" }});
+      }
+      this.setState({managementFee: creditcard.managementFee})
+    }else{
+      this.setState({action : 1}); //crear
+    }
+  }
+
+  async ValidateSendCreditCard(action){
+    var allGood = [0,0,0];//[0,0,0]; //legth equal to zero to remove ignore password fields
+    if(this.state.CreditCardNameError === '' || this.state.CreditCardNameError === true) {this.setState({CreditCardNameError : true}); allGood[0]=0}else{allGood[0]=1};
+    if(this.state.InterestError === '' || this.state.InterestError === true) {this.setState({InterestError : true}); allGood[1]=0}else{allGood[1]=1};
+    let managementFee;
+    if(this.state.management.key==0){
+     if(this.state.managementFeeError === '' || this.state.managementFeeError === true) 
+      {this.setState({managementFeeError : true});allGood[2]=0}else{allGood[2]=1;managementFee=this.state.managementFee};  
+    }else{
+      allGood[2]=1;
+      managementFee = 0;
+    }
+    let brand  = this.state.TypeCard.key;
+
+    
+    if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
+      let saveResponse;
+      if (action == 1) {
+         saveResponse = await CreateCreditCard(this.state.CreditCardName,brand,this.state.Interest,managementFee,this.state.id_expense);
+      }else{
+         saveResponse = await UpdateCreditCard(this.state.CreditCardName,brand,this.state.Interest,managementFee,this.state.idcredit_card);
+      }
+
+      if(saveResponse.status){
+        this.setState({SuccessModalLine1: saveResponse.message});
+        this.setState({SuccesbuttonLabel: "ok, entendido"});
+        this.setState({imageSuccessModal:2})
+        this.setState({SuccessModal : true});
+        this.setState({modalVisible  : false});
+      }else{
+        this.setState({SuccessModalLine1: saveResponse.message});
+        this.setState({SuccesbuttonLabel: "ok, entendido"});
+        this.setState({imageSuccessModal:1})
+        this.setState({SuccessModal : true});
+        this.setState({modalVisible  : false});
+      }
+    }
+  }
   //////////////////////Validations////////////////////////
   validate(kind,state,type,input){
     this.setState({[state] : input});
@@ -42,17 +124,6 @@ async componentDidMount(){
     this.setState({[type] : verdict});
   }
     render() {
-      let index = 0;
-      const data = [
-          { key: index++, name: 'amex', label:"American Express" },
-          { key: index++, name: 'dinners',label: "Dinners Club" },
-          { key: index++, name: 'discover',label: "Discover" },
-          { key: index++, name: 'mastercard',label:"MasterCard"},
-          { key: index++, name: 'visa',label:"Visa" }
-      ];
-      data.forEach(element => {
-        element.image = images[element.name];        
-      });
       return(
         <View style={[layout.MainContainer]}>
             <ScrollView
@@ -116,7 +187,7 @@ async componentDidMount(){
                         onChangeText={(CreditCardName) => this.validate('text','CreditCardName','CreditCardNameError',CreditCardName)}
                         placeholder="Nombre Tarjeta de Credito"
                         keyboardType = "default"
-                        value={this.state.name}
+                        value={this.state.CreditCardName}
                     />
                 </View>
                 {this.state.CreditCardNameError? 
@@ -133,7 +204,7 @@ async componentDidMount(){
                     Marca tarjeta 
                 </Text>
                 <ModalSelector
-                    data={data}
+                    data={this.state.elements}
                     initValue="Algo"
                     onChange={TypeCard => this.validate('','TypeCard','TypeCardError',TypeCard)}
                     cancelText = "Cancelar"
@@ -163,13 +234,13 @@ async componentDidMount(){
                 this.setState({concept: DEFINITION_INTEREST})
               }}>
                 <Text style={[text.InputLabel,forms.LeftAlingment]}>
-                Intereses Anual(%)<Text style={text.InputLabelQuestion}>¿Que es esto?</Text>
+                Interes Mensual(%){"  "}<Text style={text.InputLabelQuestion}>¿Que es esto?</Text>
                 </Text>
               </TouchableOpacity>
               <View style={[forms.InputCont, forms.LeftAlingment, this.state.InterestError ?forms.AlertInput:null]}>
                   <TextInput
                       style={forms.Input}
-                      onChangeText={(Interest) => this.validate('numNull','Interest','InterestError',Interest)}
+                      onChangeText={(Interest) => this.validate('num','Interest','InterestError',Interest)}
                       placeholder="Ingresar Intereses"
                       keyboardType = "numeric"
                       value={this.state.Interest}
@@ -191,7 +262,7 @@ async componentDidMount(){
                 this.setState({concept: DEFINITION_MANAGEMENT})
               }}>
                   <Text style={[text.InputLabel,forms.LeftAlingment]}>
-                  ¿Cuota de manejo?<Text style={text.InputLabelQuestion}>¿Que es esto?</Text>
+                  ¿Cuota de manejo? {"  "}<Text style={text.InputLabelQuestion}>¿Que es esto?</Text>
                   </Text>
               </TouchableOpacity>
             <ModalSelector
@@ -228,35 +299,44 @@ async componentDidMount(){
                   this.setState({concept: DEFINITION_QUOTE})
                 }}>
                   <Text style={[text.InputLabel,forms.LeftAlingment]}>
-                  Cuota de manejo<Text style={text.InputLabelQuestion}>Consejo</Text>
+                  Cuota de manejo{" "}<Text style={text.InputLabelQuestion}>Info</Text>
                   </Text>
                 </TouchableOpacity>
-                <View style={[forms.InputCont, forms.LeftAlingment, this.state.InterestError ?forms.AlertInput:null]}>
+                <View style={[forms.InputCont, forms.LeftAlingment, this.state.managementFeeError ?forms.AlertInput:null]}>
                     <TextInput
                         style={forms.Input}
-                        onChangeText={(Interest) => this.validate('numNull','Interest','InterestError',Interest)}
-                        placeholder="Ingresar Intereses"
+                        onChangeText={(managementFee) => this.validate('num','managementFee','managementFeeError',managementFee)}
+                        placeholder="Ingresar Cuota de manejo"
                         keyboardType = "numeric"
-                        value={this.state.Interest}
+                        value={this.state.managementFee}
                     />
                 </View>
-                {this.state.InterestError? 
+                {this.state.managementFeeError? 
                   <View style={layout.textAlertCont}>
                       <Text style={[layout.textAlertError, text.Regular]}>
-                          Interes no valido
+                          Cuota no valida
                       </Text>
                   </View>
                 :null}
             </View>
           :null:null}
-
-          <TouchableOpacity 
-              onPress={() => this.validateMail()}
-              style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
-              <Text style={[text.BText, text.TLight]}>
-                Enviar
-              </Text>
-          </TouchableOpacity>
+         {this.state.action == 1 ? 
+            <TouchableOpacity 
+                onPress={() => this.ValidateSendCreditCard(this.state.action)}
+                style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
+                <Text style={[text.BText, text.TLight]}>
+                  Enviar
+                </Text>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity 
+                onPress={() => this.ValidateSendCreditCard(this.state.action)}
+                style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
+                <Text style={[text.BText, text.TLight]}>
+                  Actualizar
+                </Text>
+            </TouchableOpacity>
+          }
         <Modal
           backdropColor = {colors.opacityMain}
           backdropOpacity = {0.9}
@@ -297,6 +377,14 @@ async componentDidMount(){
             </View>
         </Modal>
         </ScrollView>
+                <SimpleAlert 
+                isModalVisible = {this.state.SuccessModal} 
+                imageType = {this.state.imageSuccessModal}
+                line1 = {this.state.SuccessModalLine1}
+                line2 = {this.state.SuccessModalLine2}
+                buttonLabel = {this.state.SuccesbuttonLabel}
+                closeModal={() => this.setState({SuccessModal: false})}
+                />
         </View>
     );
   }

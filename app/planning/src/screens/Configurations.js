@@ -14,8 +14,8 @@ import Modal from "react-native-modal";
 import {SimpleAlert,TwoButtonsAlert} from '../components/modalAlert';
 
 
-import {getCategoryIncomes,UpdateCategoryIncome,CreateIncomeCategory} from '../helpers/income_services';
-import {getCategoryExpense,UpdateCategoryExpense,CreateCategoryExpense} from '../helpers/expense_services';
+import {getCategoryIncomes,UpdateCategoryIncome,CreateIncomeCategory,DeleteCategoryIncome} from '../helpers/income_services';
+import {getCategoryExpense,UpdateCategoryExpense,CreateCategoryExpense,DeleteCategoryExpense} from '../helpers/expense_services';
 import {masterValidator} from '../helpers/validations';
 
 import Loading from '../components/Loading';
@@ -32,6 +32,7 @@ class Configurations extends React.Component {
             modalCategorie:false,
             SuccessModal:false,
             actionModal:1,
+            confirmationModal: false,
       };
     }
     async componentDidMount(){
@@ -79,6 +80,31 @@ class Configurations extends React.Component {
         this.setState({id_categorie: id});
         this.setState({modalCategorie: true});
     }
+
+    async deleteConfiguration(id,type){
+
+        let ResponseDelete;
+        if (type == 1) {
+            ResponseDelete = await DeleteCategoryIncome(id,this.state.idUser);
+        }else{
+            ResponseDelete = await DeleteCategoryExpense(id,this.state.idUser);
+        }
+        if(ResponseDelete.status){
+            this.setState({SuccessModalLine1: ResponseDelete.message});
+            this.setState({SuccesbuttonLabel: "ok, entendido"});
+            this.setState({SuccessModal : true});
+            this.setState({confirmationModal  : false});
+          }
+  
+          this.setBusyIndicator(true, '');
+          const onSession = await getSession();
+          let idUser = onSession.id;
+          let token = onSession.token;
+          this.setState({idUser});
+          this.setCategories(idUser,token);
+          this.setBusyIndicator(false, '');
+    }
+
     async ValidateSendCategorie(action){
         var allGood = [0];//[0,0,0]; //legth equal to zero to remove ignore password fields
         if(this.state.labelError === '' || this.state.labelError === true) {this.setState({labelError : true}); allGood[0]=0}else{allGood[0]=1};
@@ -119,7 +145,6 @@ class Configurations extends React.Component {
       
     changeData(select){
         this.setState({categories:select});
-        console.warn(select);
         this.setBusyIndicator(true, '');        
         select.key==1? this.setState({dataCategories: this.state.categoriesIncomes}):this.setState({dataCategories: this.state.categoriesExpenses});
         this.setBusyIndicator(false, '');
@@ -227,11 +252,13 @@ class Configurations extends React.Component {
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() =>{this.setState({confirmationModal: true}),this.setState({id_categorie: data.item.key})} }
+                            >
                                 <View  style={layout.itemConfigurationsDelete}>
                                     <View style={layout.AdminItemTextCont}>
                                         <Text style={[layout.AdminItemTextNormal, text.Medium, text.TLight]}>
-                                    Eliminar
+                                           Eliminar
                                         </Text>
                                     </View>
                                 </View>
@@ -286,7 +313,7 @@ class Configurations extends React.Component {
                             onPress={() => this.ValidateSendCategorie(this.state.categories.key)}
                             style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
                             <Text style={[text.BText, text.TLight]}>
-                                categoria
+                                Guardar
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -310,6 +337,16 @@ class Configurations extends React.Component {
                 buttonLabel = {this.state.SuccesbuttonLabel}
                 closeModal={() => this.setState({SuccessModal: false})}
                 />
+                <TwoButtonsAlert 
+                isModalVisible = {this.state.confirmationModal} 
+                imageType = {1}
+                line1 = {"¿Esta seguro de eliminar esta configuración?"}
+                line2 = {""}
+                leftButton = {"No"}
+                rightButton = {"Si"}
+                leftFunction={() => this.setState({confirmationModal:false})}
+                rightFunction={() => this.deleteConfiguration(this.state.id_categorie,this.state.categories.key)}
+              />
           </View>
     );
   }

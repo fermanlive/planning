@@ -51,6 +51,15 @@ const CONST = require('../constants/constants');
       //console.log("doLogin-error= "+error);
     }
   }
+  export async function DeleteCategoryIncome(idincome,iduser){
+    try{
+      var parameters= `idincome/`+ idincome + `/iduser/`+ iduser + `/` ;
+      var data = await fetchRequest("Incomes/DeleteCategoryIncome",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
   export async function UpdateCategoryIncome(name,idcategory,iduser){
     try{
       var parameters= `name/`+ name + `/id_category/`+ idcategory + `/iduser/`+ iduser ;

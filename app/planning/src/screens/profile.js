@@ -22,6 +22,7 @@ class Profile extends React.Component {
           iduser:0,
           name:"",
           surname:"",
+          observation:"",
         };
     }
     _toggleEdit = () => this.setState({ Editable: !this.state.Editable });
@@ -127,7 +128,7 @@ class Profile extends React.Component {
                             <TextInput
                                 style={forms.Input}
                                 onChangeText={(surname) => this.validate('text','surname','surnameError',surname)}
-                                placeholder="Apellidos"
+                                placeholder="Ingresar Apellidos"
                                 keyboardType = "email-address"
                             />
                         </View>
@@ -216,12 +217,14 @@ class Profile extends React.Component {
              <View style={ [layout.MainContainer, layout.AlignCenter],{backgroundColor: 'white'} }>
                 <View style={[layout.GralTextCont, {marginBottom: 60,}]}>
                     <Text style={[text.TravelInfoTitle, text.Regular, text.TAccentPurple]}>
-                    Encuesta desempeño Planing
+                    Encuesta desempeño Planning
                     </Text>
                 </View>
-                <Text style={text.InputLabel}>
-                Queremos crecer contigo, por tanto una encuesta seria muy importante para nosotros, nos ayudas?
+                <View style={layout.InputGroup}>
+                    <Text style={text.InputLabel}>
+                     Queremos crecer contigo, por tanto una encuesta seria muy importante para nosotros, nos ayudas?
                     </Text>
+                </View>
                 <View style={layout.InputGroup}>
                     <Text style={text.InputLabel}>
                         Califica el desempeño de la app

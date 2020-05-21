@@ -320,7 +320,6 @@ this.setState({
     let id_categoryexpense= typeof this.state.categoriesExpense !== 'undefined' ? this.state.categoriesExpense.id_category_expense: 5;
     let chosenDate= this.state.chosenDate ? this.state.chosenDate : 0 ;
     if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
-      console.warn('oli');
       let ExpenseResponse;
       if (ExpenseAction == 0) {
          ExpenseResponse = await UpdateExpense(this.state.nameExpense,id_categoryexpense,chosenDate,this.state.IdPeriod,this.state.amountExpense,this.state.idUser,this.state.id_expense);
@@ -368,15 +367,10 @@ this.setState({
     this.setState({chosenDate: ''});
   }
     render() {
-      let index = 0;
-      const data = [
-          { key: index++, label: 'Enero del 2020' },
-          { key: index++, label: 'Febrero del 2020' },
-      ];
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:colors.BackgroundColorDefault }}>
           <Text style={[text.TravelInfoTitle, text.Regular, text.TBlack]}>
-           Seleccione un de los mes anteriores
+            Seleccione uno de los meses anteriores
           </Text>
             <ModalSelector
                 data={this.state.selectPeriods}

@@ -48,6 +48,15 @@ const CONST = require('../constants/constants');
       //console.log("doLogin-error= "+error);
     }
   }
+  export async function DeleteCategoryIncome(idincome,iduser){
+    try{
+      var parameters= `Idcategory/`+ idincome + `/iduser/`+ iduser + `/` ;
+      var data = await fetchRequest("Expenses/DeleteCategoryExpense",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
   export async function UpdateCategoryExpense(name,idcategory,iduser){
     try{
       var parameters= `name/`+ name + `/idcategory/`+ idcategory + `/iduser/`+ iduser ;
@@ -61,6 +70,35 @@ const CONST = require('../constants/constants');
     try{
       var parameters= `name/`+ name  + `/IdUser/`+ iduser ;
       var data = await fetchRequest("Expenses/CreateCategoryExpense",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
+
+  export async function CreateCreditCard(name,brand,interest,managementFee,id_expense){
+    try{
+      
+      var parameters= `name/`+ name  + `/brand/`+ brand + `/interest/`+ interest  + `/managementFee/`+ managementFee +`/id_expense/`+ id_expense  + `/` ;
+      var data = await fetchRequest("Expenses/CreateCreditCard",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
+  export async function ReadCreditCard(id_expense){
+    try{
+      var parameters= `id_expense/`+ id_expense  ;
+      var data = await fetchRequest("Expenses/ReadCreditCard",parameters);
+      return data;
+    } catch (error) {
+      //console.log("doLogin-error= "+error);
+    }
+  }
+  export async function UpdateCreditCard(name,brand,interest,managementFee,idcredit_card){
+    try{
+      var parameters= `name/`+ name  + `/brand/`+ brand + `/interest/`+ interest  + `/managementFee/`+ managementFee +`/idcredit_card/`+ idcredit_card  + `/` ;
+      var data = await fetchRequest("Expenses/UpdateCreditCard",parameters);
       return data;
     } catch (error) {
       //console.log("doLogin-error= "+error);

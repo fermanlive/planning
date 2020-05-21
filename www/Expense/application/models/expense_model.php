@@ -21,14 +21,25 @@ class Expense_model extends CI_Model {
     public function CreateExpense($name,$IdCategory,$dateExpense,$value,$IdPeriod){
 
         //Array con los datos del usuario
-        $data = array(
-            'value' => $value,
-            'name' => $name,
-            'category_expense_id_category_expense' => $IdCategory,
-            'date_expense' => $dateExpense,
-            'value' => $value,
-            'period_idperiod' => $IdPeriod,
-        );
+        if($dateExpense !== "null"){
+            $data = array(
+                'value' => $value,
+                'name' => $name,
+                'category_expense_id_category_expense' => $IdCategory,
+                'date_expense' => $dateExpense,
+                'value' => $value,
+                'period_idperiod' => $IdPeriod,
+            );
+        }
+        else{
+            $data = array(
+                'value' => $value,
+                'name' => $name,
+                'category_expense_id_category_expense' => $IdCategory,
+                'value' => $value,
+                'period_idperiod' => $IdPeriod,
+            );
+        }
 
         $this->db->set($data);
         $this->db->insert('expense');
@@ -50,6 +61,23 @@ class Expense_model extends CI_Model {
         return $insert_id > 0 ? true : false ;
     }
 
+    public function CreateCreditCard($name,$brand,$interest,$managementFee,$id_expense){
+
+        //Array con los datos del usuario
+        $data = array(
+            'name' => $name,
+            'brand' => $brand,
+            'interest' => $interest,
+            'managementFee' => $managementFee,
+            'id_expense' => $id_expense
+        );
+
+        $this->db->set($data);
+        $this->db->insert('credit_card');
+        $insert_id = $this->db->insert_id();
+        return $insert_id > 0 ? true : false ;
+    }
+
     public function UpdateExpense($name,$IdCategory,$dateExpense,$value,$IdUser,$IdExpense){
 
         //Array con los datos del usuario
@@ -63,6 +91,23 @@ class Expense_model extends CI_Model {
         $this->db->set($data);
         $this->db->where('id_expense',$IdExpense);
         $this->db->update('expense');
+        
+        return $this->db->affected_rows() > 0 ? true : false ;
+    }
+
+    public function UpdateCreditCard($name,$brand,$interest,$managementFee,$idcredit_card){
+
+        //Array con los datos del usuario
+        $data = array(
+            'name' => $name,
+            'brand' => $brand,
+            'interest' => $interest,
+            'managementFee' => $managementFee
+        );
+
+        $this->db->set($data);
+        $this->db->where('idcredit_card',$idcredit_card);
+        $this->db->update('credit_card');
         
         return $this->db->affected_rows() > 0 ? true : false ;
     }
@@ -122,6 +167,16 @@ class Expense_model extends CI_Model {
         $this->db->where('status',1);
         $this->db->where('period_idperiod',$IdPeriod);
         // $this->db->where('$IdUser',$Iduser);
+        $query = $this->db->get();
+        $result = $query->result_array();
+        return $result;
+    }
+
+    public function ReadCreditCard($id_expense){
+
+        $this->db->select('*');
+        $this->db->from('credit_card');
+        $this->db->where('id_expense',$id_expense);
         $query = $this->db->get();
         $result = $query->result_array();
         return $result;

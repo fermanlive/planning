@@ -10,7 +10,12 @@ import NetInfo from "@react-native-community/netinfo";
 import { Card, SimpleCard } from "@paraboly/react-native-card";
 import numeral from 'numeral';
 import ModalInstructor from "react-native-modal";
+import {SimpleAlert} from '../components/modalAlert';
 const {TOO_MUCH_INTEREST_MONEY,TOO_MUCH_FEE,BETTER_INTEREST,DEFINITION_INTEREST,DEFINITION_TYPES} = require ('../facts/facts');
+
+import {getSession} from '../helpers/users_services';
+import {getDefaultPeriod} from '../helpers/period_services';
+import {CreateExpense} from '../helpers/expense_services';
 
 
 import {masterValidator} from '../helpers/validations';
@@ -31,6 +36,7 @@ class Simulator extends React.Component {
       suggest:'',
       typeTransaction:null,
       modalInstructor:false,
+      SuccessModal:false,
       tableHead: ['Mes','Pago \nMinimo', 'Interes','Total \nIntereses', 'Deuda \nVigente'],
       tableData: [
         ['1','$30,780.50', '$0.00', '$123,122.00'],
@@ -58,25 +64,25 @@ class Simulator extends React.Component {
 
 SimulateCredit(typeCredit){
  let select = typeCredit? typeCredit.value : null;
- this.SimulateCreditCard();
-//  switch (select) {
-//    case 0:
-//      this.SimulateCreditCard();
-//      break;
 
-//     case 1:
+ switch (select) {
+   case 0:
+     this.SimulateCreditCard();
+     break;
 
-//     break;
+    case 1:
+      this.SimulateCreditCard();
+    break;
 
-//     case 2:
-     
-//       break;
+    case 2:
+      this.SimulateCreditEstate();
+    break;
  
-//      case 3:
- 
-//      break;
+    case 3:
+      this.SimulateCreditCard();
+    break;
 
-//  }
+ }
 }
 
 componentDidMount(){
@@ -88,6 +94,29 @@ componentDidMount(){
     });
   }
 }
+SimulateCreditEstate(){
+  let amount = this.state.amount ? this.state.amount : 0;
+  let numberFee = this.state.numberFee ? this.state.numberFee : 0;
+  let interest = this.state.interest ? parseFloat(this.state.interest)/100 : 0;
+  let Totaldebt=parseFloat(amount);
+  let MinimumPay;
+  let dataSimulation=new Array();
+  let Showinterest;
+  let TotalShowinterest = 0;
+  let feestatic = (Totaldebt*interest)/(1-Math.pow((1+interest), -numberFee));
+  for (let index = 1; index <= numberFee; index++) {
+    Showinterest =  parseFloat(Totaldebt*interest);
+    MinimumPay =  feestatic-Showinterest;
+    TotalShowinterest = Showinterest+TotalShowinterest;
+    Totaldebt = (Totaldebt-MinimumPay)>0 ? Math.trunc(Totaldebt-MinimumPay) : 0 ;
+    let value = [index,numeral(feestatic).format('$0,0'),numeral(Showinterest).format('$0,0'),numeral(TotalShowinterest).format('$0,0'),numeral(Totaldebt).format('$0,0')];
+    dataSimulation.push(value);
+  }
+  this.setState({tableData: dataSimulation});
+  this.setState({modalVisible:true });
+  this.setState({TotalShowinterest});
+  this.setState({suggest: ""});
+}
 
 SimulateCreditCard(){
   let amount = this.state.amount ? this.state.amount : 0;
@@ -98,6 +127,7 @@ SimulateCreditCard(){
   let dataSimulation=new Array();
   let Showinterest;
   let TotalShowinterest = 0;
+  let firstFee=0;
   
   for (let index = 1; index <= numberFee; index++) {
     if(numberFee == 1){
@@ -110,8 +140,9 @@ SimulateCreditCard(){
       Totaldebt = Totaldebt+(Showinterest);
       MinimumPay =  amount/numberFee + Showinterest;
       TotalShowinterest = Showinterest+TotalShowinterest;
-      Totaldebt = (Totaldebt-MinimumPay)>0 ? Totaldebt-MinimumPay : 0 ;
+      Totaldebt = (Totaldebt-MinimumPay)>0 ? Math.trunc(Totaldebt-MinimumPay) : 0 ;
     }
+    firstFee = index == 1 ?this.setState({firstfee: MinimumPay}): null;
     let value = [index,numeral(MinimumPay).format('$0,0'),numeral(Showinterest).format('$0,0'),numeral(TotalShowinterest).format('$0,0'),numeral(Totaldebt).format('$0,0')];
     dataSimulation.push(value);
   }
@@ -130,7 +161,28 @@ SimulateCreditCard(){
     this.setState({suggest: TOO_MUCH_FEE});
   }
 
+  if(this.state.typeCredit.value != 0){
+    this.setState({suggest: ""});
+  }
 }
+  async SaveAsExpense(){
+    const onSession = await getSession();
+    let idUser = onSession.id;
+    let IdPeriod = await getDefaultPeriod(idUser);
+    IdPeriod = IdPeriod.status ? IdPeriod.message : 0 ;
+    let id_categoryincome = 2;
+    let chosenDate = null;
+    let name = "Simulación";
+    let firstFee = this.state.firstfee;
+    let IncomeResponse = await CreateExpense(name,id_categoryincome,chosenDate,firstFee,IdPeriod);
+    
+    if(IncomeResponse.status){
+      this.setState({SuccessModalLine1: IncomeResponse.message});
+      this.setState({SuccesbuttonLabel: "ok, entendido"});
+      this.setState({SuccessModal : true});
+    }
+   
+  }
 
   //////////////////////Validations////////////////////////
   validate(kind,state,type,input){
@@ -407,22 +459,32 @@ SimulateCreditCard(){
                   </Text>
                   .
                 </Text>
-                <SimpleCard title={this.state.suggest} 
-                        styles={{ paddingBottom:10 }}
-                      />
-
+                {this.state.suggest?
+                  <SimpleCard title={this.state.suggest} 
+                          styles={{ paddingBottom:10 }}
+                        />
+                :null}
                 <Text style={{textAlign:'justify'}}>
                   Este simulador ofrece un estimativo de como serian las cuotas mas no 
                   una herramienta oficial del banco.
                 </Text>
               </ScrollView>
+              {this.state.typeCredit.value == 0 ? 
+                <TouchableOpacity 
+                  onPress={() => this.SaveAsExpense()}
+                  style={[buttons.GralButton, buttons.ButtonAccentBlue]}>
+                    <Text style={[text.BText, text.TLight]}>
+                      Guardar como egreso
+                    </Text>
+                </TouchableOpacity>
+              :null}
               <TouchableOpacity 
                 onPress={() => this.setState({modalVisible:false})}
                 style={[buttons.GralButton, buttons.ButtonAccentPurple]}>
-                <Text style={[text.BText, text.TLight]}>
-                  Cerrar
-                </Text>
-            </TouchableOpacity>
+                  <Text style={[text.BText, text.TLight]}>
+                    Cerrar
+                  </Text>
+              </TouchableOpacity>
             </Modal>
             <ModalInstructor
           backdropColor = {colors.opacityMain}
@@ -463,6 +525,14 @@ SimulateCreditCard(){
               </View>
             </View>
         </ModalInstructor>
+        <SimpleAlert 
+        isModalVisible = {this.state.SuccessModal} 
+        imageType = {2}
+        line1 = {this.state.SuccessModalLine1}
+        line2 = {this.state.SuccessModalLine2}
+        buttonLabel = {this.state.SuccesbuttonLabel}
+        closeModal={() => this.setState({SuccessModal: false})}
+        />
 
             </View>
     );

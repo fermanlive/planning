@@ -1,6 +1,6 @@
 import React from 'react';
 import numeral from 'numeral';
-import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,ScrollView,SafeAreaView ,TextInput} from 'react-native';
+import { View, Text ,TouchableOpacity,TouchableHighlight,FlatList,ScrollView,SafeAreaView ,TextInput,RefreshControl} from 'react-native';
 import {PieChart} from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import Loading from '../components/Loading';
@@ -56,6 +56,7 @@ class Home extends React.Component {
       idUser:0,
       IncomeAction:0,
       ExpenseAction:0,
+      refreshing:false,
       
 
     };
@@ -69,11 +70,13 @@ async componentDidMount(){
   this.setState({token});
   let IdPeriod = await getDefaultPeriod(idUser);
   IdPeriod=IdPeriod.message;
+  this.setState({IdPeriod});
   this.setPeriod(idUser,IdPeriod);
   this.setBalance(idUser,IdPeriod);
   this.setCategories(idUser,token);
   this.setBusyIndicator(false, '');
 }
+
 async setPeriod(idUser,IdPeriod){
   let period = await ReadPeriod(idUser,IdPeriod);
   period = period.status != undefined ? period.message: null;
@@ -130,15 +133,14 @@ async setBalance(idUser,IdPeriod){
     let color = this.random_rgba();
     let legendFontColor = '#7F7F7F';
     let legendFontSize = 12;
-    let title ='Ingreso restante';
-    let name ='Ingreso restante';
+    let title ='Dinero restante';
+    let name ='Dinero restante';
     element = {"id_expense":id_expense,"name":name, "porcentaje":porcentaje,"color":color,"legendFontColor":legendFontColor,"legendFontSize":legendFontSize,"title":title}
     dataGraphic.push(element);
   }
 
   this.setState({Expenses});
   this.setState({dataGraphic});
-  console.warn(this.state.dataGraphic);
  
   this.setState({TotalExpenses});
   this.setState({balance});
@@ -289,13 +291,20 @@ this.setState({
     this.setState({warningDeleteModal: false});
     selectDelete==2 ? this.DeleteIncome():this.DeleteExpense() ;
   }
-
+   refreshList =  async () => {
+    this.setState({listRefreshing: true});
+    this.setBalance(this.state.idUser,this.state.IdPeriod);
+    this.setState({listRefreshing: false});
+  }
 
   //////////////////////Validations////////////////////////
   validate(kind,state,type,input){
     this.setState({[state] : input});
     var verdict = masterValidator(kind,input);
     this.setState({[type] : verdict});
+    if(kind=='num'){
+      this.setState({[state] : parseFloat(input)});
+    }
   }
 
   async validateSendIncome(IncomeAction){
@@ -342,7 +351,7 @@ this.setState({
     if(this.state.amountExpenseError === '' || this.state.amountExpenseError === true) {this.setState({amountExpenseError : true}); allGood[1]=0}else{allGood[1]=1};  
 
     let id_categoryexpense= typeof this.state.categoriesExpense !== 'undefined' ? this.state.categoriesExpense.id_category_expense: 5;
-    let chosenDate= this.state.chosenDate ? this.state.chosenDate : 0 ;
+    let chosenDate= this.state.chosenDate ? this.state.chosenDate : null ;
     if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
       let ExpenseResponse;
       if (ExpenseAction == 0) {
@@ -402,7 +411,7 @@ this.setState({
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:'#66E49B' }}>
           <View style={{backgroundColor:'white' ,width:width, height:height*3/7,alignItems: 'center',borderBottomWidth:5,borderColor:colors.AccentPurple}}>
           <Text style={[text.TravelInfoTitle, text.Regular, text.TAccentPurple]}>
-          Relacion de gastos para {this.state.namePeriod}
+          Relación de gastos para {this.state.namePeriod}
           </Text>
           <View style={layout.MainTabsCont}>
             <TouchableHighlight
@@ -538,7 +547,15 @@ this.setState({
                 </Text>
             </TouchableHighlight>
           </View>
-          <ScrollView style={{flex: 1}}>
+          <ScrollView 
+          style={{flex: 1}}
+            refreshControl={
+              <RefreshControl
+                  onRefresh={() => this.refreshList()}
+                  refreshing={this.state.listRefreshing}
+              />
+            }
+          >
           <FlatList
              nestedScrollEnabled={true}
             data = {this.state.elements}
@@ -776,7 +793,7 @@ this.setState({
                         this.setState({selectDelete: 1})}}
                         style={[buttons.GralButton, buttons.ButtonAccentRed]}>
                         <Text style={[text.BText, text.TLight]}>
-                          Eliminar Egreso
+                          Eliminar
                         </Text>
                      </TouchableOpacity>
                       }  

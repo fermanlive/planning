@@ -28,6 +28,10 @@ class Saves extends React.Component {
           action: 1,
           current_value:null,
           confirmationModal: false,
+          goalError:'',
+          nameError:'',
+          current_valueError:'',
+          imageSuccessModal:2,
           elements:[
             {
               id:"1",
@@ -68,6 +72,9 @@ class Saves extends React.Component {
       this.setState({name: ""});
       this.setState({action: 1});
       this.setState({modalVisible: true});
+      this.setState({nameError: ''});
+      this.setState({current_valueError: ''});
+      this.setState({goalError: ''});
     }
    async ValidateSendSave(action){
       var allGood = [0,0,0];//[0,0,0]; //legth equal to zero to remove ignore password fields
@@ -75,22 +82,36 @@ class Saves extends React.Component {
       if(this.state.goalError === '' || this.state.goalError === true) {this.setState({goalError : true}); allGood[1]=0}else{allGood[1]=1};
       if(this.state.current_valueError === '' || this.state.current_valueError === true) {this.setState({current_valueError : true}); allGood[2]=0}else{allGood[2]=1};  
       let saveResponse;
+
+      if(parseFloat(this.state.current_value)>parseFloat(this.state.goal)){
+        
+        this.setState({SuccessModalLine1: "La meta no puede ser menor que el valor actual."});
+        this.setState({SuccesbuttonLabel: "ok, entendido"});
+        this.setState({imageSuccessModal:1})
+        this.setState({SuccessModal : true});
+        return;
+      }
       if(allGood.reduce((a, b) => a + b, 0) === allGood.length){
         if (action == 1) {
            saveResponse = await CreateSave(this.state.current_value,this.state.name,this.state.goal,this.state.Iduser);
         }else{
           saveResponse = await EditSave(this.state.current_value,this.state.name,this.state.goal,this.state.Iduser,this.state.id_saves);
         }
+        if(saveResponse.status){
+          this.setState({SuccessModalLine1: saveResponse.message});
+          this.setState({SuccesbuttonLabel: "ok, entendido"});
+          this.setState({imageSuccessModal:2})
+          this.setState({SuccessModal : true});
+          this.setState({modalVisible  : false});
+        }else{
+          this.setState({SuccessModalLine1: saveResponse.message});
+          this.setState({SuccesbuttonLabel: "ok, entendido"});
+          this.setState({imageSuccessModal:1})
+          this.setState({SuccessModal : true});
+          this.setState({modalVisible  : false});
+        }
+        this.updateSaves();
       }
-
-      if(saveResponse.status){
-        this.setState({SuccessModalLine1: saveResponse.message});
-        this.setState({SuccesbuttonLabel: "ok, entendido"});
-        this.setState({SuccessModal : true});
-        this.setState({modalVisible  : false});
-      }
-      this.updateSaves();
-
     }
 
     async updateSaves(){
@@ -162,6 +183,10 @@ class Saves extends React.Component {
               this.setState({current_value : item.current_value})
               this.setState({id_saves : item.id_saves})
               this.setState({action : 2})
+              this.setState({nameError:false})
+              this.setState({goalError:false})
+              this.setState({current_valueError:false})
+
             }}
             >
               <View 
@@ -329,7 +354,7 @@ class Saves extends React.Component {
               />
               <SimpleAlert 
                 isModalVisible = {this.state.SuccessModal} 
-                imageType = {2}
+                imageType = {this.state.imageSuccessModal}
                 line1 = {this.state.SuccessModalLine1}
                 line2 = {this.state.SuccessModalLine2}
                 buttonLabel = {this.state.SuccesbuttonLabel}
